@@ -1,0 +1,109 @@
+For your full business requirement, these are the major missing pieces.
+
+1.Driver lifecycle
+full driver registration form
+license number and document uploads
+driver photo
+optional secondary contact
+address/location data
+proper driver status flow like active, blocked, duplicate, blacklisted
+duplicate detection by phone, WhatsApp, license, and vehicle number
+
+
+*******************************
+******************Vehicle management
+multiple vehicles per driver
+better vehicle categories: bus, cab, traveller, truck, tempo, private taxi
+RC/permit/insurance fields if needed
+vehicle history if a driver changes vehicle
+
+********************Visit verification flow
+verify by phone number is present, but should also support vehicle number search
+ideally support quick search by mobile, WhatsApp, vehicle, or driver ID
+proper “already registered / not registered” flow
+employee should be able to register a new driver and immediately log first visit in one transaction
+guard against duplicate same-day or same-minute accidental visit entry
+
+
+**********************Visit capture details
+guest count entry
+food issued yes/no and maybe quantity/type
+cash incentive issued
+remarks/reason
+which employee handled the visit
+maybe bill amount / order value if business needs ROI reporting
+
+
+********************Incentive engine
+configurable rules from admin panel
+threshold-based monthly bonus logic like 15 visits = 10%, 30 visits = 15%
+date-effective rule versioning
+automatic computation and storage in monthly summary table
+backfill/recalculation command for old data
+reports showing qualifying drivers and bonus earned
+
+
+##########  REMAINING ######################
+*********************WhatsApp system
+template management UI
+integration with WhatsApp Business API/provider
+daily campaign scheduler
+queue/retry/failure handling
+opt-out / consent handling
+delivery reporting and history
+****************************Employee/admin management
+stronger role permissions than current 3-role redirection
+screen-level and action-level authorization
+employee activation/deactivation
+password reset flow
+role/permission audit trail
+****************************88Reporting and analytics
+daily/monthly visit reports
+guest-count analytics
+incentive payout reports
+driver performance ranking
+employee productivity reports
+WhatsApp campaign effectiveness
+duplicate/fraud detection reports
+export to Excel/PDF
+*********************Audit, compliance, and control
+actual audit logs on every sensitive action
+who created/edited/deleted driver/visit/user
+IP/device/time tracking for accountability
+soft delete recovery flows
+proper data retention rules
+*****************888Production readiness
+validation centralization
+service layer instead of all logic in one Home controller
+tests
+background jobs/cron
+environment-based config
+error logging and monitoring
+security hardening
+backup and restore process
+
+
+********FINAL WORKFLOW
+Driver Arrives
+    ↓
+Employee Searches Driver
+    ↓
+If New → Register Driver
+    ↓
+Create Check-In
+    ↓
+Passengers Eat and count passenger(guest)
+    ↓
+Bill Generated
+    ↓
+Visit Verified
+    ↓
+Food/Cash Benefit Issued
+    ↓
+Points Added
+    ↓
+Monthly Incentive Calculated
+    ↓
+Admin Approves Payout
+    ↓
+WhatsApp Notification Sent

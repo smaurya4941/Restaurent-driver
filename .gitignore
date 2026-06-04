@@ -1,0 +1,113 @@
+# =========================
+# CodeIgniter .gitignore
+# =========================
+
+# -------------------------
+# OS Files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# IDE / Editor
+# -------------------------
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# -------------------------
+# Logs
+# -------------------------
+*.log
+logs/
+writable/logs/
+
+# -------------------------
+# Environment Files
+# -------------------------
+.env
+.env.*
+
+# -------------------------
+# Composer
+# -------------------------
+vendor/
+
+# -------------------------
+# Node Modules
+# -------------------------
+node_modules/
+
+# -------------------------
+# Cache & Sessions
+# -------------------------
+writable/cache/
+writable/session/
+writable/sessions/
+writable/uploads/debugbar/
+
+# -------------------------
+# Uploads (Optional)
+# Uncomment if you don't want uploads in git
+# -------------------------
+# uploads/
+# public/uploads/
+
+# -------------------------
+# Runtime / Temp
+# -------------------------
+tmp/
+temp/
+cache/
+
+# -------------------------
+# PHPUnit
+# -------------------------
+phpunit.xml
+coverage/
+
+# -------------------------
+# Xdebug
+# -------------------------
+*.cachegrind
+*.out
+
+# -------------------------
+# CodeIgniter 4 Specific
+# -------------------------
+writable/debugbar/
+writable/uploads/
+writable/cache/*
+writable/session/*
+writable/logs/*
+
+# Keep writable folders
+!writable/cache/index.html
+!writable/session/index.html
+!writable/logs/index.html
+
+# -------------------------
+# CodeIgniter 3 Specific
+# -------------------------
+application/logs/*
+!application/logs/index.html
+
+application/cache/*
+!application/cache/index.html
+
+# -------------------------
+# Backup Files
+# -------------------------
+*.bak
+*.sql
+*.zip
+*.tar.gz
+
+# -------------------------
+# Mac/Linux Hidden Files
+# -------------------------
+.*.swp
+*~
