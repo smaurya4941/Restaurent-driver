@@ -80,6 +80,9 @@ $routes->post('reset_user_password/(:num)', 'Home::resetUserPassword/$1');
 
 $routes->get('/branches', 'BranchController::index');
 $routes->post('/branches', 'BranchController::store');
+$routes->post('/branches/(:num)', 'BranchController::update/$1');
+$routes->post('/branches/(:num)/toggle-status', 'BranchController::toggleStatus/$1');
+$routes->post('/branches/(:num)/admins', 'BranchController::assignAdmins/$1');
 $routes->post('/branches/switch', 'BranchController::switchBranch');
 
 
