@@ -27,6 +27,30 @@ class ReportingService
             'label' => 'Monthly Bonuses',
             'description' => 'Drivers who qualified for visit milestone bonuses in the selected month.',
         ],
+        'top-drivers' => [
+            'label' => 'Top Drivers',
+            'description' => 'Branch-scoped driver ranking by visits, guests, and incentives.',
+        ],
+        // 'branch-monthly-summary' => [
+        //     'label' => 'Branch Monthly Summary',
+        //     'description' => 'Monthly branch totals for visits, guests, incentives, expenses, and payouts.',
+        // ],
+        // 'expenses' => [
+        //     'label' => 'Expenses Report',
+        //     'description' => 'Branch expenses by date, category, vendor, and status.',
+        // ],
+        // 'payouts' => [
+        //     'label' => 'Payouts Report',
+        //     'description' => 'Branch payouts by type, recipient, amount, and status.',
+        // ],
+        // 'vehicle-activity' => [
+        //     'label' => 'Vehicle Branch Activity',
+        //     'description' => 'Global vehicles with branch-wise operational activity.',
+        // ],
+        // 'national-loyalty' => [
+        //     'label' => 'National Loyalty',
+        //     'description' => 'National driver loyalty points, tiers, and cross-branch activity.',
+        // ],  
     ];
 
     public function getReportDefinitions(): array
@@ -75,6 +99,12 @@ class ReportingService
             'visit-ledger' => $this->buildVisitLedgerReport($type, $definition, $filters),
             'drivers-registered' => $this->buildDriversRegisteredReport($type, $definition, $filters),
             'monthly-bonuses' => $this->buildIncentivePayoutReport($type, $definition, $filters),
+            'top-drivers' => $this->buildDriverRankingReport($type, $definition, $filters),
+            'branch-monthly-summary' => $this->buildBranchMonthlySummaryReport($type, $definition, $filters),
+            'expenses' => $this->buildExpensesReport($type, $definition, $filters),
+            'payouts' => $this->buildPayoutsReport($type, $definition, $filters),
+            'vehicle-activity' => $this->buildVehicleActivityReport($type, $definition, $filters),
+            'national-loyalty' => $this->buildNationalLoyaltyReport($type, $definition, $filters),
             default => $this->buildDriverReport($type, $definition, $filters),
         };
     }
@@ -89,6 +119,7 @@ class ReportingService
 
         $this->applyCreatedAtDateRange($builder, 'drivers.created_at', $filters);
         $this->applyDriverSearch($builder, $filters['search_input']);
+        $this->applyDriverOperationalScope($builder);
 
         $rows = $builder
             ->orderBy('drivers.full_name', 'ASC')
@@ -262,6 +293,7 @@ class ReportingService
 
         $this->applyCreatedAtDateRange($builder, 'drivers.created_at', $filters);
         $this->applyDriverSearch($builder, $filters['search_input']);
+        $this->applyDriverOperationalScope($builder);
 
         $rows = $builder
             ->orderBy('drivers.created_at', 'DESC')
@@ -429,6 +461,193 @@ class ReportingService
         );
     }
 
+    private function buildExpensesReport(string $type, array $definition, array $filters): array
+    {
+        $builder = Database::connect()
+            ->table('expenses')
+            ->select('branches.name AS branch_name, expenses.expense_date, expenses.category, expenses.vendor_name, expenses.amount, expenses.payment_mode, expenses.reference_number, expenses.status')
+            ->join('branches', 'branches.id = expenses.branch_id', 'left')
+            ->where('expenses.deleted_at', null);
+
+        $this->applyBranchFilter($builder, 'expenses.branch_id');
+        $this->applyCreatedAtDateRange($builder, 'expenses.expense_date', $filters);
+        $this->applySearch($builder, $filters['search_input'], ['expenses.category', 'expenses.vendor_name', 'expenses.reference_number']);
+
+        $rows = $builder->orderBy('expenses.expense_date', 'DESC')->limit($filters['limit'])->get()->getResultArray();
+
+        return $this->buildResponse($type, $definition, [
+            ['key' => 'expense_date', 'label' => 'Date'],
+            ['key' => 'branch_name', 'label' => 'Branch'],
+            ['key' => 'category', 'label' => 'Category'],
+            ['key' => 'vendor_name', 'label' => 'Vendor'],
+            ['key' => 'amount', 'label' => 'Amount', 'format' => 'currency'],
+            ['key' => 'payment_mode', 'label' => 'Mode'],
+            ['key' => 'status', 'label' => 'Status'],
+            ['key' => 'reference_number', 'label' => 'Reference'],
+        ], $rows, $filters, [
+            'Expenses' => count($rows),
+            'Amount' => array_sum(array_map(static fn(array $row): float => (float) ($row['amount'] ?? 0), $rows)),
+        ]);
+    }
+
+    private function buildPayoutsReport(string $type, array $definition, array $filters): array
+    {
+        $builder = Database::connect()
+            ->table('payouts')
+            ->select('branches.name AS branch_name, payouts.payout_date, payouts.payout_type, payouts.recipient_name, payouts.amount, payouts.payment_mode, payouts.reference_number, payouts.status')
+            ->join('branches', 'branches.id = payouts.branch_id', 'left')
+            ->where('payouts.deleted_at', null);
+
+        $this->applyBranchFilter($builder, 'payouts.branch_id');
+        $this->applyCreatedAtDateRange($builder, 'payouts.payout_date', $filters);
+        $this->applySearch($builder, $filters['search_input'], ['payouts.payout_type', 'payouts.recipient_name', 'payouts.reference_number']);
+
+        $rows = $builder->orderBy('payouts.payout_date', 'DESC')->limit($filters['limit'])->get()->getResultArray();
+
+        return $this->buildResponse($type, $definition, [
+            ['key' => 'payout_date', 'label' => 'Date'],
+            ['key' => 'branch_name', 'label' => 'Branch'],
+            ['key' => 'payout_type', 'label' => 'Type'],
+            ['key' => 'recipient_name', 'label' => 'Recipient'],
+            ['key' => 'amount', 'label' => 'Amount', 'format' => 'currency'],
+            ['key' => 'payment_mode', 'label' => 'Mode'],
+            ['key' => 'status', 'label' => 'Status'],
+            ['key' => 'reference_number', 'label' => 'Reference'],
+        ], $rows, $filters, [
+            'Payouts' => count($rows),
+            'Amount' => array_sum(array_map(static fn(array $row): float => (float) ($row['amount'] ?? 0), $rows)),
+        ]);
+    }
+
+    private function buildVehicleActivityReport(string $type, array $definition, array $filters): array
+    {
+        $builder = Database::connect()
+            ->table('vehicle_branch_activity')
+            ->select('branches.name AS branch_name, vehicles.vehicle_number, vehicles.vehicle_type, drivers.full_name AS driver_name, vehicle_branch_activity.activity_type, vehicle_branch_activity.activity_at')
+            ->join('branches', 'branches.id = vehicle_branch_activity.branch_id', 'left')
+            ->join('vehicles', 'vehicles.id = vehicle_branch_activity.vehicle_id')
+            ->join('drivers', 'drivers.id = vehicle_branch_activity.driver_id');
+
+        $this->applyBranchFilter($builder, 'vehicle_branch_activity.branch_id');
+        $this->applyCreatedAtDateRange($builder, 'vehicle_branch_activity.activity_at', $filters);
+        $this->applyDriverSearch($builder, $filters['search_input']);
+
+        $rows = $builder->orderBy('vehicle_branch_activity.activity_at', 'DESC')->limit($filters['limit'])->get()->getResultArray();
+
+        return $this->buildResponse($type, $definition, [
+            ['key' => 'activity_at', 'label' => 'Activity At'],
+            ['key' => 'branch_name', 'label' => 'Branch'],
+            ['key' => 'vehicle_number', 'label' => 'Vehicle'],
+            ['key' => 'vehicle_type', 'label' => 'Type'],
+            ['key' => 'driver_name', 'label' => 'Driver'],
+            ['key' => 'activity_type', 'label' => 'Activity'],
+        ], $rows, $filters, ['Activity Rows' => count($rows)]);
+    }
+
+    private function buildNationalLoyaltyReport(string $type, array $definition, array $filters): array
+    {
+        $builder = Database::connect()
+            ->table('driver_loyalty_accounts')
+            ->select('drivers.full_name AS driver_name, drivers.mobile_number, driver_loyalty_accounts.tier, driver_loyalty_accounts.loyalty_points, driver_loyalty_accounts.total_visits, driver_loyalty_accounts.total_branches_visited, driver_loyalty_accounts.total_guests, driver_loyalty_accounts.total_cash_incentive, driver_loyalty_accounts.total_bonus_paid, driver_loyalty_accounts.last_visit_at')
+            ->join('drivers', 'drivers.id = driver_loyalty_accounts.driver_id')
+            ->where('drivers.deleted_at', null);
+
+        $this->applyDriverSearch($builder, $filters['search_input']);
+        $rows = $builder->orderBy('driver_loyalty_accounts.loyalty_points', 'DESC')->limit($filters['limit'])->get()->getResultArray();
+
+        return $this->buildResponse($type, $definition, [
+            ['key' => 'driver_name', 'label' => 'Driver'],
+            ['key' => 'mobile_number', 'label' => 'Mobile'],
+            ['key' => 'tier', 'label' => 'Tier'],
+            ['key' => 'loyalty_points', 'label' => 'Points'],
+            ['key' => 'total_visits', 'label' => 'Visits'],
+            ['key' => 'total_branches_visited', 'label' => 'Branches'],
+            ['key' => 'total_guests', 'label' => 'Guests'],
+            ['key' => 'total_cash_incentive', 'label' => 'Cash Incentive', 'format' => 'currency'],
+            ['key' => 'total_bonus_paid', 'label' => 'Bonus Paid', 'format' => 'currency'],
+            ['key' => 'last_visit_at', 'label' => 'Last Visit'],
+        ], $rows, $filters, [
+            'Drivers' => count($rows),
+            'Points' => array_sum(array_map(static fn(array $row): int => (int) ($row['loyalty_points'] ?? 0), $rows)),
+        ]);
+    }
+
+    private function buildBranchMonthlySummaryReport(string $type, array $definition, array $filters): array
+    {
+        $db = Database::connect();
+        $periodStart = sprintf('%04d-%02d-01 00:00:00', (int) $filters['year'], (int) $filters['month']);
+        $periodEnd = date('Y-m-t 23:59:59', strtotime($periodStart));
+        $scopeBranchId = $this->branchContext->getScopeBranchId();
+
+        $branchBuilder = $db->table('branches')->select('id, name')->where('status', 'active');
+        if ($scopeBranchId !== null) {
+            $branchBuilder->where('id', $scopeBranchId);
+        }
+
+        $rows = [];
+        foreach ($branchBuilder->orderBy('name', 'ASC')->get()->getResultArray() as $branch) {
+            $branchId = (int) $branch['id'];
+            $visits = $db->table('visits')
+                ->select('COUNT(id) AS visits, COALESCE(SUM(guest_count), 0) AS guests, COALESCE(SUM(cash_incentive_amount), 0) AS incentives')
+                ->where('deleted_at', null)
+                ->where('branch_id', $branchId)
+                ->where('visited_at >=', $periodStart)
+                ->where('visited_at <=', $periodEnd)
+                ->get()
+                ->getRowArray() ?? [];
+
+            $expenses = $this->monthlyMoney($db, 'expenses', 'expense_date', $branchId, $filters);
+            $payouts = $this->monthlyMoney($db, 'payouts', 'payout_date', $branchId, $filters);
+            $incentives = (float) ($visits['incentives'] ?? 0);
+
+            $rows[] = [
+                'month' => sprintf('%04d-%02d', (int) $filters['year'], (int) $filters['month']),
+                'branch_name' => $branch['name'],
+                'visits' => (int) ($visits['visits'] ?? 0),
+                'guests' => (int) ($visits['guests'] ?? 0),
+                'incentives' => $incentives,
+                'expenses' => $expenses,
+                'payouts' => $payouts,
+                'net_outflow' => $incentives + $expenses + $payouts,
+            ];
+        }
+
+        return $this->buildResponse($type, $definition, [
+            ['key' => 'month', 'label' => 'Month'],
+            ['key' => 'branch_name', 'label' => 'Branch'],
+            ['key' => 'visits', 'label' => 'Visits'],
+            ['key' => 'guests', 'label' => 'Guests'],
+            ['key' => 'incentives', 'label' => 'Visit Incentives', 'format' => 'currency'],
+            ['key' => 'expenses', 'label' => 'Expenses', 'format' => 'currency'],
+            ['key' => 'payouts', 'label' => 'Payouts', 'format' => 'currency'],
+            ['key' => 'net_outflow', 'label' => 'Total Outflow', 'format' => 'currency'],
+        ], $rows, $filters, [
+            'Branches' => count($rows),
+            'Visits' => array_sum(array_map(static fn(array $row): int => (int) $row['visits'], $rows)),
+            'Total Outflow' => array_sum(array_map(static fn(array $row): float => (float) $row['net_outflow'], $rows)),
+        ]);
+    }
+
+    private function monthlyMoney($db, string $table, string $dateColumn, int $branchId, array $filters): float
+    {
+        if (!$db->tableExists($table)) {
+            return 0.0;
+        }
+
+        $start = sprintf('%04d-%02d-01', (int) $filters['year'], (int) $filters['month']);
+        $end = date('Y-m-t', strtotime($start));
+        $row = $db->table($table)
+            ->select('COALESCE(SUM(amount), 0) AS amount')
+            ->where('deleted_at', null)
+            ->where('branch_id', $branchId)
+            ->where($dateColumn . ' >=', $start)
+            ->where($dateColumn . ' <=', $end)
+            ->get()
+            ->getRowArray();
+
+        return (float) ($row['amount'] ?? 0);
+    }
+
     private function buildResponse(string $type, array $definition, array $columns, array $rows, array $filters, array $summary): array
     {
         return [
@@ -468,6 +687,38 @@ class ReportingService
             ->like('drivers.full_name', $searchInput)
             ->orLike('drivers.mobile_number', $searchInput)
             ->groupEnd();
+    }
+
+    private function applySearch(object $builder, string $searchInput, array $columns): void
+    {
+        if ($searchInput === '' || $columns === []) {
+            return;
+        }
+
+        $builder->groupStart();
+        foreach ($columns as $index => $column) {
+            if ($index === 0) {
+                $builder->like($column, $searchInput);
+                continue;
+            }
+
+            $builder->orLike($column, $searchInput);
+        }
+        $builder->groupEnd();
+    }
+
+    private function applyDriverOperationalScope(object $builder): void
+    {
+        $branchId = $this->branchContext->getScopeBranchId();
+        if ($branchId === null) {
+            return;
+        }
+
+        $builder->where(
+            'EXISTS (SELECT 1 FROM visits v_scope WHERE v_scope.driver_id = drivers.id AND v_scope.branch_id = ' . (int) $branchId . ' AND v_scope.deleted_at IS NULL)',
+            null,
+            false
+        );
     }
 
     private function applyBranchFilter(object $builder, string $column): void

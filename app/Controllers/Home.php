@@ -8,6 +8,7 @@ use App\Models\DriverModel;
 use App\Models\RoleModel;
 use App\Models\UserModel;
 use App\Models\VisitModel;
+use Config\Database;
 
 class Home extends BaseController
 {
@@ -121,6 +122,7 @@ class Home extends BaseController
                 'visitsCount'  => $visitsCount,
                 'role'         => $role,
                 'branchLabel'  => $this->branchContext->getActiveBranchLabel(),
+                'dashboardMetrics' => $this->buildDashboardMetrics(),
             ]);
         }
 
@@ -518,6 +520,88 @@ class Home extends BaseController
             ->join('vehicles', 'vehicles.driver_id = drivers.id AND vehicles.is_primary = 1', 'left')
             ->orderBy('drivers.id', 'DESC')
             ->findAll();
+    }
+
+    private function buildDashboardMetrics(): array
+    {
+        $db = Database::connect();
+        $branchId = $this->branchContext->getScopeBranchId();
+        $todayStart = date('Y-m-d 00:00:00');
+        $todayEnd = date('Y-m-d 23:59:59');
+        $monthStart = date('Y-m-01 00:00:00');
+        $monthEnd = date('Y-m-t 23:59:59');
+
+        $todayVisits = $this->visitAggregate($db, $todayStart, $todayEnd, $branchId);
+        $monthVisits = $this->visitAggregate($db, $monthStart, $monthEnd, $branchId);
+        $monthExpenses = $this->moneyAggregate($db, 'expenses', 'expense_date', 'amount', date('Y-m-01'), date('Y-m-t'), $branchId);
+        $monthPayouts = $this->moneyAggregate($db, 'payouts', 'payout_date', 'amount', date('Y-m-01'), date('Y-m-t'), $branchId);
+
+        $topDrivers = $db->table('visits')
+            ->select('drivers.full_name AS driver_name, drivers.mobile_number, COUNT(visits.id) AS visit_count, COALESCE(SUM(visits.guest_count), 0) AS guest_count, COALESCE(SUM(visits.cash_incentive_amount), 0) AS cash_total')
+            ->join('drivers', 'drivers.id = visits.driver_id')
+            ->where('visits.deleted_at', null)
+            ->where('visits.visited_at >=', $monthStart)
+            ->where('visits.visited_at <=', $monthEnd);
+        if ($branchId !== null) {
+            $topDrivers->where('visits.branch_id', $branchId);
+        }
+        $topDrivers = $topDrivers
+            ->groupBy('drivers.id, drivers.full_name, drivers.mobile_number')
+            ->orderBy('visit_count', 'DESC')
+            ->limit(5)
+            ->get()
+            ->getResultArray();
+
+        $recentVisits = $db->table('visits')
+            ->select('visits.id, visits.visited_at, branches.name AS branch_name, drivers.full_name AS driver_name, vehicles.vehicle_number, visits.guest_count, visits.cash_incentive_amount')
+            ->join('branches', 'branches.id = visits.branch_id', 'left')
+            ->join('drivers', 'drivers.id = visits.driver_id')
+            ->join('vehicles', 'vehicles.id = visits.vehicle_id', 'left')
+            ->where('visits.deleted_at', null);
+        if ($branchId !== null) {
+            $recentVisits->where('visits.branch_id', $branchId);
+        }
+
+        return [
+            'todayVisits' => $todayVisits,
+            'monthVisits' => $monthVisits,
+            'monthExpenses' => $monthExpenses,
+            'monthPayouts' => $monthPayouts,
+            'topDrivers' => $topDrivers,
+            'recentVisits' => $recentVisits->orderBy('visits.visited_at', 'DESC')->limit(8)->get()->getResultArray(),
+        ];
+    }
+
+    private function visitAggregate($db, string $start, string $end, ?int $branchId): array
+    {
+        $builder = $db->table('visits')
+            ->select('COUNT(id) AS total, COALESCE(SUM(guest_count), 0) AS guests, COALESCE(SUM(cash_incentive_amount), 0) AS cash_total')
+            ->where('deleted_at', null)
+            ->where('visited_at >=', $start)
+            ->where('visited_at <=', $end);
+        if ($branchId !== null) {
+            $builder->where('branch_id', $branchId);
+        }
+
+        return $builder->get()->getRowArray() ?? ['total' => 0, 'guests' => 0, 'cash_total' => 0];
+    }
+
+    private function moneyAggregate($db, string $table, string $dateColumn, string $amountColumn, string $start, string $end, ?int $branchId): array
+    {
+        if (!$db->tableExists($table)) {
+            return ['total' => 0, 'amount' => 0];
+        }
+
+        $builder = $db->table($table)
+            ->select('COUNT(id) AS total, COALESCE(SUM(' . $amountColumn . '), 0) AS amount')
+            ->where('deleted_at', null)
+            ->where($dateColumn . ' >=', $start)
+            ->where($dateColumn . ' <=', $end);
+        if ($branchId !== null) {
+            $builder->where('branch_id', $branchId);
+        }
+
+        return $builder->get()->getRowArray() ?? ['total' => 0, 'amount' => 0];
     }
 
     private function getUserStatusOptions(): array

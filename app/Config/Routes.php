@@ -46,6 +46,15 @@ $routes->get('/incentive-rules/(:num)/toggle', 'IncentiveController::legacyToggl
 $routes->get('/reports', 'ReportingController::index');
 $routes->get('/reports/(:segment)', 'ReportingController::index/$1');
 $routes->get('/reports/export/(:segment)/(:segment)', 'ReportingController::export/$1/$2');
+$routes->get('/expenses', 'ExpenseController::index');
+$routes->post('/expenses', 'ExpenseController::store');
+$routes->post('/expenses/(:num)/status', 'ExpenseController::updateStatus/$1');
+$routes->get('/payouts', 'PayoutController::index');
+$routes->post('/payouts', 'PayoutController::store');
+$routes->post('/payouts/(:num)/status', 'PayoutController::updateStatus/$1');
+$routes->get('/vehicle-branch-activity', 'VehicleBranchController::index');
+$routes->get('/loyalty', 'LoyaltyController::index');
+$routes->post('/loyalty/recompute', 'LoyaltyController::recompute');
 
 $routes->get('/whatsapp-campaigns', 'WhatsAppController::index');
 $routes->post('/whatsapp-campaigns/send', 'WhatsAppController::sendGroupedMessage');

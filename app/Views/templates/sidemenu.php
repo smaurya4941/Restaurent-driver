@@ -32,10 +32,13 @@ $isCurrent = static function (array $paths) use ($currentPath): bool {
 $adminDriverOpen = $isCurrent(['driverEntry', 'drivers']);
 $adminVisitOpen = $isCurrent(['visitEntry', 'visitEntryList']);
 $reportsOpen = $isCurrent(['reports']);
+$financeOpen = $isCurrent(['expenses', 'payouts']);
 $incentivesOpen = $isCurrent(['bonus-rules', 'driver-bonuses', 'incentive-rules']);
 $whatsAppOpen = $isCurrent(['whatsapp-campaigns']);
 $usersOpen = $isCurrent(['user_list', 'create_user', 'edit_user', 'update_user']);
 $branchesOpen = $isCurrent(['branches']);
+$loyaltyOpen = $isCurrent(['loyalty']);
+$vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
 ?>
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -151,6 +154,44 @@ $branchesOpen = $isCurrent(['branches']);
                         </a>
                     </li>
 
+                    <!-- <li class="nav-item <?= $financeOpen ? 'menu-open' : '' ?>">
+                        <a href="#" class="nav-link <?= $financeOpen ? 'active' : '' ?>">
+                            <i class="nav-icon fa-solid fa-wallet"></i>
+                            <p>
+                                Finance
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="<?= base_url('expenses') ?>" class="nav-link <?= $isCurrent(['expenses']) ? 'active' : '' ?>">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Expenses</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?= base_url('payouts') ?>" class="nav-link <?= $isCurrent(['payouts']) ? 'active' : '' ?>">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Payouts</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="<?= base_url('vehicle-branch-activity') ?>" class="nav-link <?= $vehicleOpsOpen ? 'active' : '' ?>">
+                            <i class="nav-icon fa-solid fa-car-side"></i>
+                            <p>Vehicle Activity</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="<?= base_url('loyalty') ?>" class="nav-link <?= $loyaltyOpen ? 'active' : '' ?>">
+                            <i class="nav-icon fa-solid fa-medal"></i>
+                            <p>Driver Loyalty</p>
+                        </a>
+                    </li> -->
+
                     <?php if ($isSuperAdmin): ?>
                         <li class="nav-item">
                             <a href="<?= base_url('branches') ?>" class="nav-link <?= $branchesOpen ? 'active' : '' ?>">
@@ -197,6 +238,24 @@ $branchesOpen = $isCurrent(['branches']);
                         <a href="<?= base_url('reports') ?>" class="nav-link <?= $reportsOpen ? 'active' : '' ?>">
                             <i class="nav-icon fa-solid fa-file-lines"></i>
                             <p>Reports</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('expenses') ?>" class="nav-link <?= $isCurrent(['expenses']) ? 'active' : '' ?>">
+                            <i class="nav-icon fa-solid fa-receipt"></i>
+                            <p>Expenses</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('payouts') ?>" class="nav-link <?= $isCurrent(['payouts']) ? 'active' : '' ?>">
+                            <i class="nav-icon fa-solid fa-wallet"></i>
+                            <p>Payouts</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('loyalty') ?>" class="nav-link <?= $loyaltyOpen ? 'active' : '' ?>">
+                            <i class="nav-icon fa-solid fa-medal"></i>
+                            <p>Driver Loyalty</p>
                         </a>
                     </li>
                     <li class="nav-item">

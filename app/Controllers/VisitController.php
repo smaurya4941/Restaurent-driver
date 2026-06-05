@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Models\DriverModel;
+use App\Models\VehicleBranchActivityModel;
 use App\Models\VehicleModel;
 use App\Models\VisitModel;
+use App\Services\DriverLoyaltyService;
 use App\Services\IncentiveEngineService;
 
 class VisitController extends BaseController
@@ -123,7 +125,9 @@ class VisitController extends BaseController
         $visitModel = new VisitModel();
         $visitModel->insert($visitPayload);
         $visitId = (int) $visitModel->getInsertID();
+        $this->recordVehicleActivity($branchId, $vehicleId, $driverId, $visitId, $visitedAt);
         (new IncentiveEngineService())->recomputeForVisitDate($driverId, $visitedAt, $branchId);
+        (new DriverLoyaltyService())->recomputeDriver($driverId);
         $this->logAudit('visit.created', 'visit', $visitId, null, $visitPayload);
 
         return redirect()->to('/visitEntry')->with('success', 'Visit entry saved successfully.');
@@ -191,6 +195,7 @@ class VisitController extends BaseController
 
         $visitModel->insert($visitPayload);
         $visitId = (int) $visitModel->getInsertID();
+        $this->recordVehicleActivity($branchId, $vehicleId, $driverId, $visitId, $visitedAt);
 
         $db->transComplete();
 
@@ -199,6 +204,7 @@ class VisitController extends BaseController
         }
 
         (new IncentiveEngineService())->recomputeForVisitDate($driverId, $visitedAt, $branchId);
+        (new DriverLoyaltyService())->recomputeDriver($driverId);
         $this->logAudit('driver.created', 'driver', $driverId, null, ['source' => 'visitEntryInline']);
         $this->logAudit('visit.created', 'visit', $visitId, null, $visitPayload);
 
@@ -268,6 +274,7 @@ class VisitController extends BaseController
             $visitBranchId = (int) ($visit['branch_id'] ?? $this->requireBranchId());
             (new IncentiveEngineService())->recomputeForVisitDate((int) $visit['driver_id'], (string) $visit['visited_at'], $visitBranchId);
             (new IncentiveEngineService())->recomputeForVisitDate((int) $visit['driver_id'], $payload['visited_at'], $visitBranchId);
+            (new DriverLoyaltyService())->recomputeDriver((int) $visit['driver_id']);
             $this->logAudit('visit.updated', 'visit', (int) $id, $visit, $payload);
             return redirect()->to('/visitEntry')->with('success', 'Visit updated successfully.');
         }
@@ -288,8 +295,9 @@ class VisitController extends BaseController
                 (new IncentiveEngineService())->recomputeForVisitDate(
                     (int) $visit['driver_id'],
                     (string) $visit['visited_at'],
-                    (int) ($visit['branch_id'] ?? $this->requireBranchId())
+                (int) ($visit['branch_id'] ?? $this->requireBranchId())
                 );
+                (new DriverLoyaltyService())->recomputeDriver((int) $visit['driver_id']);
             }
             $this->logAudit('visit.deleted', 'visit', (int) $id, $visit, null);
             return redirect()->to('/visitEntry')->with('success', 'Visit deleted successfully.');
@@ -550,6 +558,20 @@ class VisitController extends BaseController
             'vehicle_number' => 'required|max_length[30]|is_unique[vehicles.vehicle_number]',
             'vehicle_type' => 'required|in_list[' . implode(',', self::VEHICLE_TYPES) . ']',
         ];
+    }
+
+    private function recordVehicleActivity(int $branchId, int $vehicleId, int $driverId, int $visitId, string $activityAt): void
+    {
+        (new VehicleBranchActivityModel())->insert([
+            'branch_id' => $branchId,
+            'vehicle_id' => $vehicleId,
+            'driver_id' => $driverId,
+            'visit_id' => $visitId,
+            'activity_type' => 'visit',
+            'activity_at' => $activityAt,
+            'notes' => null,
+            'created_by_user_id' => session()->get('user')['id'] ?? null,
+        ]);
     }
 
     private function buildInlineDriverPayload(): array
