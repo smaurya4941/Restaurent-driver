@@ -11,7 +11,7 @@ use App\Services\IncentiveEngineService;
 class DriverController extends BaseController
 {
     private const DRIVER_STATUSES = ['active', 'blocked', 'duplicate', 'blacklisted'];
-    private const VEHICLE_TYPES = ['bus','traveller', 'taxi 5', 'taxi 7'];
+    private const VEHICLE_TYPES = ['car 5 seat', 'car 7 seat', 'bus', 'traveller'];
 
     public function index()
     {

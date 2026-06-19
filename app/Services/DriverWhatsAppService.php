@@ -58,8 +58,13 @@ class DriverWhatsAppService
         $mediaUrl = trim((string) $mediaUrl);
         $inserted = 0;
 
+        log_message('info', '[WhatsApp Queue] Raw template received: ' . $messageBody);
+        log_message('info', '[WhatsApp Queue] Driver rows to process: ' . count($rows));
+
         foreach ($rows as $row) {
             $personalizedMessage = $this->personalizeMessage($messageBody, $row);
+
+            log_message('debug', '[WhatsApp Queue] Driver #' . $row['id'] . ' (' . ($row['full_name'] ?? 'unknown') . '): "' . $personalizedMessage . '"');
 
             $this->messageModel->insert([
                 'campaign_id' => null,
@@ -108,8 +113,9 @@ class DriverWhatsAppService
             'vehicle_type' => (string) ($row['vehicle_type'] ?? ''),
         ];
 
-        return preg_replace_callback('/{{\s*([a-zA-Z0-9_]+)\s*}}/', static function (array $matches) use ($tokens): string {
-            return $tokens[$matches[1]] ?? $matches[0];
+        return preg_replace_callback('/{{\s*([a-zA-Z0-9_\s]+)\s*}}/i', static function (array $matches) use ($tokens): string {
+            $key = strtolower(str_replace(' ', '_', trim($matches[1])));
+            return $tokens[$key] ?? $matches[0];
         }, trim($messageBody)) ?? trim($messageBody);
     }
 

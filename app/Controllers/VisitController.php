@@ -12,7 +12,7 @@ use App\Services\IncentiveEngineService;
 class VisitController extends BaseController
 {
     private const VISIT_VERIFICATION_METHODS = ['phone', 'qr', 'manual'];
-    private const VEHICLE_TYPES = ['bus', 'cab', 'traveller', 'truck', 'tempo', 'private taxi'];
+    private const VEHICLE_TYPES = ['car 5 seat', 'car 7 seat', 'bus', 'traveller'];
     private const DUPLICATE_CHECKIN_HOURS = 1;
     private const MAX_VISITS_PER_DAY = 5;
 

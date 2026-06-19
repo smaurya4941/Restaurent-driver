@@ -110,4 +110,4 @@ application/cache/*
 # Mac/Linux Hidden Files
 # -------------------------
 .*.swp
-*~
+*~  

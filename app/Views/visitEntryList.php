@@ -21,7 +21,7 @@ $isAdmin = in_array((int) session()->get('role'), [1, 3], true);
 
             <div class="ops-toolbar">
                 <p class="toolbar-copy">Operational history of food and cash benefits issued at Hawa Hawai.</p>
-                <a href="<?= base_url('visitEntry') ?>" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> New Check-In</a>
+                <a href="<?= base_url('visitEntry') ?>" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> New Visit Entry</a>
             </div>
 
             <div class="card ops-card">

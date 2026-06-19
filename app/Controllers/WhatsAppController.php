@@ -79,7 +79,7 @@ class WhatsAppController extends BaseController
             return redirect()->back()->withInput()->with('error', 'No matching selected drivers with WhatsApp numbers were found.');
         }
 
-        $result = (new WhatsAppQueueService())->processQueuedMessages($queued);
+        $result = (new WhatsAppQueueService())->processQueuedMessages();
         $this->logAudit('whatsapp.campaign.sent', 'whatsapp_campaign', $queued, null, [
             'filters' => $filters,
             'scope' => $sendScope,
@@ -92,7 +92,7 @@ class WhatsAppController extends BaseController
 
         return redirect()->to('/whatsapp-campaigns')->with(
             'success',
-            'Message queued for ' . $queued . ' driver(s). Sent: ' . $result['sent'] . ', failed: ' . $result['failed'] . '.'
+            'Successfully queued ' . $queued . ' new message(s). Worker processed ' . $result['processed'] . ' message(s) from the queue (Sent: ' . $result['sent'] . ', Failed: ' . $result['failed'] . ').'
         );
     }
 

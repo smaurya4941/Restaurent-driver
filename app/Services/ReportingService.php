@@ -33,7 +33,7 @@ class ReportingService
         ],
         // 'branch-monthly-summary' => [
         //     'label' => 'Branch Monthly Summary',
-        //     'description' => 'Monthly branch totals for visits, guests, incentives, expenses, and payouts.',
+        //     'description' => 'Monthly branch  totals for visits, guests, incentives, expenses, and payouts.',
         // ],
         // 'expenses' => [
         //     'label' => 'Expenses Report',

@@ -4,14 +4,19 @@ namespace App\Libraries\WhatsApp;
 
 use CodeIgniter\HTTP\CURLRequest;
 use Config\WhatsApp;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 class RestWhatsAppProvider implements WhatsAppProviderInterface
 {
+    private readonly LoggerInterface $logger;
+
     public function __construct(
         private readonly WhatsApp $config,
         private readonly CURLRequest $client,
+        ?LoggerInterface $logger = null,
     ) {
+        $this->logger = $logger ?? \Config\Services::logger();
     }
 
     public function send(string $to, string $message, ?array $media = null): array
@@ -65,6 +70,9 @@ class RestWhatsAppProvider implements WhatsAppProviderInterface
             }
         }
 
+        $this->logger->info('[WhatsApp] Sending to ' . $to . ' via ' . $this->config->httpMethod . ' ' . $this->config->apiUrl);
+        $this->logger->debug('[WhatsApp] Payload: ' . json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
         try {
             $response = $this->client->request($this->config->httpMethod, $this->config->apiUrl, $options);
             $statusCode = $response->getStatusCode();
@@ -72,6 +80,8 @@ class RestWhatsAppProvider implements WhatsAppProviderInterface
             $decoded = json_decode($body, true);
             $providerResponse = is_array($decoded) ? $decoded : ['raw' => $body];
             $success = $statusCode >= 200 && $statusCode < 300 && !$this->looksFailed($providerResponse);
+
+            $this->logger->info('[WhatsApp] Response [' . $statusCode . ']: ' . $body);
 
             return [
                 'success' => $success,
@@ -81,6 +91,8 @@ class RestWhatsAppProvider implements WhatsAppProviderInterface
                 'error_message' => $success ? null : ($providerResponse['message'] ?? $providerResponse['error'] ?? 'WhatsApp API request failed.'),
             ];
         } catch (Throwable $exception) {
+            $this->logger->error('[WhatsApp] Exception: ' . $exception->getMessage());
+
             return [
                 'success' => false,
                 'provider_message_id' => null,

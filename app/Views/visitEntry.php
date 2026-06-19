@@ -30,11 +30,9 @@ $breadcrumbs = [
                 <div class="card-body">
                     <form action="<?= base_url('visitEntry') ?>" method="post">
                         <?= csrf_field(); ?>
-                        <div class="input-group input-group-lg">
-                            <input type="text" class="form-control" name="search_term" id="search_term" value="<?= esc($searchTerm) ?>" placeholder="Mobile, vehicle, license, or ID" required>
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary px-4">Search</button>
-                            </div>
+                        <div class="d-flex flex-column flex-sm-row">
+                            <input type="text" class="form-control form-control-lg mb-2 mb-sm-0 mr-sm-2" name="search_term" id="search_term" value="<?= esc($searchTerm) ?>" placeholder="Mobile, vehicle, license, or ID" required>
+                            <button type="submit" class="btn btn-primary btn-lg px-4">Search</button>
                         </div>
                     </form>
                 </div>
@@ -150,10 +148,10 @@ $breadcrumbs = [
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="vehicle_type">Vehicle Type</label>
+                                                <?php $selectedVehicleType = old('vehicle_type', $driver['vehicle_type'] ?? ''); ?>
                                                 <select name="vehicle_type" id="vehicle_type" class="form-control" required>
                                                     <option value="">Select vehicle type</option>
                                                     <?php foreach (($vehicleTypeOptions ?? []) as $vehicleTypeOption): ?>
-                                                        <?php $selectedVehicleType = old('vehicle_type', $driver['vehicle_type'] ?? ''); ?>
                                                         <option value="<?= esc($vehicleTypeOption) ?>" <?= $selectedVehicleType === $vehicleTypeOption ? 'selected' : '' ?>><?= esc(ucwords($vehicleTypeOption)) ?></option>
                                                     <?php endforeach; ?>
                                                 </select>

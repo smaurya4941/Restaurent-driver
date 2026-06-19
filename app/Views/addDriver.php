@@ -87,7 +87,7 @@ $duplicateWarnings = session('duplicate_warnings') ?? ($duplicateWarnings ?? [])
                                         </div>
                                     </div>
 
-                                    <!-- <div class="col-md-6">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="whatsapp_opt_in">WhatsApp Consent</label>
                                             <select name="whatsapp_opt_in" id="whatsapp_opt_in" class="form-control <?= isset($errors['whatsapp_opt_in']) ? 'is-invalid' : '' ?>">
@@ -98,9 +98,9 @@ $duplicateWarnings = session('duplicate_warnings') ?? ($duplicateWarnings ?? [])
                                                 <div class="invalid-feedback"><?= esc($errors['whatsapp_opt_in']) ?></div>
                                             <?php endif; ?>
                                         </div>
-                                    </div> -->
+                                    </div>
 
-                                    <!-- <div class="col-md-6">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="whatsapp_opt_out_reason">Opt-out Reason</label>
                                             <input type="text" name="whatsapp_opt_out_reason" id="whatsapp_opt_out_reason" class="form-control <?= isset($errors['whatsapp_opt_out_reason']) ? 'is-invalid' : '' ?>" value="<?= old('whatsapp_opt_out_reason') ?>" placeholder="Optional reason when consent is removed">
@@ -108,7 +108,7 @@ $duplicateWarnings = session('duplicate_warnings') ?? ($duplicateWarnings ?? [])
                                                 <div class="invalid-feedback"><?= esc($errors['whatsapp_opt_out_reason']) ?></div>
                                             <?php endif; ?>
                                         </div>
-                                    </div> -->
+                                    </div>
 
                                     <div class="col-12">
                                         <div class="ops-section-title field-group">Primary Vehicle</div>
