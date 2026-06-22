@@ -62,6 +62,10 @@ abstract class BaseController extends Controller
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         parent::initController($request, $response, $logger);
+        $session = \Config\Services::session();
+        $locale = $session->get('locale') ?? 'en';
+        service('request')->setLocale($locale);
+        service('language')->setLocale($locale);
         $this->branchContext = new BranchContext();
     }
 

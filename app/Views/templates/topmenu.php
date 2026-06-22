@@ -41,19 +41,16 @@
     <li class="nav-item mr-2">
         <div class="d-flex align-items-center bg-white border rounded px-2"
              style="height:40px;">
-
             <i class="fa-solid fa-language text-primary mr-2"></i>
-
+            <?php $currentLocale = session()->get('locale') ?? 'en'; ?>
             <select id="languageSwitcher"
                     class="border-0 bg-transparent"
-                    style="outline:none; box-shadow:none; font-size:14px; cursor:pointer;">
-
-                <option value="en">English</option>
-                <option value="hi">हिन्दी</option>
+                    style="outline:none; box-shadow:none; font-size:14px; cursor:pointer;"
+                    onchange="window.location.href='<?= base_url('lang/') ?>' + this.value">
+                <option value="en" <?= $currentLocale === 'en' ? 'selected' : '' ?>>English</option>
+                <option value="hi" <?= $currentLocale === 'hi' ? 'selected' : '' ?>>हिन्दी</option>
             </select>
         </div>
-
-        <div id="google_translate_element" style="display:none;"></div>
     </li>
 
     <!-- Logout Button -->
@@ -65,7 +62,7 @@
             <i class="fa-solid fa-right-from-bracket"></i>
 
             <span class="d-none d-sm-inline">
-                Logout
+                <?= lang('App.logout') ?>
             </span>
         </a>
     </li>

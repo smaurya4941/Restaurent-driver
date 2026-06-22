@@ -6,41 +6,7 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- google translation  -->
-<script type="text/javascript">
-function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        autoDisplay: false
-    }, 'google_translate_element');
-}
 
-document.addEventListener('DOMContentLoaded', function () {
-
-    document.getElementById('languageSwitcher').addEventListener('change', function () {
-
-        var lang = this.value;
-
-        var interval = setInterval(function () {
-
-            var select = document.querySelector(".goog-te-combo");
-
-            if (select) {
-                select.value = lang;
-                select.dispatchEvent(new Event('change'));
-                clearInterval(interval);
-            }
-
-        }, 500);
-
-    });
-
-});
-</script>
-
-<script type="text/javascript"
-src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
-</script>
 <!-- jQuery -->
 <script src="<?php echo base_url()?>asset/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->

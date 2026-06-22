@@ -68,6 +68,9 @@ $routes->post('/message-templates/(:num)', 'MessageTemplateController::update/$1
 $routes->get('/message-templates/(:num)/delete', 'MessageTemplateController::delete/$1');
 $routes->get('/message-templates/(:num)/toggle', 'MessageTemplateController::toggle/$1');
 
+// Language Switcher
+$routes->get('/lang/(:segment)', 'LanguageController::switchLang/$1');
+
 $routes->get('/editVisit/(:num)', 'VisitController::edit/$1');
 $routes->get('/deleteVisit/(:num)', 'VisitController::delete/$1');
 $routes->post('/saveEditedVisit/(:num)', 'VisitController::update/$1');

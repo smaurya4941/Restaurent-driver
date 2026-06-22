@@ -53,7 +53,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                     <li class="nav-item">
                         <a href="<?= base_url('dashboard') ?>" class="nav-link <?= $isCurrent(['dashboard']) ? 'active' : '' ?>">
                             <i class="nav-icon fa-solid fa-gauge"></i>
-                            <p>Dashboard</p>
+                            <p><?= lang('App.dashboard') ?></p>
                         </a>
                     </li>
 
@@ -61,7 +61,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                         <a href="#" class="nav-link <?= $adminDriverOpen ? 'active' : '' ?>">
                             <i class="nav-icon fa-solid fa-id-card"></i>
                             <p>
-                                Drivers
+                                <?= lang('App.drivers') ?>
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -69,13 +69,13 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                             <li class="nav-item">
                                 <a href="<?= base_url('driverEntry') ?>" class="nav-link <?= $isCurrent(['driverEntry', 'drivers']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Driver List</p>
+                                    <p><?= lang('App.driver_list') ?></p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="<?= base_url('drivers/create') ?>" class="nav-link <?= $isCurrent(['drivers/create']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add Driver</p>
+                                    <p><?= lang('App.add_driver') ?></p>
                                 </a>
                             </li>
                         </ul>
@@ -85,7 +85,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                         <a href="#" class="nav-link <?= $adminVisitOpen ? 'active' : '' ?>">
                             <i class="nav-icon fa-solid fa-door-open"></i>
                             <p>
-                                Visits
+                                <?= lang('App.visits') ?>
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -93,13 +93,13 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                             <li class="nav-item">
                                 <a href="<?= base_url('visitEntry') ?>" class="nav-link <?= $isCurrent(['visitEntry']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Visit Entry</p>
+                                    <p><?= lang('App.visit_entry') ?></p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="<?= base_url('visitEntryList') ?>" class="nav-link <?= $isCurrent(['visitEntryList']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Visit List</p>
+                                    <p><?= lang('App.visit_list') ?></p>
                                 </a>
                             </li>
                         </ul>
@@ -109,7 +109,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                         <a href="#" class="nav-link <?= $incentivesOpen ? 'active' : '' ?>">
                             <i class="nav-icon fa-solid fa-percent"></i>
                             <p>
-                                Bonuses
+                                <?= lang('App.bonuses') ?>
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -117,13 +117,13 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                             <li class="nav-item">
                                 <a href="<?= base_url('bonus-rules') ?>" class="nav-link <?= $isCurrent(['bonus-rules', 'incentive-rules']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Bonus Rules</p>
+                                    <p><?= lang('App.bonus_rules') ?></p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="<?= base_url('driver-bonuses') ?>" class="nav-link <?= $isCurrent(['driver-bonuses']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Driver Bonuses</p>
+                                    <p><?= lang('App.driver_bonuses') ?></p>
                                 </a>
                             </li>
                         </ul>
@@ -133,7 +133,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                         <a href="#" class="nav-link <?= $whatsAppOpen ? 'active' : '' ?>">
                             <i class="nav-icon fa-brands fa-whatsapp"></i>
                             <p>
-                                WhatsApp
+                                <?= lang('App.whatsapp') ?>
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -141,13 +141,13 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                             <li class="nav-item">
                                 <a href="<?= base_url('whatsapp-campaigns') ?>" class="nav-link <?= $isCurrent(['whatsapp-campaigns']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Driver Report</p>
+                                    <p><?= lang('App.driver_report') ?></p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="<?= base_url('message-templates') ?>" class="nav-link <?= $isCurrent(['message-templates']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Message Templates</p>
+                                    <p><?= lang('App.message_templates') ?></p>
                                 </a>
                             </li>
                         </ul>
@@ -156,7 +156,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                     <li class="nav-item">
                         <a href="<?= base_url('reports') ?>" class="nav-link <?= $reportsOpen ? 'active' : '' ?>">
                             <i class="nav-icon fa-solid fa-file-lines"></i>
-                            <p>Reports</p>
+                            <p><?= lang('App.reports') ?></p>
                         </a>
                     </li>
 
@@ -202,7 +202,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                         <li class="nav-item">
                             <a href="<?= base_url('branches') ?>" class="nav-link <?= $branchesOpen ? 'active' : '' ?>">
                                 <i class="nav-icon fa-solid fa-store"></i>
-                                <p>Branches</p>
+                                <p><?= lang('App.branches') ?></p>
                             </a>
                         </li>
                     <?php endif; ?>
@@ -211,7 +211,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                         <a href="#" class="nav-link <?= $usersOpen ? 'active' : '' ?>">
                             <i class="nav-icon fa-solid fa-users"></i>
                             <p>
-                                Users
+                                <?= lang('App.users') ?>
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -219,14 +219,14 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                             <li class="nav-item">
                                 <a href="<?= base_url('user_list') ?>" class="nav-link <?= $isCurrent(['user_list', 'edit_user']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>User List</p>
+                                    <p><?= lang('App.user_list') ?></p>
                                 </a>
                             </li>
                             <?php if ($isBranchManager): ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('create_user') ?>" class="nav-link <?= $isCurrent(['create_user']) ? 'active' : '' ?>">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Create User</p>
+                                        <p><?= lang('App.create_user') ?></p>
                                     </a>
                                 </li>
                             <?php endif; ?>
@@ -236,7 +236,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                     <li class="nav-item">
                         <a href="<?= base_url('profile') ?>" class="nav-link <?= $isCurrent(['profile']) ? 'active' : '' ?>">
                             <i class="nav-icon fa-solid fa-address-card"></i>
-                            <p>Profile</p>
+                            <p><?= lang('App.profile') ?></p>
                         </a>
                     </li>
                 <?php elseif ($role === 2): ?>
