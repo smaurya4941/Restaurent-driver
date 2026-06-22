@@ -75,6 +75,16 @@ $breadcrumbs = [
                                 <input type="hidden" name="max_guests" value="<?= esc($currentFilters['max_guests'] ?? '') ?>">
 
                                 <div class="form-group">
+                                    <label for="template_select">Select Template</label>
+                                    <select id="template_select" class="form-control">
+                                        <option value="">-- Custom Message (No Template) --</option>
+                                        <?php foreach (($templates ?? []) as $template): ?>
+                                            <option value="<?= esc($template['content']) ?>"><?= esc($template['name']) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
                                     <label for="message_body">WhatsApp Message</label>
                                     <textarea name="message_body" id="message_body" rows="6" class="form-control" placeholder="Example: Hello {{driver_name}}, you completed {{visit_count}} visits and brought {{guest_count}} guests."><?= esc(old('message_body')) ?></textarea>
                                     <small class="form-text text-muted">Supported variables: {{driver_name}}, {{visit_count}}, {{guest_count}}, {{city}}, {{vehicle_type}}</small>
@@ -200,6 +210,17 @@ document.addEventListener('DOMContentLoaded', function () {
     checkboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', updateSelectedCount);
     });
+
+    const templateSelect = document.getElementById('template_select');
+    const messageBody = document.getElementById('message_body');
+
+    if (templateSelect && messageBody) {
+        templateSelect.addEventListener('change', function () {
+            if (this.value !== '') {
+                messageBody.value = this.value;
+            }
+        });
+    }
 
     updateSelectedCount();
 });

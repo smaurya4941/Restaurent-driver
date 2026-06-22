@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\MessageTemplateModel;
 use App\Services\DriverWhatsAppService;
 use App\Services\WhatsAppQueueService;
 
@@ -15,10 +16,13 @@ class WhatsAppController extends BaseController
         }
 
         $filters = $this->collectFilters();
+        $templateModel = new MessageTemplateModel();
+        $templates = $templateModel->where('is_active', 1)->findAll();
 
         return view('whatsappCampaigns', [
             'currentFilters' => $filters,
             'groupRows' => (new DriverWhatsAppService())->buildDriverGroupReport($filters),
+            'templates' => $templates,
         ]);
     }
 

@@ -34,7 +34,7 @@ $adminVisitOpen = $isCurrent(['visitEntry', 'visitEntryList']);
 $reportsOpen = $isCurrent(['reports']);
 $financeOpen = $isCurrent(['expenses', 'payouts']);
 $incentivesOpen = $isCurrent(['bonus-rules', 'driver-bonuses', 'incentive-rules']);
-$whatsAppOpen = $isCurrent(['whatsapp-campaigns']);
+$whatsAppOpen = $isCurrent(['whatsapp-campaigns', 'message-templates']);
 $usersOpen = $isCurrent(['user_list', 'create_user', 'edit_user', 'update_user']);
 $branchesOpen = $isCurrent(['branches']);
 $loyaltyOpen = $isCurrent(['loyalty']);
@@ -142,6 +142,12 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                                 <a href="<?= base_url('whatsapp-campaigns') ?>" class="nav-link <?= $isCurrent(['whatsapp-campaigns']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Driver Report</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?= base_url('message-templates') ?>" class="nav-link <?= $isCurrent(['message-templates']) ? 'active' : '' ?>">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Message Templates</p>
                                 </a>
                             </li>
                         </ul>

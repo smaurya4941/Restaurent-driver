@@ -59,6 +59,14 @@ $routes->post('/loyalty/recompute', 'LoyaltyController::recompute');
 $routes->get('/whatsapp-campaigns', 'WhatsAppController::index');
 $routes->post('/whatsapp-campaigns/send', 'WhatsAppController::sendGroupedMessage');
 
+// Message Templates
+$routes->get('/message-templates', 'MessageTemplateController::index');
+$routes->get('/message-templates/create', 'MessageTemplateController::create');
+$routes->post('/message-templates', 'MessageTemplateController::store');
+$routes->get('/message-templates/(:num)/edit', 'MessageTemplateController::edit/$1');
+$routes->post('/message-templates/(:num)', 'MessageTemplateController::update/$1');
+$routes->get('/message-templates/(:num)/delete', 'MessageTemplateController::delete/$1');
+$routes->get('/message-templates/(:num)/toggle', 'MessageTemplateController::toggle/$1');
 
 $routes->get('/editVisit/(:num)', 'VisitController::edit/$1');
 $routes->get('/deleteVisit/(:num)', 'VisitController::delete/$1');
