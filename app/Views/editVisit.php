@@ -25,6 +25,7 @@ $breadcrumbs = [
                 </div>
                 <div class="card-body">
                     <form action="<?= base_url('saveEditedVisit/' . $visit['id']) ?>" method="post">
+                        <?= csrf_field() ?>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">

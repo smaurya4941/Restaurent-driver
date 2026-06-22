@@ -28,6 +28,7 @@ $breadcrumbs = [
                             <h3 class="card-title"><?= $isEdit ? 'Edit Message Template' : 'New Message Template' ?></h3>
                         </div>
                         <form action="<?= base_url($isEdit ? 'message-templates/' . $template['id'] : 'message-templates') ?>" method="post">
+                            <?= csrf_field() ?>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="name">Template Name</label>

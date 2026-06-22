@@ -68,6 +68,7 @@ $breadcrumbs = [
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('whatsapp-campaigns/send') ?>" method="post" enctype="multipart/form-data" id="whatsapp-send-form">
+                                <?= csrf_field() ?>
                                 <input type="hidden" name="vehicle_type" value="<?= esc($currentFilters['vehicle_type'] ?? '') ?>">
                                 <input type="hidden" name="min_visits" value="<?= esc($currentFilters['min_visits'] ?? '') ?>">
                                 <input type="hidden" name="max_visits" value="<?= esc($currentFilters['max_visits'] ?? '') ?>">
