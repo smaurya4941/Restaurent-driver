@@ -39,7 +39,7 @@ $breadcrumbs = [
                                         <td><?= esc((string) ($log['created_at'] ?? '')) ?></td>
                                         <td>
                                             <strong><?= esc((string) ($log['user_name'] ?? 'System')) ?></strong><br>
-                                            <small class="text-muted"><?= esc((string) ($log['user_email'] ?? '')) ?></small>
+                                            <small class="text-muted"><?= esc((string) ($log['user_phone'] ?? '')) ?></small>
                                         </td>
                                         <td><span class="status-pill badge-status-secondary"><?= esc((string) $log['action']) ?></span></td>
                                         <td><?= esc((string) $log['entity_type']) ?> #<?= esc((string) $log['entity_id']) ?></td>

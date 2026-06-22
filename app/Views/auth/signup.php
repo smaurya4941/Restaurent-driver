@@ -31,9 +31,9 @@
             <form action="" method="post">
                 <?= csrf_field() ?>
                 <div class="input-group mb-3">
-                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+                    <input type="tel" name="phone" class="form-control" placeholder="Mobile Number" required>
                     <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>
+                        <div class="input-group-text"><span class="fas fa-phone"></span></div>
                     </div>
                 </div>
                 <div class="input-group mb-3">

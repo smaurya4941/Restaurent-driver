@@ -3,7 +3,7 @@
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 <?php
 $pageTitle = 'My Profile';
-$pageSubtitle = 'Update your email and password for this account.';
+$pageSubtitle = 'Update your mobile number and password for this account.';
 $pageEyebrow = 'Account';
 $breadcrumbs = [
     ['label' => 'Home', 'url' => base_url('dashboard')],
@@ -29,8 +29,8 @@ $userSession = session()->get('user') ?? [];
                             <form action="<?= base_url('updateAdmin') ?>" method="POST">
                                 <?= csrf_field() ?>
                                 <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" value="<?= esc($userSession['email'] ?? '') ?>" required>
+                                    <label for="phone">Mobile Number</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" value="<?= esc($userSession['phone'] ?? '') ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="current_password">Current Password</label>

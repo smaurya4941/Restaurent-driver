@@ -36,7 +36,7 @@ $canCreateUsers = in_array((int) session()->get('role'), [1, 5], true);
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Email</th>
+                                <th>Mobile Number</th>
                                 <th>Role</th>
                                 <th>Branch</th>
                                 <th>Status</th>
@@ -50,7 +50,7 @@ $canCreateUsers = in_array((int) session()->get('role'), [1, 5], true);
                                     <tr>
                                         <td>#<?= esc((string) $user['id']) ?></td>
                                         <td><strong><?= esc($user['name']) ?></strong></td>
-                                        <td><?= esc($user['email']) ?></td>
+                                        <td><?= esc($user['phone']) ?></td>
                                         <td><?= esc(ucwords(str_replace('_', ' ', $user['role_name'] ?? 'Unknown'))) ?></td>
                                         <td><?= esc($user['branch_name'] ?? 'All branches') ?></td>
                                         <td>

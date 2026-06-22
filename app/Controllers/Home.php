@@ -20,11 +20,11 @@ class Home extends BaseController
     public function signup()
     {
         $user = new UserModel();
-        $email = trim((string) $this->request->getVar('email'));
+        $phone = trim((string) $this->request->getVar('phone'));
         $password = (string) $this->request->getVar('password');
         $confirmPassword = (string) $this->request->getVar('confirm_password');
 
-        if ($email === '' || $password === '' || $confirmPassword === '') {
+        if ($phone === '' || $password === '' || $confirmPassword === '') {
             session()->setFlashdata('Required', 'Please fill your fields');
             return redirect()->to(base_url('/signup'));
         }
@@ -34,14 +34,14 @@ class Home extends BaseController
             return redirect()->to(base_url('/signup'));
         }
 
-        if ($user->where('email', $email)->first()) {
-            session()->setFlashdata('Sorry', 'Email already exists');
+        if ($user->where('phone', $phone)->first()) {
+            session()->setFlashdata('Sorry', 'Mobile Number already exists');
             return redirect()->to(base_url('/signup'));
         }
 
         $user->save([
             'name'     => 'New User',
-            'email'    => $email,
+            'phone'    => $phone,
             'password' => password_hash($password, PASSWORD_DEFAULT),
             'role_id'  => self::ROLE_FRONTDESK,
             'status'   => self::USER_STATUS_INACTIVE,
@@ -63,9 +63,9 @@ class Home extends BaseController
     public function login()
     {
         $userModel = new UserModel();
-        $email = trim((string) $this->request->getVar('email'));
+        $phone = trim((string) $this->request->getVar('phone'));
         $password = (string) $this->request->getVar('password');
-        $result = $userModel->where('email', $email)->first();
+        $result = $userModel->where('phone', $phone)->first();
 
         if ($result && password_verify($password, $result['password'])) {
             $status = strtolower((string) ($result['status'] ?? ''));
@@ -93,11 +93,11 @@ class Home extends BaseController
                 'active_branch_id' => $activeBranchId,
             ]);
 
-            $this->logAudit('auth.login', 'user', (int) $result['id'], null, ['email' => $result['email']]);
+            $this->logAudit('auth.login', 'user', (int) $result['id'], null, ['phone' => $result['phone']]);
             return redirect()->to('/dashboard');
         }
 
-        session()->setFlashdata('failed', 'Invalid email or password');
+        session()->setFlashdata('failed', 'Invalid mobile number or password');
         return redirect()->to(base_url());
     }
 
@@ -253,19 +253,19 @@ class Home extends BaseController
 
         $userModel = new UserModel();
         $adminId = session()->get('user')['id'];
-        $email = trim((string) $this->request->getPost('email'));
+        $phone = trim((string) $this->request->getPost('phone'));
         $currentPassword = (string) $this->request->getPost('current_password');
         $newPassword = (string) $this->request->getPost('new_password');
         $confirmNewPassword = (string) $this->request->getPost('confirm_new_password');
 
-        if ($email === '' || $currentPassword === '') {
-            session()->setFlashdata('error', 'Email and current password are required.');
+        if ($phone === '' || $currentPassword === '') {
+            session()->setFlashdata('error', 'Mobile number and current password are required.');
             return redirect()->back();
         }
 
-        $existingUser = $userModel->where('email', $email)->first();
+        $existingUser = $userModel->where('phone', $phone)->first();
         if ($existingUser && (int) $existingUser['id'] !== (int) $adminId) {
-            session()->setFlashdata('error', 'Email is already taken.');
+            session()->setFlashdata('error', 'Mobile number is already taken.');
             return redirect()->back();
         }
 
@@ -275,7 +275,7 @@ class Home extends BaseController
             return redirect()->back();
         }
 
-        $payload = ['email' => $email];
+        $payload = ['phone' => $phone];
         if ($newPassword !== '') {
             if ($newPassword !== $confirmNewPassword) {
                 session()->setFlashdata('error', 'New passwords do not match.');
@@ -316,7 +316,7 @@ class Home extends BaseController
         }
 
         $name = trim((string) $this->request->getPost('name'));
-        $email = trim((string) $this->request->getPost('email'));
+        $phone = trim((string) $this->request->getPost('phone'));
         $passwordInput = (string) $this->request->getPost('password');
         $roleId = (int) $this->request->getPost('role');
         $branchId = $this->request->getPost('branch_id');
@@ -324,7 +324,7 @@ class Home extends BaseController
 
         if (
             $name === ''
-            || $email === ''
+            || $phone === ''
             || $passwordInput === ''
             || !in_array($roleId, $this->getAssignableRoleIds(), true)
             || !in_array($status, $this->getUserStatusOptions(), true)
@@ -338,13 +338,13 @@ class Home extends BaseController
         }
 
         $userModel = new UserModel();
-        if ($userModel->where('email', $email)->first()) {
-            return redirect()->back()->with('error', 'Email is already taken.');
+        if ($userModel->where('phone', $phone)->first()) {
+            return redirect()->back()->with('error', 'Mobile number is already taken.');
         }
 
         $userData = [
             'name'     => $name,
-            'email'    => $email,
+            'phone'    => $phone,
             'password' => password_hash($passwordInput, PASSWORD_BCRYPT),
             'role_id'  => $roleId,
             'branch_id' => $resolvedBranchId,
@@ -406,14 +406,14 @@ class Home extends BaseController
         }
 
         $name = trim((string) $this->request->getPost('name'));
-        $email = trim((string) $this->request->getPost('email'));
+        $phone = trim((string) $this->request->getPost('phone'));
         $roleId = (int) $this->request->getPost('role');
         $branchId = $this->request->getPost('branch_id');
         $status = strtolower(trim((string) $this->request->getPost('status')));
 
         if (
             $name === ''
-            || $email === ''
+            || $phone === ''
             || !in_array($roleId, $this->getAssignableRoleIds(), true)
             || !in_array($status, $this->getUserStatusOptions(), true)
         ) {
@@ -430,14 +430,14 @@ class Home extends BaseController
         if ($resolvedBranchId === false) {
             return redirect()->back()->withInput()->with('error', 'Please select a branch for this employee.');
         }
-        $existingUser = $userModel->where('email', $email)->first();
+        $existingUser = $userModel->where('phone', $phone)->first();
         if ($existingUser && (int) $existingUser['id'] !== (int) $id) {
-            return redirect()->back()->with('error', 'Email is already taken.');
+            return redirect()->back()->with('error', 'Mobile number is already taken.');
         }
 
         if ($userModel->update($id, [
             'name'      => $name,
-            'email'     => $email,
+            'phone'     => $phone,
             'role_id'   => $roleId,
             'branch_id' => $resolvedBranchId,
             'status'    => $status,
@@ -490,7 +490,7 @@ class Home extends BaseController
         }
 
         $userModel->update((int) $id, ['password' => password_hash($newPassword, PASSWORD_BCRYPT)]);
-        $this->logAudit('user.password.reset', 'user', (int) $id, ['email' => $user['email']], ['reset_by_admin' => true]);
+        $this->logAudit('user.password.reset', 'user', (int) $id, ['phone' => $user['phone']], ['reset_by_admin' => true]);
 
         return redirect()->to(base_url('edit_user/' . (int) $id))->with('success', 'Password reset successfully.');
     }
@@ -502,7 +502,7 @@ class Home extends BaseController
         }
 
         $query = (new AuditLogModel())
-            ->select('audit_logs.*, users.name AS user_name, users.email AS user_email, branches.name AS branch_name')
+            ->select('audit_logs.*, users.name AS user_name, users.phone AS user_phone, branches.name AS branch_name')
             ->join('users', 'users.id = audit_logs.user_id', 'left')
             ->join('branches', 'branches.id = audit_logs.branch_id', 'left');
 

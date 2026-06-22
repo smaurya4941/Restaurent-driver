@@ -39,8 +39,8 @@ $breadcrumbs = [
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <label for="phone">Mobile Number</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
