@@ -21,9 +21,11 @@ $breadcrumbs = [
 
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="card ops-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Add Bonus Rule</h3>
+                    <div class="card ops-card mb-4">
+                        <div class="card-header ops-toolbar">
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Add Bonus Rule</h3>
+                            </div>
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('bonus-rules') ?>" method="post">
@@ -46,9 +48,9 @@ $breadcrumbs = [
                                 <div class="form-group">
                                     <label for="effective_to">Effective To</label>
                                     <input type="date" name="effective_to" id="effective_to" class="form-control" value="<?= esc(old('effective_to')) ?>">
-                                    <small class="form-text text-muted">Leave empty to keep this bonus rule active until replaced.</small>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;">Leave empty to keep this bonus rule active until replaced.</div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-4">
                                     <label for="is_active">Status</label>
                                     <select name="is_active" id="is_active" class="form-control">
                                         <option value="1" <?= old('is_active', '1') === '1' ? 'selected' : '' ?>>Active</option>
@@ -56,57 +58,83 @@ $breadcrumbs = [
                                     </select>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">Save Bonus Rule</button>
+                                <button type="submit" class="btn btn-primary-enterprise w-100">Save Bonus Rule</button>
                             </form>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-8">
-                    <div class="card ops-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Configured Bonus Rules</h3>
+                    <div class="card ops-card mb-4">
+                        <div class="card-header ops-toolbar">
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Configured Bonus Rules</h3>
+                            </div>
                         </div>
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-striped table-bordered mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Version</th>
-                                        <th>Threshold</th>
-                                        <th>Bonus %</th>
-                                        <th>Effective From</th>
-                                        <th>Effective To</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($rules as $rule): ?>
+                        <div class="card-body ops-table-wrap p-0">
+                            <div class="table-responsive">
+                                <table class="table table-modern mb-0">
+                                    <thead>
                                         <tr>
-                                            <td><?= esc($rule['name']) ?></td>
-                                            <td><?= esc((string) $rule['visit_threshold']) ?> visits</td>
-                                            <td><?= esc(number_format((float) $rule['bonus_value'], 2)) ?>%</td>
-                                            <td><?= esc($rule['effective_from'] ?: '-') ?></td>
-                                            <td><?= esc($rule['effective_to'] ?: 'Open') ?></td>
-                                            <td>
-                                                <span class="badge badge-<?= (int) $rule['is_active'] === 1 ? 'success' : 'secondary' ?>">
-                                                    <?= (int) $rule['is_active'] === 1 ? 'Active' : 'Inactive' ?>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <a href="<?= base_url('bonus-rules/' . $rule['id'] . '/toggle') ?>" class="btn btn-sm btn-outline-primary">
-                                                    <?= (int) $rule['is_active'] === 1 ? 'Deactivate' : 'Activate' ?>
-                                                </a>
-                                            </td>
+                                            <th>Version</th>
+                                            <th>Threshold</th>
+                                            <th>Bonus %</th>
+                                            <th>Effective From</th>
+                                            <th>Effective To</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
                                         </tr>
-                                    <?php endforeach; ?>
-                                    <?php if (empty($rules)): ?>
-                                        <tr>
-                                            <td colspan="7" class="text-center text-muted">No bonus rules configured yet.</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($rules as $rule): ?>
+                                            <tr>
+                                                <td data-label="Version">
+                                                    <div style="font-weight: 600; color: #1A1C1C; font-size: 14px;">
+                                                        <?= esc($rule['name']) ?>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Threshold">
+                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #1A1C1C;">
+                                                        <?= esc((string) $rule['visit_threshold']) ?> visits
+                                                    </div>
+                                                </td>
+                                                <td data-label="Bonus %">
+                                                    <div class="badge-enterprise-role" style="background: #F3E8FF; color: #A600FF;">
+                                                        <?= esc(number_format((float) $rule['bonus_value'], 2)) ?>%
+                                                    </div>
+                                                </td>
+                                                <td data-label="Effective From">
+                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4F4255;">
+                                                        <?= esc($rule['effective_from'] ?: '-') ?>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Effective To">
+                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4F4255;">
+                                                        <?= esc($rule['effective_to'] ?: 'Open') ?>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Status">
+                                                    <span class="badge-enterprise-role" style="background: <?= (int) $rule['is_active'] === 1 ? '#10B981' : '#E0E0E0' ?>; color: <?= (int) $rule['is_active'] === 1 ? '#FFFFFF' : '#1A1C1C' ?>;">
+                                                        <?= (int) $rule['is_active'] === 1 ? 'Active' : 'Inactive' ?>
+                                                    </span>
+                                                </td>
+                                                <td data-label="Action">
+                                                    <a href="<?= base_url('bonus-rules/' . $rule['id'] . '/toggle') ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2" style="font-size: 12px;">
+                                                        <?= (int) $rule['is_active'] === 1 ? 'Deactivate' : 'Activate' ?>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                        <?php if (empty($rules)): ?>
+                                            <tr>
+                                                <td colspan="7" class="text-center text-muted py-4" style="font-family: 'Inter', sans-serif; font-size: 14px;">
+                                                    No bonus rules configured yet.
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -114,5 +142,186 @@ $breadcrumbs = [
         </div>
     </section>
 </div>
+
+<style>
+/* =========================================
+   ENTERPRISE LAYOUT & CARD
+========================================= */
+.ops-card {
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #E0E0E0;
+    box-shadow: none;
+    margin-bottom: 24px;
+}
+.ops-toolbar {
+    background: #F5F5F5;
+    padding: 16px 20px;
+    border-bottom: 1px solid #E0E0E0;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.ops-toolbar .card-title {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 600;
+    color: #1A1C1C;
+    font-size: 18px;
+}
+.ops-toolbar .text-muted {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+}
+.badge-enterprise-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 8px;
+    background: #1A1C1C;
+    color: #FFFFFF;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-block;
+}
+
+/* =========================================
+   FORM INPUTS
+========================================= */
+.form-group label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+.form-control {
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #1A1C1C;
+    background: #FFFFFF;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+    height: auto;
+}
+.form-control:focus {
+    border-color: #A600FF;
+    outline: 0;
+}
+textarea.form-control {
+    min-height: 80px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+.btn-primary-enterprise {
+    background: #A600FF;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: background 0.2s;
+    text-decoration: none;
+}
+.btn-primary-enterprise:hover {
+    background: #8300CA;
+    color: #FFFFFF;
+}
+.btn-outline-enterprise {
+    background: transparent;
+    color: #1A1C1C;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.btn-outline-enterprise:hover {
+    background: #F5F5F5;
+    border-color: #1A1C1C;
+}
+
+/* =========================================
+   TABLE MODERN
+========================================= */
+.table-modern {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-modern thead th {
+    background: #F8F9FA;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 20px;
+    border-bottom: 2px solid #E0E0E0;
+    border-top: none;
+    white-space: nowrap;
+}
+.table-modern tbody td {
+    padding: 16px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #EEEEEE;
+}
+.table-modern tbody tr:last-child td {
+    border-bottom: none;
+}
+.table-modern tbody tr:hover {
+    background-color: #F8F9FA;
+}
+
+/* Mobile Responsive Data Tables */
+@media (max-width: 768px) {
+    .table-modern thead {
+        display: none;
+    }
+    .table-modern tbody td {
+        display: block;
+        text-align: right !important;
+        padding: 10px 15px;
+        border-bottom: 1px solid #EEEEEE;
+        position: relative;
+    }
+    .table-modern tbody td::before {
+        content: attr(data-label);
+        float: left;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        font-weight: 600;
+        color: #4F4255;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .table-modern tbody tr {
+        border-bottom: 2px solid #E0E0E0;
+        display: block;
+        margin-bottom: 10px;
+    }
+    .table-modern tbody td:last-child {
+        border-bottom: none;
+    }
+}
+</style>
 
 <?php include 'app/Views/templates/footer.php'; ?>

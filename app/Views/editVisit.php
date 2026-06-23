@@ -20,8 +20,10 @@ $breadcrumbs = [
             <?php include 'app/Views/templates/flash_alerts.php'; ?>
 
             <div class="card ops-card">
-                <div class="card-header">
-                    <h3 class="card-title">Update Visit Record</h3>
+                <div class="card-header ops-toolbar">
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
+                        <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Update Visit Record</h3>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form action="<?= base_url('saveEditedVisit/' . $visit['id']) ?>" method="post">
@@ -97,7 +99,7 @@ $breadcrumbs = [
                                 <div class="form-group">
                                     <label>Cash Incentive</label>
                                     <input type="text" class="form-control" value="<?= esc((string) $visit['cash_incentive_amount']) ?>" disabled>
-                                    <small class="text-muted">This visit uses the auto-assigned incentive amount.</small>
+                                    <small class="text-muted" style="font-family: 'Inter', sans-serif; font-size: 11px;">This visit uses the auto-assigned incentive amount.</small>
                                 </div>
                             </div>
                         </div>
@@ -106,19 +108,132 @@ $breadcrumbs = [
                             <label for="remarks">Remarks</label>
                             <textarea class="form-control" name="remarks" id="remarks" rows="3"><?= esc($visit['remarks'] ?? '') ?></textarea>
                         </div>
-
-                        <div class="floating-actions d-flex justify-content-between align-items-center flex-wrap mt-3">
-                            <span class="text-muted small">Editing visit #<?= esc((string) ($visit['id'] ?? '')) ?></span>
-                            <div>
-                                <a href="<?= base_url('visitEntryList') ?>" class="btn btn-outline-secondary">Cancel</a>
-                                <button type="submit" class="btn btn-primary ml-2"><i class="fas fa-save mr-1"></i> Save Changes</button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap" style="gap:12px;">
+                        <span class="text-muted small" style="font-family: 'JetBrains Mono', monospace;">Editing visit #<?= esc((string) ($visit['id'] ?? '')) ?></span>
+                        <div>
+                            <a href="<?= base_url('visitEntryList') ?>" class="btn btn-outline-enterprise">Cancel</a>
+                            <button type="submit" class="btn btn-primary-enterprise ml-2"><i class="fas fa-save mr-1"></i> Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+                    </form>
             </div>
         </div>
     </section>
 </div>
+
+<style>
+/* =========================================
+   ENTERPRISE LAYOUT & CARD
+========================================= */
+.ops-card {
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #E0E0E0;
+    box-shadow: none;
+    margin-bottom: 24px;
+}
+.ops-toolbar {
+    background: #F5F5F5;
+    padding: 16px 20px;
+    border-bottom: 1px solid #E0E0E0;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.ops-toolbar .card-title {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 600;
+    color: #1A1C1C;
+    font-size: 18px;
+}
+.ops-toolbar .text-muted {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+}
+
+/* =========================================
+   FORM INPUTS
+========================================= */
+.form-group label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+.form-control {
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #1A1C1C;
+    background: #FFFFFF;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+    height: auto;
+}
+.form-control:focus {
+    border-color: #A600FF;
+    outline: 0;
+}
+textarea.form-control {
+    min-height: 80px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+.btn-primary-enterprise {
+    background: #A600FF;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: background 0.2s;
+    text-decoration: none;
+}
+.btn-primary-enterprise:hover {
+    background: #8300CA;
+    color: #FFFFFF;
+}
+.btn-outline-enterprise {
+    background: transparent;
+    color: #1A1C1C;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.btn-outline-enterprise:hover {
+    background: #F5F5F5;
+    border-color: #1A1C1C;
+}
+
+.card-footer {
+    background: #FFFFFF;
+    padding: 20px;
+    border-top: 1px solid #E0E0E0 !important;
+    border-radius: 0 0 4px 4px;
+}
+</style>
 
 <?php include 'app/Views/templates/footer.php'; ?>

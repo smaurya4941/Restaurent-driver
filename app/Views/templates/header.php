@@ -7,10 +7,13 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-  <!-- Google Font: Source Sans Pro -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Google Fonts: Hanken Grotesk, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?php echo base_url()?>/asset/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -38,5 +41,25 @@
 
   <link rel="stylesheet" href="<?php echo base_url()?>/asset/dist/css/style.css">
 
- 
+  <style>
+      /* Global Enterprise Font Settings */
+      body, .content-wrapper, .form-control {
+          font-family: 'Inter', sans-serif !important;
+          font-size: 13px !important; 
+          background-color: #f9f9f9 !important;
+      }
+      h1, h2, h3, h4, h5, h6, .card-title, .main-header, .brand-text {
+          font-family: 'Hanken Grotesk', sans-serif !important;
+          font-weight: 600;
+      }
+      .main-sidebar, .nav-link {
+          font-family: 'Inter', sans-serif !important;
+          font-size: 13px !important;
+      }
+      .btn {
+          font-family: 'Hanken Grotesk', sans-serif !important;
+          font-weight: 600 !important;
+          font-size: 13px !important;
+      }
+  </style>
 </head>

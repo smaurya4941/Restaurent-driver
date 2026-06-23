@@ -23,9 +23,11 @@ $breadcrumbs = [
 
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="card ops-card">
-                        <div class="card-header">
-                            <h3 class="card-title"><?= $isEdit ? 'Edit Message Template' : 'New Message Template' ?></h3>
+                    <div class="card ops-card mb-4">
+                        <div class="card-header ops-toolbar">
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= $isEdit ? 'Edit Message Template' : 'New Message Template' ?></h3>
+                            </div>
                         </div>
                         <form action="<?= base_url($isEdit ? 'message-templates/' . $template['id'] : 'message-templates') ?>" method="post">
                             <?= csrf_field() ?>
@@ -38,23 +40,27 @@ $breadcrumbs = [
                                 <div class="form-group">
                                     <label for="content">Message Content</label>
                                     <textarea name="content" id="content" rows="8" class="form-control" required maxlength="5000" placeholder="Type your message here..."><?= esc(old('content', $template['content'] ?? '')) ?></textarea>
-                                    <small class="form-text text-muted">
-                                        <strong>Available Variables:</strong><br>
-                                        <code>{{driver_name}}</code>, <code>{{visit_count}}</code>, <code>{{guest_count}}</code>, <code>{{city}}</code>, <code>{{vehicle_type}}</code>
-                                    </small>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; margin-top: 8px;">
+                                        <strong style="color: #1A1C1C;">Available Variables:</strong><br>
+                                        <span style="background: #F5F5F5; padding: 2px 4px; border-radius: 2px;">{{driver_name}}</span>, 
+                                        <span style="background: #F5F5F5; padding: 2px 4px; border-radius: 2px;">{{visit_count}}</span>, 
+                                        <span style="background: #F5F5F5; padding: 2px 4px; border-radius: 2px;">{{guest_count}}</span>, 
+                                        <span style="background: #F5F5F5; padding: 2px 4px; border-radius: 2px;">{{city}}</span>, 
+                                        <span style="background: #F5F5F5; padding: 2px 4px; border-radius: 2px;">{{vehicle_type}}</span>
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="custom-control custom-switch">
+                                <div class="form-group mb-2 mt-4">
+                                    <div class="custom-control custom-switch" style="padding-left: 2.25rem;">
                                         <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" value="1" <?= old('is_active', $template['is_active'] ?? 1) ? 'checked' : '' ?>>
-                                        <label class="custom-control-label" for="is_active">Template is Active</label>
+                                        <label class="custom-control-label" for="is_active" style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: #1A1C1C; text-transform: none; letter-spacing: 0;">Template is Active</label>
                                     </div>
-                                    <small class="form-text text-muted">Inactive templates will not appear in the WhatsApp Campaigns dropdown.</small>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;">Inactive templates will not appear in the WhatsApp Campaigns dropdown.</div>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Update Template' : 'Save Template' ?></button>
-                                <a href="<?= base_url('message-templates') ?>" class="btn btn-default">Cancel</a>
+                            <div class="card-footer" style="background: #F8F9FA; border-top: 1px solid #E0E0E0; display: flex; gap: 10px;">
+                                <button type="submit" class="btn btn-primary-enterprise"><?= $isEdit ? 'Update Template' : 'Save Template' ?></button>
+                                <a href="<?= base_url('message-templates') ?>" class="btn btn-outline-enterprise">Cancel</a>
                             </div>
                         </form>
                     </div>
@@ -63,5 +69,108 @@ $breadcrumbs = [
         </div>
     </section>
 </div>
+
+<style>
+/* =========================================
+   ENTERPRISE LAYOUT & CARD
+========================================= */
+.ops-card {
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #E0E0E0;
+    box-shadow: none;
+    margin-bottom: 24px;
+}
+.ops-toolbar {
+    background: #F5F5F5;
+    padding: 16px 20px;
+    border-bottom: 1px solid #E0E0E0;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.ops-toolbar .card-title {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 600;
+    color: #1A1C1C;
+    font-size: 18px;
+}
+
+/* =========================================
+   FORM INPUTS
+========================================= */
+.form-group label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+.form-control {
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #1A1C1C;
+    background: #FFFFFF;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+    height: auto;
+}
+.form-control:focus {
+    border-color: #A600FF;
+    outline: 0;
+}
+textarea.form-control {
+    min-height: 80px;
+}
+
+/* Custom Switch for Enterprise */
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: #A600FF;
+    background-color: #A600FF;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+.btn-primary-enterprise {
+    background: #A600FF;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: background 0.2s;
+    text-decoration: none;
+}
+.btn-primary-enterprise:hover {
+    background: #8300CA;
+    color: #FFFFFF;
+}
+.btn-outline-enterprise {
+    background: transparent;
+    color: #1A1C1C;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.btn-outline-enterprise:hover {
+    background: #F5F5F5;
+    border-color: #1A1C1C;
+}
+</style>
 
 <?php include 'app/Views/templates/footer.php'; ?>

@@ -205,7 +205,7 @@ class BranchController extends BaseController
     private function getBranchAdmins(): array
     {
         $admins = (new UserModel())
-            ->select('id, branch_id, name, email, status')
+            ->select('id, branch_id, name, email, phone, status')
             ->where('role_id', self::ROLE_BRANCH_ADMIN)
             ->orderBy('name', 'ASC')
             ->findAll();

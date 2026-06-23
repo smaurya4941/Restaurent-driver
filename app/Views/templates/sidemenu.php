@@ -1,7 +1,91 @@
 <style>
-    .dropdown-menu .dropdown-item:hover {
-        background-color: #343a40;
-        color: #fff;
+    /* Enterprise Sidebar Styling */
+    .main-sidebar {
+        background-color: #F9F9F9 !important;
+        border-right: 1px solid #E0E0E0 !important;
+        box-shadow: none !important;
+    }
+    .brand-link {
+        border-bottom: 1px solid #E0E0E0 !important;
+        background-color: #F9F9F9 !important;
+        text-align: center;
+        padding: 1.25rem 0.5rem !important;
+        display: block;
+    }
+    .brand-link img {
+        max-width: 140px;
+        margin-bottom: 0.5rem;
+    }
+    /* Remove text from brand-link if any, just keep image */
+    .brand-text {
+        display: none !important;
+    }
+    
+    .nav-sidebar .nav-item > .nav-link {
+        color: #4F4255 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 12px !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 12px 16px !important;
+        border-left: 3px solid transparent;
+        transition: all 0.2s ease;
+    }
+    .nav-sidebar .nav-item > .nav-link:hover {
+        background-color: #EEEEEE !important;
+        color: #1A1C1C !important;
+    }
+    /* Active Link Styling */
+    .nav-sidebar .nav-item > .nav-link.active {
+        background-color: #fbebff !important; /* Very subtle purple */
+        color: #A600FF !important;
+        border-left: 3px solid #A600FF !important;
+        font-weight: 600;
+        box-shadow: none !important;
+    }
+    .nav-sidebar .nav-item > .nav-link.active i {
+        color: #A600FF !important;
+    }
+    
+    /* Submenu (Treeview) Styling */
+    .nav-treeview {
+        background-color: transparent !important;
+        padding-left: 10px;
+    }
+    .nav-treeview > .nav-item > .nav-link {
+        color: #4F4255 !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 12px !important;
+        padding: 8px 16px 8px 32px !important;
+        border-left: 3px solid transparent !important;
+        background: transparent !important;
+    }
+    .nav-treeview > .nav-item > .nav-link:hover {
+        color: #1A1C1C !important;
+        background-color: transparent !important;
+    }
+    .nav-treeview > .nav-item > .nav-link.active {
+        color: #A600FF !important;
+        font-weight: 600;
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+    .nav-treeview > .nav-item > .nav-link.active i {
+        color: #A600FF !important;
+    }
+    /* Icons */
+    .nav-sidebar .nav-icon {
+        font-size: 14px !important;
+        margin-right: 12px !important;
+        width: 20px;
+        text-align: center;
+        color: #807287;
+    }
+    .nav-sidebar .nav-link:hover .nav-icon {
+        color: #1A1C1C;
+    }
+    .nav-sidebar .nav-link.active .nav-icon {
+        color: #A600FF;
     }
 </style>
 
@@ -41,7 +125,7 @@ $loyaltyOpen = $isCurrent(['loyalty']);
 $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
 ?>
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar">
     <a href="<?= base_url('dashboard') ?>" class="brand-link">
         <img src="<?= base_url('uploads/hawahhawai_logo1.png') ?>" alt="hawaa hawai logo" width="180">
     </a>

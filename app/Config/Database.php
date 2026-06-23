@@ -27,6 +27,9 @@ class Database extends Config
     public array $default = [
         'DSN'          => '',
         'hostname'     => 'localhost',
+        // 'username'     => 'hawahawai_driversystem',
+        // 'password'     => 'driversystem',
+        // 'database'     => 'hawahawai_driversystem',
         'username'     => 'root',
         'password'     => '',
         'database'     => 'hawahawai_driversystem',

@@ -21,9 +21,11 @@ $breadcrumbs = [
 
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="card ops-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Group Drivers</h3>
+                    <div class="card ops-card mb-4">
+                        <div class="card-header ops-toolbar">
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Group Drivers</h3>
+                            </div>
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('whatsapp-campaigns') ?>" method="get">
@@ -52,19 +54,21 @@ $breadcrumbs = [
                                     <label for="min_guests">Minimum Guest Count</label>
                                     <input type="number" name="min_guests" id="min_guests" class="form-control" min="0" value="<?= esc($currentFilters['min_guests'] ?? '') ?>">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-4">
                                     <label for="max_guests">Maximum Guest Count</label>
                                     <input type="number" name="max_guests" id="max_guests" class="form-control" min="0" value="<?= esc($currentFilters['max_guests'] ?? '') ?>">
                                 </div>
 
-                                <button type="submit" class="btn btn-success">View Group</button>
+                                <button type="submit" class="btn btn-outline-enterprise w-100"><i class="fas fa-search mr-1"></i> View Group</button>
                             </form>
                         </div>
                     </div>
 
-                    <div class="card ops-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Send Message</h3>
+                    <div class="card ops-card mb-4">
+                        <div class="card-header ops-toolbar">
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Send Message</h3>
+                            </div>
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('whatsapp-campaigns/send') ?>" method="post" enctype="multipart/form-data" id="whatsapp-send-form">
@@ -88,27 +92,26 @@ $breadcrumbs = [
                                 <div class="form-group">
                                     <label for="message_body">WhatsApp Message</label>
                                     <textarea name="message_body" id="message_body" rows="6" class="form-control" placeholder="Example: Hello {{driver_name}}, you completed {{visit_count}} visits and brought {{guest_count}} guests."><?= esc(old('message_body')) ?></textarea>
-                                    <small class="form-text text-muted">Supported variables: {{driver_name}}, {{visit_count}}, {{guest_count}}, {{city}}, {{vehicle_type}}</small>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;">Supported variables: {{driver_name}}, {{visit_count}}, {{guest_count}}, {{city}}, {{vehicle_type}}</div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="media_url">Image URL</label>
                                     <input type="url" name="media_url" id="media_url" class="form-control" maxlength="2048" value="<?= esc(old('media_url')) ?>" placeholder="https://example.com/image.jpg">
-                                    <!-- <small class="form-text text-muted">Optional fallback. If you select an image below, the uploaded image will be used.</small> -->
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mb-4">
                                     <label for="message_image">Select Image</label>
-                                    <input type="file" name="message_image" id="message_image" class="form-control-file" accept="image/jpeg,image/png,image/webp">
-                                    <small class="form-text text-muted">Optional. Max 5 MB. JPG, PNG, and WebP are allowed.</small>
+                                    <input type="file" name="message_image" id="message_image" class="form-control" accept="image/jpeg,image/png,image/webp" style="padding-top: 7px; padding-bottom: 7px;">
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;">Optional. Max 5 MB. JPG, PNG, and WebP are allowed.</div>
                                 </div>
 
-                                <div class="btn-group d-flex" role="group">
-                                    <button type="submit" name="send_scope" value="selected" class="btn btn-primary" <?= empty($groupRows) ? 'disabled' : '' ?>>
-                                        Send To Selected
+                                <div class="d-flex flex-column" style="gap: 10px;">
+                                    <button type="submit" name="send_scope" value="selected" class="btn btn-primary-enterprise w-100" <?= empty($groupRows) ? 'disabled' : '' ?>>
+                                        <i class="fab fa-whatsapp mr-1"></i> Send To Selected
                                     </button>
-                                    <button type="submit" name="send_scope" value="group" class="btn btn-outline-primary" <?= empty($groupRows) ? 'disabled' : '' ?> onclick="return confirm('Send this message to every driver in the current group?');">
-                                        Send To Group
+                                    <button type="submit" name="send_scope" value="group" class="btn btn-outline-enterprise w-100" <?= empty($groupRows) ? 'disabled' : '' ?> onclick="return confirm('Send this message to every driver in the current group?');">
+                                        <i class="fas fa-users mr-1"></i> Send To Group
                                     </button>
                                 </div>
                             </form>
@@ -118,58 +121,93 @@ $breadcrumbs = [
 
                 <div class="col-lg-8">
                     <div class="card ops-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Grouped Driver Report</h3>
+                        <div class="card-header ops-toolbar">
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Grouped Driver Report</h3>
+                            </div>
+                            <span class="badge-enterprise-role" style="background: #E0E0E0; color: #1A1C1C;">Matching drivers: <?= esc((string) count($groupRows ?? [])) ?></span>
                         </div>
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <input type="checkbox" id="select_all_drivers" aria-label="Select all drivers">
-                                        </th>
-                                        <th>Driver</th>
-                                        <th>WhatsApp</th>
-                                        <th>Status</th>
-                                        <th>City</th>
-                                        <th>Vehicle</th>
-                                        <th>Visits</th>
-                                        <th>Guests</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach (($groupRows ?? []) as $row): ?>
+                        <div class="card-body ops-table-wrap p-0">
+                            <div class="table-responsive">
+                                <table class="table table-modern mb-0">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                <input
-                                                    type="checkbox"
-                                                    name="selected_driver_ids[]"
-                                                    value="<?= esc((string) $row['id']) ?>"
-                                                    form="whatsapp-send-form"
-                                                    class="driver-select-checkbox"
-                                                    aria-label="Select <?= esc($row['full_name']) ?>"
-                                                >
-                                            </td>
-                                            <td><?= esc($row['full_name']) ?></td>
-                                            <td><?= esc($row['whatsapp_number']) ?></td>
-                                            <td><?= esc($row['status']) ?></td>
-                                            <td><?= esc($row['city'] ?? '-') ?></td>
-                                            <td><?= esc($row['vehicle_type'] ?? '-') ?></td>
-                                            <td><?= esc((string) ((int) ($row['visit_count'] ?? 0))) ?></td>
-                                            <td><?= esc((string) ((int) ($row['total_guests'] ?? 0))) ?></td>
+                                            <th style="width: 40px; text-align: center;">
+                                                <input type="checkbox" id="select_all_drivers" aria-label="Select all drivers">
+                                            </th>
+                                            <th>Driver</th>
+                                            <th>WhatsApp</th>
+                                            <th>Status</th>
+                                            <th>City</th>
+                                            <th>Vehicle</th>
+                                            <th>Visits</th>
+                                            <th>Guests</th>
                                         </tr>
-                                    <?php endforeach; ?>
-                                    <?php if (empty($groupRows)): ?>
-                                        <tr>
-                                            <td colspan="8" class="text-center text-muted">No drivers matched the current report filters.</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach (($groupRows ?? []) as $row): ?>
+                                            <tr>
+                                                <td data-label="Select" style="text-align: center;">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="selected_driver_ids[]"
+                                                        value="<?= esc((string) $row['id']) ?>"
+                                                        form="whatsapp-send-form"
+                                                        class="driver-select-checkbox"
+                                                        aria-label="Select <?= esc($row['full_name']) ?>"
+                                                    >
+                                                </td>
+                                                <td data-label="Driver">
+                                                    <div style="font-weight: 600; color: #1A1C1C;">
+                                                        <?= esc($row['full_name']) ?>
+                                                    </div>
+                                                </td>
+                                                <td data-label="WhatsApp">
+                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #1A1C1C;">
+                                                        <?= esc($row['whatsapp_number']) ?>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Status">
+                                                    <?php $status = esc($row['status']); ?>
+                                                    <span class="badge-enterprise-role" style="background: <?= in_array($status, ['blocked', 'blacklisted']) ? '#F43F5E' : '#10B981' ?>; color: #FFFFFF;">
+                                                        <?= ucfirst($status) ?>
+                                                    </span>
+                                                </td>
+                                                <td data-label="City">
+                                                    <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4F4255;">
+                                                        <?= esc($row['city'] ?? '-') ?>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Vehicle">
+                                                    <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4F4255;">
+                                                        <?= esc($row['vehicle_type'] ?? '-') ?>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Visits">
+                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: #1A1C1C;">
+                                                        <?= esc((string) ((int) ($row['visit_count'] ?? 0))) ?>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Guests">
+                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: #1A1C1C;">
+                                                        <?= esc((string) ((int) ($row['total_guests'] ?? 0))) ?>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                        <?php if (empty($groupRows)): ?>
+                                            <tr>
+                                                <td colspan="8" class="text-center text-muted py-4" style="font-family: 'Inter', sans-serif; font-size: 14px;">
+                                                    No drivers matched the current report filters.
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            Matching drivers: <strong><?= esc((string) count($groupRows ?? [])) ?></strong>
-                            <span class="ml-3 text-muted" id="selected_driver_count">Selected: 0</span>
+                        <div class="card-footer" style="background: #F8F9FA; border-top: 1px solid #E0E0E0; font-family: 'Inter', sans-serif; font-size: 13px; color: #4F4255;">
+                            <span id="selected_driver_count" style="font-weight: 600; color: #A600FF;">Selected: 0</span>
                         </div>
                     </div>
                 </div>
@@ -177,6 +215,236 @@ $breadcrumbs = [
         </div>
     </section>
 </div>
+
+<style>
+/* =========================================
+   ENTERPRISE LAYOUT & CARD
+========================================= */
+.ops-card {
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #E0E0E0;
+    box-shadow: none;
+    margin-bottom: 24px;
+}
+.ops-toolbar {
+    background: #F5F5F5;
+    padding: 16px 20px;
+    border-bottom: 1px solid #E0E0E0;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.ops-toolbar .card-title {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 600;
+    color: #1A1C1C;
+    font-size: 18px;
+}
+.ops-toolbar .text-muted {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+}
+.badge-enterprise-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 8px;
+    background: #1A1C1C;
+    color: #FFFFFF;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-block;
+}
+
+/* =========================================
+   FORM INPUTS
+========================================= */
+.form-group label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+.form-control {
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #1A1C1C;
+    background: #FFFFFF;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+    height: auto;
+}
+.form-control:focus {
+    border-color: #A600FF;
+    outline: 0;
+}
+textarea.form-control {
+    min-height: 80px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+.btn-primary-enterprise {
+    background: #A600FF;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: background 0.2s;
+    text-decoration: none;
+}
+.btn-primary-enterprise:hover {
+    background: #8300CA;
+    color: #FFFFFF;
+}
+.btn-outline-enterprise {
+    background: transparent;
+    color: #1A1C1C;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.btn-outline-enterprise:hover {
+    background: #F5F5F5;
+    border-color: #1A1C1C;
+}
+.btn-primary-enterprise:disabled, .btn-outline-enterprise:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   TABLE MODERN
+========================================= */
+.table-modern {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-modern thead th {
+    background: #F8F9FA;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 20px;
+    border-bottom: 2px solid #E0E0E0;
+    border-top: none;
+    white-space: nowrap;
+}
+.table-modern tbody td {
+    padding: 16px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #EEEEEE;
+}
+.table-modern tbody tr:last-child td {
+    border-bottom: none;
+}
+.table-modern tbody tr:hover {
+    background-color: #F8F9FA;
+}
+
+/* DataTables Global Overrides for Enterprise View */
+div.dataTables_wrapper div.dataTables_length label {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #4F4255;
+    margin-left: 20px;
+    margin-top: 15px;
+}
+div.dataTables_wrapper div.dataTables_length select {
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin: 0 4px;
+}
+div.dataTables_wrapper div.dataTables_filter label {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #4F4255;
+    margin-right: 20px;
+    margin-top: 15px;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-left: 8px;
+}
+div.dataTables_wrapper div.dataTables_filter input:focus {
+    border-color: #A600FF;
+    outline: none;
+}
+div.dataTables_wrapper div.dataTables_info {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #4F4255;
+    padding: 20px;
+}
+div.dataTables_wrapper div.dataTables_paginate {
+    padding: 20px;
+}
+.page-item.active .page-link {
+    background-color: #A600FF;
+    border-color: #A600FF;
+}
+
+/* Mobile Responsive Data Tables */
+@media (max-width: 768px) {
+    .table-modern thead {
+        display: none;
+    }
+    .table-modern tbody td {
+        display: block;
+        text-align: right !important;
+        padding: 10px 15px;
+        border-bottom: 1px solid #EEEEEE;
+        position: relative;
+    }
+    .table-modern tbody td::before {
+        content: attr(data-label);
+        float: left;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        font-weight: 600;
+        color: #4F4255;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .table-modern tbody tr {
+        border-bottom: 2px solid #E0E0E0;
+        display: block;
+        margin-bottom: 10px;
+    }
+    .table-modern tbody td:last-child {
+        border-bottom: none;
+    }
+}
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

@@ -24,86 +24,101 @@ $breadcrumbs = [
                         <h3 class="card-title mb-0">All Drivers</h3>
                         <span class="text-muted small d-block"><?= count($drivers ?? []) ?> registered</span>
                     </div>
-                    <a href="<?= base_url('drivers/create') ?>" class="btn btn-primary">
+                    <a href="<?= base_url('drivers/create') ?>" class="btn btn-primary-enterprise">
                         <i class="fas fa-plus mr-1"></i> Add Driver
                     </a>
                 </div>
-                <div class="card-body ops-table-wrap driver-directory-wrap table-responsive p-0">
-                    <table class="table table-hover data_table1 driver-directory-table mb-0">
-                    <thead>
-    <tr>
-        <th>Driver Info</th>
-        <th width="120">Actions</th>
-    </tr>
-</thead>
-                        <tbody>
-    <?php $i = 1; ?>
-    <?php foreach ($drivers as $driver): ?>
-        <?php
-        $status = (string) ($driver['status'] ?? 'active');
+                <div class="card-body ops-table-wrap driver-directory-wrap p-0">
+                    <div class="table-responsive">
+                        <table class="table table-modern data_table1 mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Driver Name</th>
+                                    <th>Contact</th>
+                                    <th>Vehicle Details</th>
+                                    <th>Incentive</th>
+                                    <th>Status</th>
+                                    <th width="120">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($drivers as $driver): ?>
+                                    <?php
+                                    $status = (string) ($driver['status'] ?? 'active');
+                                    $statusClass = match ($status) {
+                                        'active' => 'badge-status-active',
+                                        'blocked', 'blacklisted' => 'badge-status-blocked',
+                                        'duplicate' => 'badge-status-duplicate',
+                                        default => 'badge-status-secondary',
+                                    };
+                                    ?>
+                                    <tr>
+                                        <!-- DRIVER NAME -->
+                                        <td data-label="Driver Name">
+                                            <div class="driver-name" style="font-weight: 600; color: #1A1C1C;">
+                                                <?= esc($driver['driver_name']) ?>
+                                            </div>
+                                        </td>
+                                        
+                                        <!-- CONTACT -->
+                                        <td data-label="Contact">
+                                            <div class="driver-phone" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4F4255;">
+                                                <i class="fas fa-phone-alt mr-1" style="color: #A600FF; font-size: 11px;"></i>
+                                                <?= esc($driver['mobile_number']) ?>
+                                            </div>
+                                        </td>
+                                        
+                                        <!-- VEHICLE DETAILS -->
+                                        <td data-label="Vehicle Details">
+                                            <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #1A1C1C; font-weight: 500;">
+                                                <?= esc(strtoupper($driver['vehicle_number'] ?? 'N/A')) ?>
+                                            </div>
+                                            <div class="mt-1">
+                                                <span class="badge-enterprise-role">
+                                                    <?= esc(ucwords($driver['vehicle_type'] ?? 'Unknown')) ?>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        
+                                        <!-- INCENTIVE -->
+                                        <td data-label="Incentive">
+                                            <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #1A1C1C;">
+                                                ₹<?= number_format((float)($driver['default_cash_incentive_amount'] ?? 200), 2) ?>
+                                            </div>
+                                        </td>
 
-        $statusClass = match ($status) {
-            'active' => 'badge-status-active',
-            'blocked', 'blacklisted' => 'badge-status-blocked',
-            'duplicate' => 'badge-status-duplicate',
-            default => 'badge-status-secondary',
-        };
-        ?>
-<tr>
-
-<!-- DRIVER INFO -->
-<td>
-    <div class="driver-card">
-
-        <div class="driver-name">
-            <strong><?= esc($driver['driver_name']) ?></strong>
-        </div>
-
-        <div class="driver-phone">
-            <i class="fas fa-phone-alt mr-1"></i>
-            <?= esc($driver['mobile_number']) ?>
-        </div>
-
-        <div class="driver-category">
-            <span class="badge badge-primary">
-                <?= esc(ucwords($driver['vehicle_type'] ?? '')) ?>
-            </span>
-        </div>
-
-    </div>
-</td>
-
-<!-- ACTION BUTTONS -->
-<td class="btn-group-ops">
-    <div class="action-buttons">
-
-        <a href="<?= base_url('drivers/' . $driver['id']) ?>"
-           class="btn btn-info btn-sm">
-            <i class="fas fa-user"></i>
-        </a>
-
-        <a href="<?= base_url('drivers/' . $driver['id'] . '/edit') ?>"
-           class="btn btn-warning btn-sm">
-            <i class="fas fa-pen"></i>
-        </a>
-
-        <?php if (in_array((int) $user_role, [1, 3], true)): ?>
-            <a href="<?= base_url('drivers/' . $driver['id'] . '/delete') ?>"
-               class="btn btn-danger btn-sm"
-               onclick="return confirm('Delete this driver?');">
-                <i class="fas fa-trash"></i>
-            </a>
-        <?php endif; ?>
-
-    </div>
-</td>
-
-</tr>
-
-    <?php endforeach; ?>
-</tbody>
-                    </table>
-                </div>
+                                        <!-- STATUS -->
+                                        <td data-label="Status">
+                                            <span class="badge-enterprise-role <?= $statusClass ?>">
+                                                <?= esc(ucwords($status)) ?>
+                                            </span>
+                                        </td>
+                                        
+                                        <!-- ACTION BUTTONS -->
+                                        <td data-label="Actions" class="btn-group-ops">
+                                            <div class="action-buttons">
+                                                <a href="<?= base_url('drivers/' . $driver['id']) ?>"
+                                                   class="btn" title="View Profile">
+                                                    <i class="fas fa-user"></i>
+                                                </a>
+                                                <a href="<?= base_url('drivers/' . $driver['id'] . '/edit') ?>"
+                                                   class="btn" title="Edit Driver">
+                                                    <i class="fas fa-pen"></i>
+                                                </a>
+                                                <?php if (in_array((int) $user_role, [1, 3], true)): ?>
+                                                    <a href="<?= base_url('drivers/' . $driver['id'] . '/delete') ?>"
+                                                       class="btn btn-danger-enterprise"
+                                                       onclick="return confirm('Delete this driver?');" title="Delete Driver">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
             </div>
         </div>
     </section>
@@ -112,214 +127,292 @@ $breadcrumbs = [
 
 <style>
 /* =========================================
-   TABLE LAYOUT
+   ENTERPRISE LAYOUT & CARD
 ========================================= */
+.ops-card {
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #E0E0E0;
+    box-shadow: none;
+    margin-bottom: 24px;
+}
+.ops-toolbar {
+    background: #F5F5F5;
+    padding: 16px 20px;
+    border-bottom: 1px solid #E0E0E0;
+    border-radius: 4px 4px 0 0;
+}
+.ops-toolbar .card-title {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 600;
+    color: #1A1C1C;
+    font-size: 18px;
+}
+.ops-toolbar .text-muted {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #4F4255;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+}
+.btn-primary-enterprise {
+    background: #A600FF;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    transition: background 0.2s;
+    display: inline-block;
+    text-decoration: none;
+}
+.btn-primary-enterprise:hover {
+    background: #8300CA;
+    color: #FFFFFF;
+}
 
-.table {
+/* =========================================
+   ENTERPRISE TABLE
+========================================= */
+.table-modern {
     width: 100%;
     margin-bottom: 0;
 }
-
-.table td,
-.table th {
+.table-modern th {
+    border-top: none !important;
+    border-bottom: 1px solid #E0E0E0 !important;
+    color: #4F4255;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    padding: 12px 20px !important;
+    background: #FAFAFA !important;
+}
+.table-modern td {
     vertical-align: middle !important;
-    border-top: 1px solid #eee;
-    padding: 14px 12px;
+    border-top: 1px solid #EEEEEE !important;
+    padding: 16px 20px !important;
 }
-
-.ops-table-wrap {
-    overflow-x: hidden !important;
+.table-modern tbody tr {
+    transition: background-color 0.15s ease;
+    border-left: 2px solid transparent;
 }
-
-.driver-directory-table {
-    table-layout: fixed;
-}
-
-.driver-directory-table th:first-child,
-.driver-directory-table td:first-child {
-    width: auto;
+.table-modern tbody tr:hover {
+    background-color: #F9F9F9;
+    border-left: 2px solid #A600FF;
 }
 
 /* =========================================
    DRIVER INFO
 ========================================= */
-
 .driver-card {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
 }
-
 .driver-name {
-    font-size: 16px;
-    font-weight: 700;
-    color: #222;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1A1C1C;
     line-height: 1.2;
 }
-
 .driver-phone {
-    font-size: 14px;
-    color: #666;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #4F4255;
+}
+.driver-phone i {
+    color: #807287;
 }
 
-.driver-category .badge {
-    font-size: 11px;
-    padding: 5px 10px;
-    border-radius: 20px;
+/* Enterprise Badges */
+.badge-enterprise-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 8px;
+    background: #1A1C1C;
+    color: #FFFFFF;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-block;
 }
+.badge-status-active { border-left: 2px solid #10B981; padding-left: 8px; }
+.badge-status-blocked { border-left: 2px solid #F43F5E; padding-left: 8px; }
 
 /* =========================================
    ACTION BUTTONS
 ========================================= */
-
 .btn-group-ops {
-    width: 120px;
-    min-width: 120px;
+    width: 140px;
+    min-width: 140px;
 }
-
 .action-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    justify-content: center;
+    gap: 8px;
     align-items: center;
 }
-
 .action-buttons .btn {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     padding: 0;
-    border-radius: 8px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid #E0E0E0;
+    background: #FFFFFF;
+    color: #1A1C1C;
+    transition: all 0.2s;
+    font-size: 12px;
+}
+.action-buttons .btn:hover {
+    background: #F5F5F5;
+    border-color: #1A1C1C;
+}
+.action-buttons .btn-danger-enterprise {
+    color: #F43F5E;
+}
+.action-buttons .btn-danger-enterprise:hover {
+    background: #FFF1F2;
+    border-color: #F43F5E;
+    color: #F43F5E;
 }
 
 /* =========================================
-   MOBILE VIEW
+   DATA TABLES OVERRIDES
 ========================================= */
+.dataTables_wrapper {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+.dataTables_wrapper .row:first-child {
+    padding: 0 20px 16px 20px;
+    margin: 0;
+}
+.dataTables_wrapper .row:last-child {
+    padding: 16px 20px 0 20px;
+    margin: 0;
+}
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #4F4255;
+}
+.dataTables_wrapper .dataTables_info {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #4F4255;
+    padding-top: 8px !important;
+}
 
+/* Inputs */
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    outline: none;
+    margin-left: 8px;
+    transition: border-color 0.2s;
+}
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #A600FF;
+}
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    outline: none;
+    margin: 0 6px;
+}
+.dataTables_wrapper .dataTables_length select:focus {
+    border-color: #A600FF;
+}
+
+/* Pagination Buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 6px 12px !important;
+    margin-left: 4px !important;
+    border: 1px solid #E0E0E0 !important;
+    background: #FFFFFF !important;
+    color: #1A1C1C !important;
+    border-radius: 4px !important;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #F5F5F5 !important;
+    border-color: #1A1C1C !important;
+    color: #1A1C1C !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #A600FF !important;
+    border-color: #A600FF !important;
+    color: #FFFFFF !important;
+    font-weight: 600;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Fix mobile alignment issues */
 @media (max-width: 767px) {
-
-    .card-body {
-        padding: 0 !important;
+    .table-modern thead { display: none; }
+    .table-modern tbody tr {
+        display: flex;
+        flex-direction: column;
+        padding: 16px 20px;
+        border-bottom: 1px solid #EEEEEE;
+        border-left: none !important;
+        gap: 12px;
     }
-
-    .driver-directory-wrap,
-    .driver-directory-wrap .dt-scroll,
-    .driver-directory-wrap .dt-scroll-head,
-    .driver-directory-wrap .dt-scroll-headInner,
-    .driver-directory-wrap .dt-scroll-body,
-    .driver-directory-wrap .dataTables_scroll,
-    .driver-directory-wrap .dataTables_scrollHead,
-    .driver-directory-wrap .dataTables_scrollHeadInner,
-    .driver-directory-wrap .dataTables_scrollBody {
-        width: 100% !important;
-        max-width: 100% !important;
-        overflow-x: hidden !important;
-    }
-
-    .driver-directory-table,
-    .driver-directory-wrap .dt-scroll table,
-    .driver-directory-wrap .dataTables_scroll table {
-        display: block !important;
-        width: 100% !important;
-        min-width: 0 !important;
-    }
-
-    .driver-directory-table thead {
-        display: none;
-    }
-
-    .driver-directory-table tbody {
-        display: block;
-        width: 100%;
-    }
-
-    .driver-directory-table tbody tr {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 82px;
-        column-gap: 8px;
+    .table-modern tbody td {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        padding: 12px 10px;
-        border-bottom: 1px solid #eee;
-        width: 100%;
-    }
-
-    .driver-directory-table tbody td {
-        display: block;
         border: none !important;
         padding: 0 !important;
+        text-align: right;
     }
-
-    /* LEFT SIDE INFO */
-    .driver-directory-table tbody td:first-child {
-        width: auto !important;
-        min-width: 0;
+    .table-modern tbody td::before {
+        content: attr(data-label);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: #4F4255;
+        text-transform: uppercase;
+        font-weight: 500;
+        text-align: left;
     }
-
-    /* RIGHT SIDE BUTTONS */c
-    .driver-directory-table tbody td:last-child {
-        width: 82px !important;
-        min-width: 82px;
-    }
-
-    .driver-name {
-        font-size: 15px;
-        overflow-wrap: anywhere;
-    }
-
-    .driver-phone {
-        font-size: 13px;
-    }
-
-    .driver-category .badge {
-        font-size: 10px;
-    }
-
     .action-buttons {
-        flex-direction: row;
-        gap: 5px;
         justify-content: flex-end;
     }
-
-    .action-buttons .btn {
-        width: 24px;
-        height: 28px;
-        border-radius: 6px;
-        font-size: 12px;
+    .dataTables_wrapper .row:first-child,
+    .dataTables_wrapper .row:last-child {
+        padding-left: 16px;
+        padding-right: 16px;
     }
-
-    /* SEARCH + SHOW DROPDOWN */
     .dataTables_wrapper .dataTables_length,
     .dataTables_wrapper .dataTables_filter {
-        width: 100%;
         text-align: left !important;
-        margin-bottom: 10px;
-        padding: 0 10px;
-    }
-
-    .dataTables_wrapper .dataTables_filter input {
-        width: 100% !important;
-        margin-left: 0 !important;
+        margin-bottom: 12px;
     }
 }
-
-/* =========================================
-   DESKTOP VIEW
-========================================= */
-
-@media (min-width: 768px) {
-
-    .table tbody tr {
-        height: 90px;
-    }
-
-    .action-buttons {
-        flex-direction: row;
-    }
-}
-
 </style>
 
 <?php include 'app/Views/templates/footer.php'; ?>
