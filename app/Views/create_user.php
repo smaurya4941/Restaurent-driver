@@ -2,13 +2,13 @@
 <?php include 'app/Views/templates/topmenu.php'; ?>
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 <?php
-$pageTitle = 'Create Employee';
-$pageSubtitle = 'Add a new admin, accountant, or front desk account.';
-$pageEyebrow = 'Administration';
+$pageTitle = lang('App.create_employee');
+$pageSubtitle = lang('App.create_employee_desc');
+$pageEyebrow = lang('App.administration');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Users', 'url' => base_url('user_list')],
-    ['label' => 'Create User', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.users'), 'url' => base_url('user_list')],
+    ['label' => lang('App.create_user'), 'active' => true],
 ];
 ?>
 
@@ -24,38 +24,38 @@ $breadcrumbs = [
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Employee Access Setup</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.employee_access_setup') ?></h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('create_user_handler') ?>" method="POST">
                                 <?= csrf_field() ?>
                                 <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #1A1C1C; background: #F8F9FA; padding: 12px; border-radius: 4px; border: 1px solid #E0E0E0; margin-bottom: 24px;">
-                                    <strong>Role guide:</strong> Admin manages everything, Accountant sees reports, and Security handles visits and driver verification.
+                                    <strong><?= lang('App.role_guide') ?></strong> <?= lang('App.role_guide_desc') ?>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="name">Name</label>
+                                            <label for="name"><?= lang('App.name') ?></label>
                                             <input type="text" class="form-control" id="name" name="name" required placeholder="John Doe">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="phone">Mobile Number</label>
+                                            <label for="phone"><?= lang('App.mobile_number') ?></label>
                                             <input type="tel" class="form-control" id="phone" name="phone" required placeholder="9876543210">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="password">Password</label>
+                                            <label for="password"><?= lang('App.password') ?></label>
                                             <input type="password" class="form-control" id="password" name="password" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="role">Role</label>
+                                            <label for="role"><?= lang('App.role') ?></label>
                                             <select class="form-control" id="role" name="role" required>
                                                 <?php foreach (($roles ?? []) as $role): ?>
                                                     <option value="<?= $role['id'] ?>"><?= esc(ucwords(str_replace('_', ' ', $role['name']))) ?></option>
@@ -66,9 +66,9 @@ $breadcrumbs = [
                                     <?php if (count($branches ?? []) > 1): ?>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="branch_id">Branch</label>
+                                                <label for="branch_id"><?= lang('App.branch') ?></label>
                                                 <select class="form-control" id="branch_id" name="branch_id">
-                                                    <option value="">Select branch</option>
+                                                    <option value=""><?= lang('App.select_branch') ?></option>
                                                     <?php foreach (($branches ?? []) as $branch): ?>
                                                         <option value="<?= (int) $branch['id'] ?>"><?= esc($branch['name']) ?></option>
                                                     <?php endforeach; ?>
@@ -80,7 +80,7 @@ $breadcrumbs = [
                                     <?php endif; ?>
                                     <div class="col-md-6">
                                         <div class="form-group mb-4">
-                                            <label for="status">Employee Status</label>
+                                            <label for="status"><?= lang('App.employee_status') ?></label>
                                             <select class="form-control" id="status" name="status" required>
                                                 <?php foreach (($statusOptions ?? []) as $status): ?>
                                                     <option value="<?= esc($status) ?>" <?= $status === 'active' ? 'selected' : '' ?>><?= esc(ucfirst($status)) ?></option>
@@ -91,10 +91,10 @@ $breadcrumbs = [
                                 </div>
                             </div>
                             <div class="card-footer" style="background: #F8F9FA; border-top: 1px solid #E0E0E0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                                <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255;">Inactive and disabled users cannot sign in.</div>
+                                <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255;"><?= lang('App.inactive_disabled_warning') ?></div>
                                 <div style="display: flex; gap: 10px;">
-                                    <button type="submit" class="btn btn-primary-enterprise">Create User</button>
-                                    <a href="<?= base_url('user_list') ?>" class="btn btn-outline-enterprise">Cancel</a>
+                                    <button type="submit" class="btn btn-primary-enterprise"><?= lang('App.create_user') ?></button>
+                                    <a href="<?= base_url('user_list') ?>" class="btn btn-outline-enterprise"><?= lang('App.cancel') ?></a>
                                 </div>
                             </div>
                         </form>

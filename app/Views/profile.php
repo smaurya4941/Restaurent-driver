@@ -2,12 +2,12 @@
 <?php include 'app/Views/templates/topmenu.php'; ?>
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 <?php
-$pageTitle = 'My Profile';
-$pageSubtitle = 'Update your mobile number and password for this account.';
-$pageEyebrow = 'Account';
+$pageTitle = lang('App.my_profile');
+$pageSubtitle = lang('App.my_profile_desc');
+$pageEyebrow = lang('App.account');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Profile', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.profile'), 'active' => true],
 ];
 $userSession = session()->get('user') ?? [];
 ?>
@@ -24,36 +24,37 @@ $userSession = session()->get('user') ?? [];
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Account Settings</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.account_settings') ?></h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('updateAdmin') ?>" method="POST">
                                 <?= csrf_field() ?>
                                 <div class="form-group">
-                                    <label for="phone">Mobile Number</label>
+                                <div class="form-group">
+                                    <label for="phone"><?= lang('App.mobile_number') ?></label>
                                     <input type="tel" class="form-control" id="phone" name="phone" value="<?= esc($userSession['phone'] ?? '') ?>" required>
                                 </div>
                                 <div class="form-group" style="margin-bottom: 32px;">
-                                    <label for="current_password">Current Password <span style="color: #F43F5E;">*</span></label>
-                                    <input type="password" class="form-control" id="current_password" name="current_password" required placeholder="Required to save changes">
+                                    <label for="current_password"><?= lang('App.current_password') ?> <span style="color: #F43F5E;">*</span></label>
+                                    <input type="password" class="form-control" id="current_password" name="current_password" required placeholder="<?= lang('App.current_password_req') ?>">
                                 </div>
                                 
                                 <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #E0E0E0; padding-bottom: 8px; margin-bottom: 16px;">
-                                    Change Password (Optional)
+                                    <?= lang('App.change_password_optional') ?>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="new_password">New Password</label>
-                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Leave blank to keep current">
+                                    <label for="new_password"><?= lang('App.new_password') ?></label>
+                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="<?= lang('App.leave_blank_keep_current') ?>">
                                 </div>
                                 <div class="form-group mb-4">
-                                    <label for="confirm_new_password">Confirm New Password</label>
+                                    <label for="confirm_new_password"><?= lang('App.confirm_new_password') ?></label>
                                     <input type="password" class="form-control" id="confirm_new_password" name="confirm_new_password">
                                 </div>
                             </div>
                             <div class="card-footer" style="background: #F8F9FA; border-top: 1px solid #E0E0E0;">
-                                <button type="submit" class="btn btn-primary-enterprise w-100"><i class="fas fa-save mr-1"></i> Update Profile</button>
+                                <button type="submit" class="btn btn-primary-enterprise w-100"><i class="fas fa-save mr-1"></i> <?= lang('App.update_profile') ?></button>
                             </div>
                         </form>
                     </div>

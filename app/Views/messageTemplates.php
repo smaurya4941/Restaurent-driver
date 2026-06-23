@@ -3,12 +3,12 @@
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 
 <?php
-$pageTitle = 'Message Templates';
-$pageSubtitle = 'Manage WhatsApp message templates.';
-$pageEyebrow = 'Marketing';
+$pageTitle = lang('App.message_templates');
+$pageSubtitle = lang('App.message_templates_desc');
+$pageEyebrow = lang('App.marketing');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Message Templates', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.message_templates'), 'active' => true],
 ];
 ?>
 
@@ -22,10 +22,10 @@ $breadcrumbs = [
             <div class="card ops-card mb-4">
                 <div class="card-header ops-toolbar">
                     <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                        <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">All Templates</h3>
+                        <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.all_templates') ?></h3>
                     </div>
                     <a href="<?= base_url('message-templates/create') ?>" class="btn btn-primary-enterprise py-2 px-3" style="font-size: 13px;">
-                        <i class="fas fa-plus mr-1"></i> Create New Template
+                        <i class="fas fa-plus mr-1"></i> <?= lang('App.create_new_template') ?>
                     </a>
                 </div>
                 <div class="card-body ops-table-wrap p-0">
@@ -33,10 +33,10 @@ $breadcrumbs = [
                         <table class="table table-modern mb-0">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Message Content</th>
-                                    <th>Status</th>
-                                    <th class="text-right">Actions</th>
+                                    <th><?= lang('App.name') ?></th>
+                                    <th><?= lang('App.message_content') ?></th>
+                                    <th><?= lang('App.status') ?></th>
+                                    <th class="text-right"><?= lang('App.actions') ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,20 +54,20 @@ $breadcrumbs = [
                                         </td>
                                         <td data-label="Status">
                                             <?php if ($template['is_active']): ?>
-                                                <span class="badge-enterprise-role" style="background: #10B981; color: #FFFFFF;">Active</span>
+                                                <span class="badge-enterprise-role" style="background: #10B981; color: #FFFFFF;"><?= lang('App.active') ?></span>
                                             <?php else: ?>
-                                                <span class="badge-enterprise-role" style="background: #E0E0E0; color: #1A1C1C;">Inactive</span>
+                                                <span class="badge-enterprise-role" style="background: #E0E0E0; color: #1A1C1C;"><?= lang('App.inactive') ?></span>
                                             <?php endif; ?>
                                         </td>
                                         <td data-label="Actions" class="text-right">
                                             <div class="btn-group" style="gap: 4px;">
-                                                <a href="<?= base_url('message-templates/' . esc($template['id']) . '/edit') ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2" title="Edit">
+                                                <a href="<?= base_url('message-templates/' . esc($template['id']) . '/edit') ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2" title="<?= lang('App.edit') ?>">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="<?= base_url('message-templates/' . esc($template['id']) . '/toggle') ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2" title="Toggle Status">
+                                                <a href="<?= base_url('message-templates/' . esc($template['id']) . '/toggle') ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2" title="<?= lang('App.toggle_status') ?>">
                                                     <i class="fas <?= $template['is_active'] ? 'fa-eye-slash' : 'fa-eye' ?>"></i>
                                                 </a>
-                                                <a href="<?= base_url('message-templates/' . esc($template['id']) . '/delete') ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2 text-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this template?');" style="border-color: #F43F5E;">
+                                                <a href="<?= base_url('message-templates/' . esc($template['id']) . '/delete') ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2 text-danger" title="<?= lang('App.delete') ?>" onclick="return confirm('<?= lang('App.delete_template_confirm') ?>');" style="border-color: #F43F5E;">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </div>
@@ -77,7 +77,7 @@ $breadcrumbs = [
                                 <?php if (empty($templates)): ?>
                                     <tr>
                                         <td colspan="4" class="text-center text-muted py-4" style="font-family: 'Inter', sans-serif; font-size: 14px;">
-                                            No templates found. Create one to get started.
+                                            <?= lang('App.no_templates_found') ?>
                                         </td>
                                     </tr>
                                 <?php endif; ?>

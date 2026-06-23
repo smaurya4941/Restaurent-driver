@@ -2,12 +2,12 @@
 <?php include 'app/Views/templates/topmenu.php'; ?>
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 <?php
-$pageTitle = 'Visit Log';
-$pageSubtitle = 'Review every driver check-in with guest count, food, and incentive details.';
-$pageEyebrow = 'Operations';
+$pageTitle = lang('App.visit_log');
+$pageSubtitle = lang('App.visit_log_subtitle');
+$pageEyebrow = lang('App.operations');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Visit Log', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.visit_log'), 'active' => true],
 ];
 $isAdmin = in_array((int) session()->get('role'), [1, 3], true);
 ?>
@@ -22,11 +22,11 @@ $isAdmin = in_array((int) session()->get('role'), [1, 3], true);
             <div class="card ops-card">
                 <div class="card-header ops-toolbar">
                     <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                        <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Operational Visits</h3>
-                        <span class="text-muted small" style="margin-top: 4px;">History of food and cash benefits issued</span>
+                        <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.operational_visits') ?></h3>
+                        <span class="text-muted small" style="margin-top: 4px;"><?= lang('App.visit_history_subtitle') ?></span>
                     </div>
                     <a href="<?= base_url('visitEntry') ?>" class="btn btn-primary-enterprise">
-                        <i class="fas fa-plus mr-1"></i> New Visit Entry
+                        <i class="fas fa-plus mr-1"></i> <?= lang('App.new_visit_entry') ?>
                     </a>
                 </div>
                 <div class="card-body ops-table-wrap p-0">
@@ -34,27 +34,27 @@ $isAdmin = in_array((int) session()->get('role'), [1, 3], true);
                         <table class="table table-modern <?= !empty($visits) ? 'data_table1' : '' ?> mb-0">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Driver</th>
-                                    <th>Vehicle</th>
-                                    <th>Guests</th>
-                                    <th>Food</th>
-                                    <th>Cash</th>
-                                    <th>Handled By</th>
-                                    <th>Visit Time</th>
-                                    <?php if ($isAdmin): ?><th width="120">Actions</th><?php endif; ?>
+                                    <th><?= lang('App.id') ?></th>
+                                    <th><?= lang('App.driver') ?></th>
+                                    <th><?= lang('App.vehicle') ?></th>
+                                    <th><?= lang('App.guests') ?></th>
+                                    <th><?= lang('App.food') ?></th>
+                                    <th><?= lang('App.cash') ?></th>
+                                    <th><?= lang('App.handled_by') ?></th>
+                                    <th><?= lang('App.visit_time') ?></th>
+                                    <?php if ($isAdmin): ?><th width="120"><?= lang('App.actions') ?></th><?php endif; ?>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php if (!empty($visits)): ?>
                                     <?php foreach ($visits as $visit): ?>
                                         <tr>
-                                            <td data-label="ID">
+                                            <td data-label="<?= lang('App.id') ?>">
                                                 <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #1A1C1C; font-weight: 500;">
                                                     #<?= esc((string) $visit['id']) ?>
                                                 </div>
                                             </td>
-                                            <td data-label="Driver">
+                                            <td data-label="<?= lang('App.driver') ?>">
                                                 <div style="font-weight: 600; color: #1A1C1C;">
                                                     <?= esc($visit['driver_name']) ?>
                                                 </div>
@@ -63,41 +63,41 @@ $isAdmin = in_array((int) session()->get('role'), [1, 3], true);
                                                     <?= esc($visit['mobile_number'] ?? '—') ?>
                                                 </div>
                                             </td>
-                                            <td data-label="Vehicle">
+                                            <td data-label="<?= lang('App.vehicle') ?>">
                                                 <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #1A1C1C;">
                                                     <?= esc(strtoupper($visit['vehicle_number'] ?? '—')) ?>
                                                 </div>
                                             </td>
-                                            <td data-label="Guests">
+                                            <td data-label="<?= lang('App.guests') ?>">
                                                 <span class="badge-enterprise-role" style="background: #10B981;">
                                                     <i class="fas fa-users mr-1"></i> <?= esc((string) $visit['guest_count']) ?>
                                                 </span>
                                             </td>
-                                            <td data-label="Food">
+                                            <td data-label="<?= lang('App.food') ?>">
                                                 <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #1A1C1C;">
-                                                    <?= (int) $visit['food_offered'] === 1 ? '<i class="fas fa-utensils mr-1" style="color: #10B981;"></i> Yes' : '<span style="color: #4F4255;">No</span>' ?>
+                                                    <?= (int) $visit['food_offered'] === 1 ? '<i class="fas fa-utensils mr-1" style="color: #10B981;"></i> ' . lang('App.yes') : '<span style="color: #4F4255;">' . lang('App.no') . '</span>' ?>
                                                 </div>
                                             </td>
-                                            <td data-label="Cash">
+                                            <td data-label="<?= lang('App.cash') ?>">
                                                 <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #1A1C1C;">
                                                     ₹<?= esc((string) $visit['cash_incentive_amount']) ?>
                                                 </div>
                                             </td>
-                                            <td data-label="Handled By">
+                                            <td data-label="<?= lang('App.handled_by') ?>">
                                                 <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4F4255;">
                                                     <?= esc($visit['handled_by_name'] ?? $visit['verified_by_name'] ?? '—') ?>
                                                 </div>
                                             </td>
-                                            <td data-label="Visit Time">
+                                            <td data-label="<?= lang('App.visit_time') ?>">
                                                 <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #1A1C1C;">
                                                     <?= esc(date('d M Y, H:i', strtotime($visit['visit_date']))) ?>
                                                 </div>
                                             </td>
                                             <?php if ($isAdmin): ?>
-                                                <td data-label="Actions" class="btn-group-ops">
+                                                <td data-label="<?= lang('App.actions') ?>" class="btn-group-ops">
                                                     <div style="display: flex; gap: 8px;">
                                                         <a href="<?= base_url('editVisit/' . $visit['id']) ?>" class="btn btn-outline-enterprise" style="padding: 4px 8px; font-size: 12px;"><i class="fas fa-pen"></i></a>
-                                                        <a href="<?= base_url('deleteVisit/' . $visit['id']) ?>" class="btn btn-outline-enterprise" style="padding: 4px 8px; font-size: 12px; color: #F43F5E; border-color: #F43F5E;" onclick="return confirm('Delete this visit?');"><i class="fas fa-trash"></i></a>
+                                                        <a href="<?= base_url('deleteVisit/' . $visit['id']) ?>" class="btn btn-outline-enterprise" style="padding: 4px 8px; font-size: 12px; color: #F43F5E; border-color: #F43F5E;" onclick="return confirm('<?= lang('App.delete_visit') ?>');"><i class="fas fa-trash"></i></a>
                                                     </div>
                                                 </td>
                                             <?php endif; ?>
@@ -106,7 +106,7 @@ $isAdmin = in_array((int) session()->get('role'), [1, 3], true);
                                 <?php else: ?>
                                     <tr>
                                         <td colspan="<?= $isAdmin ? '9' : '8' ?>" class="text-center p-4" style="color: #4F4255;">
-                                            No visits recorded yet.
+                                            <?= lang('App.no_visits_recorded_yet') ?>
                                         </td>
                                     </tr>
                                 <?php endif; ?>

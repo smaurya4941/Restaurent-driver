@@ -3,12 +3,12 @@
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 
 <?php
-$pageTitle = 'Bonus Rules';
-$pageSubtitle = 'Configure visit milestone bonuses. Incentive is paid on every visit; bonus is paid once when the monthly rule is satisfied.';
-$pageEyebrow = 'Rewards Engine';
+$pageTitle = lang('App.bonus_rules');
+$pageSubtitle = lang('App.bonus_rules_desc');
+$pageEyebrow = lang('App.rewards_engine');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Bonus Rules', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.bonus_rules'), 'active' => true],
 ];
 ?>
 
@@ -24,41 +24,41 @@ $breadcrumbs = [
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Add Bonus Rule</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.add_bonus_rule') ?></h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('bonus-rules') ?>" method="post">
                                 <div class="form-group">
-                                    <label for="name">Rule Label</label>
-                                    <input type="text" name="name" id="name" class="form-control" value="<?= esc(old('name')) ?>" placeholder="Example: June 2026 Bonus Plan" required>
+                                    <label for="name"><?= lang('App.rule_label') ?></label>
+                                    <input type="text" name="name" id="name" class="form-control" value="<?= esc(old('name')) ?>" placeholder="<?= lang('App.example_bonus_plan') ?>" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="visit_threshold">Minimum Monthly Visits</label>
+                                    <label for="visit_threshold"><?= lang('App.min_monthly_visits') ?></label>
                                     <input type="number" min="0" name="visit_threshold" id="visit_threshold" class="form-control" value="<?= esc(old('visit_threshold')) ?>" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="bonus_value">Bonus Percentage</label>
+                                    <label for="bonus_value"><?= lang('App.bonus_percentage') ?></label>
                                     <input type="number" step="0.01" min="0" name="bonus_value" id="bonus_value" class="form-control" value="<?= esc(old('bonus_value')) ?>" placeholder="10.00" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="effective_from">Effective From</label>
+                                    <label for="effective_from"><?= lang('App.effective_from') ?></label>
                                     <input type="date" name="effective_from" id="effective_from" class="form-control" value="<?= esc(old('effective_from')) ?>" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="effective_to">Effective To</label>
+                                    <label for="effective_to"><?= lang('App.effective_to') ?></label>
                                     <input type="date" name="effective_to" id="effective_to" class="form-control" value="<?= esc(old('effective_to')) ?>">
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;">Leave empty to keep this bonus rule active until replaced.</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;"><?= lang('App.leave_empty_bonus_active') ?></div>
                                 </div>
                                 <div class="form-group mb-4">
-                                    <label for="is_active">Status</label>
+                                    <label for="is_active"><?= lang('App.status') ?></label>
                                     <select name="is_active" id="is_active" class="form-control">
-                                        <option value="1" <?= old('is_active', '1') === '1' ? 'selected' : '' ?>>Active</option>
-                                        <option value="0" <?= old('is_active') === '0' ? 'selected' : '' ?>>Inactive</option>
+                                        <option value="1" <?= old('is_active', '1') === '1' ? 'selected' : '' ?>><?= lang('App.active') ?></option>
+                                        <option value="0" <?= old('is_active') === '0' ? 'selected' : '' ?>><?= lang('App.inactive') ?></option>
                                     </select>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary-enterprise w-100">Save Bonus Rule</button>
+                                <button type="submit" class="btn btn-primary-enterprise w-100"><?= lang('App.save_bonus_rule') ?></button>
                             </form>
                         </div>
                     </div>
@@ -68,7 +68,7 @@ $breadcrumbs = [
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Configured Bonus Rules</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.configured_bonus_rules') ?></h3>
                             </div>
                         </div>
                         <div class="card-body ops-table-wrap p-0">
@@ -76,13 +76,13 @@ $breadcrumbs = [
                                 <table class="table table-modern mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Version</th>
-                                            <th>Threshold</th>
-                                            <th>Bonus %</th>
-                                            <th>Effective From</th>
-                                            <th>Effective To</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th><?= lang('App.version') ?></th>
+                                            <th><?= lang('App.threshold') ?></th>
+                                            <th><?= lang('App.bonus_percent') ?></th>
+                                            <th><?= lang('App.effective_from') ?></th>
+                                            <th><?= lang('App.effective_to') ?></th>
+                                            <th><?= lang('App.status') ?></th>
+                                            <th><?= lang('App.action') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -110,17 +110,17 @@ $breadcrumbs = [
                                                 </td>
                                                 <td data-label="Effective To">
                                                     <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4F4255;">
-                                                        <?= esc($rule['effective_to'] ?: 'Open') ?>
+                                                        <?= esc($rule['effective_to'] ?: lang('App.open')) ?>
                                                     </div>
                                                 </td>
                                                 <td data-label="Status">
                                                     <span class="badge-enterprise-role" style="background: <?= (int) $rule['is_active'] === 1 ? '#10B981' : '#E0E0E0' ?>; color: <?= (int) $rule['is_active'] === 1 ? '#FFFFFF' : '#1A1C1C' ?>;">
-                                                        <?= (int) $rule['is_active'] === 1 ? 'Active' : 'Inactive' ?>
+                                                        <?= (int) $rule['is_active'] === 1 ? lang('App.active') : lang('App.inactive') ?>
                                                     </span>
                                                 </td>
                                                 <td data-label="Action">
                                                     <a href="<?= base_url('bonus-rules/' . $rule['id'] . '/toggle') ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2" style="font-size: 12px;">
-                                                        <?= (int) $rule['is_active'] === 1 ? 'Deactivate' : 'Activate' ?>
+                                                        <?= (int) $rule['is_active'] === 1 ? lang('App.deactivate') : lang('App.activate') ?>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -128,7 +128,7 @@ $breadcrumbs = [
                                         <?php if (empty($rules)): ?>
                                             <tr>
                                                 <td colspan="7" class="text-center text-muted py-4" style="font-family: 'Inter', sans-serif; font-size: 14px;">
-                                                    No bonus rules configured yet.
+                                                    <?= lang('App.no_bonus_rules_configured') ?>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>

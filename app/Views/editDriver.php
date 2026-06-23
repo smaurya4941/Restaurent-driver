@@ -2,13 +2,13 @@
 <?php include 'app/Views/templates/topmenu.php'; ?>
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 <?php
-$pageTitle = 'Edit Driver';
-$pageSubtitle = 'Update driver profile, vehicle assignment, incentives, and consent.';
-$pageEyebrow = 'Fleet Management';
+$pageTitle = lang('App.edit_driver');
+$pageSubtitle = lang('App.edit_driver_subtitle');
+$pageEyebrow = lang('App.fleet_management');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Drivers', 'url' => base_url('drivers')],
-    ['label' => 'Edit Driver', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.drivers'), 'url' => base_url('drivers')],
+    ['label' => lang('App.edit_driver'), 'active' => true],
 ];
 $errors = session('errors') ?? [];
 $duplicateWarnings = session('duplicate_warnings') ?? ($duplicateWarnings ?? []);
@@ -29,7 +29,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
 
             <?php if ($duplicateWarnings): ?>
                 <div class="alert alert-warning ops-alert mb-4 border-warning" style="background-color: #FFFBEB; color: #92400E; border-radius: 4px;">
-                    <div style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; font-size: 15px;"><i class="fas fa-exclamation-triangle mr-2"></i>Possible duplicate found:</div>
+                    <div style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; font-size: 15px;"><i class="fas fa-exclamation-triangle mr-2"></i><?= lang('App.possible_duplicate') ?></div>
                     <ul class="mb-0 mt-2" style="font-family: 'Inter', sans-serif; font-size: 13px;">
                         <?php foreach ($duplicateWarnings as $warning): ?>
                             <li><?= esc($warning) ?></li>
@@ -43,8 +43,8 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Driver Details</h3>
-                                <div class="text-muted" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase;">Update Profile & Documents</div>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.driver_details') ?></h3>
+                                <div class="text-muted" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase;"><?= lang('App.update_profile_documents') ?></div>
                             </div>
                         </div>
                         <div class="card-body">
@@ -54,7 +54,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="full_name">Full Name <span class="text-danger">*</span></label>
+                                            <label for="full_name"><?= lang('App.full_name') ?> <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control <?= isset($errors['full_name']) ? 'is-invalid border-danger' : '' ?>" id="full_name" name="full_name" value="<?= esc(old('full_name', $driver['driver_name'])) ?>" required>
                                             <?php if (isset($errors['full_name'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['full_name']) ?></div>
@@ -63,7 +63,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
+                                            <label for="mobile_number"><?= lang('App.mobile_number') ?> <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control <?= isset($errors['mobile_number']) ? 'is-invalid border-danger' : '' ?>" id="mobile_number" name="mobile_number" value="<?= esc(old('mobile_number', $driver['mobile_number'])) ?>" required>
                                             <?php if (isset($errors['mobile_number'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['mobile_number']) ?></div>
@@ -72,7 +72,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="whatsapp_number">WhatsApp Number</label>
+                                            <label for="whatsapp_number"><?= lang('App.whatsapp_number') ?></label>
                                             <input type="text" class="form-control <?= isset($errors['whatsapp_number']) ? 'is-invalid border-danger' : '' ?>" id="whatsapp_number" name="whatsapp_number" value="<?= esc(old('whatsapp_number', $driver['whatsapp_number'])) ?>">
                                             <?php if (isset($errors['whatsapp_number'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['whatsapp_number']) ?></div>
@@ -81,7 +81,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="license_number">License Number</label>
+                                            <label for="license_number"><?= lang('App.license_number') ?></label>
                                             <input type="text" class="form-control <?= isset($errors['license_number']) ? 'is-invalid border-danger' : '' ?>" id="license_number" name="license_number" value="<?= esc(old('license_number', $driver['license_number'])) ?>">
                                             <?php if (isset($errors['license_number'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['license_number']) ?></div>
@@ -91,10 +91,10 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
 
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="whatsapp_opt_in">WhatsApp Consent</label>
+                                            <label for="whatsapp_opt_in"><?= lang('App.whatsapp_consent') ?></label>
                                             <select class="form-control <?= isset($errors['whatsapp_opt_in']) ? 'is-invalid border-danger' : '' ?>" id="whatsapp_opt_in" name="whatsapp_opt_in">
-                                                <option value="1" <?= old('whatsapp_opt_in', (string) ($driver['whatsapp_opt_in'] ?? '1')) === '1' ? 'selected' : '' ?>>Opted In</option>
-                                                <option value="0" <?= old('whatsapp_opt_in', (string) ($driver['whatsapp_opt_in'] ?? '1')) === '0' ? 'selected' : '' ?>>Opted Out</option>
+                                                <option value="1" <?= old('whatsapp_opt_in', (string) ($driver['whatsapp_opt_in'] ?? '1')) === '1' ? 'selected' : '' ?>><?= lang('App.opted_in') ?></option>
+                                                <option value="0" <?= old('whatsapp_opt_in', (string) ($driver['whatsapp_opt_in'] ?? '1')) === '0' ? 'selected' : '' ?>><?= lang('App.opted_out') ?></option>
                                             </select>
                                             <?php if (isset($errors['whatsapp_opt_in'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['whatsapp_opt_in']) ?></div>
@@ -103,8 +103,8 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="whatsapp_opt_out_reason">Opt-out Reason</label>
-                                            <input type="text" class="form-control <?= isset($errors['whatsapp_opt_out_reason']) ? 'is-invalid border-danger' : '' ?>" id="whatsapp_opt_out_reason" name="whatsapp_opt_out_reason" value="<?= esc(old('whatsapp_opt_out_reason', $driver['whatsapp_opt_out_reason'] ?? '')) ?>" placeholder="Optional">
+                                            <label for="whatsapp_opt_out_reason"><?= lang('App.opt_out_reason') ?></label>
+                                            <input type="text" class="form-control <?= isset($errors['whatsapp_opt_out_reason']) ? 'is-invalid border-danger' : '' ?>" id="whatsapp_opt_out_reason" name="whatsapp_opt_out_reason" value="<?= esc(old('whatsapp_opt_out_reason', $driver['whatsapp_opt_out_reason'] ?? '')) ?>" placeholder="<?= lang('App.optional_reason') ?>">
                                             <?php if (isset($errors['whatsapp_opt_out_reason'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['whatsapp_opt_out_reason']) ?></div>
                                             <?php endif; ?>
@@ -113,7 +113,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
 
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="city">City</label>
+                                            <label for="city"><?= lang('App.city') ?></label>
                                             <input type="text" class="form-control <?= isset($errors['city']) ? 'is-invalid border-danger' : '' ?>" id="city" name="city" value="<?= esc(old('city', $driver['city'])) ?>">
                                             <?php if (isset($errors['city'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['city']) ?></div>
@@ -122,7 +122,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="state">State</label>
+                                            <label for="state"><?= lang('App.state') ?></label>
                                             <input type="text" class="form-control <?= isset($errors['state']) ? 'is-invalid border-danger' : '' ?>" id="state" name="state" value="<?= esc(old('state', $driver['state'])) ?>">
                                             <?php if (isset($errors['state'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['state']) ?></div>
@@ -132,7 +132,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
 
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="default_cash_incentive_amount">Default Cash Incentive (₹) <span class="text-danger">*</span></label>
+                                            <label for="default_cash_incentive_amount"><?= lang('App.default_incentive') ?> <span class="text-danger">*</span></label>
                                             <input type="number" step="0.01" min="0" class="form-control <?= isset($errors['default_cash_incentive_amount']) ? 'is-invalid border-danger' : '' ?>" id="default_cash_incentive_amount" name="default_cash_incentive_amount" value="<?= esc(old('default_cash_incentive_amount', $driver['default_cash_incentive_amount'] ?? '200.00')) ?>" required>
                                             <?php if (isset($errors['default_cash_incentive_amount'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['default_cash_incentive_amount']) ?></div>
@@ -141,7 +141,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="status">Driver Status <span class="text-danger">*</span></label>
+                                            <label for="status"><?= lang('App.driver_status') ?> <span class="text-danger">*</span></label>
                                             <select class="form-control <?= isset($errors['status']) ? 'is-invalid border-danger' : '' ?>" id="status" name="status" required>
                                                 <?php foreach (($statusOptions ?? []) as $statusOption): ?>
                                                     <option value="<?= esc($statusOption) ?>" <?= old('status', $driver['status']) === $statusOption ? 'selected' : '' ?>>
@@ -157,17 +157,17 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
 
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
-                                            <label for="verified_at">Verification</label>
+                                            <label for="verified_at"><?= lang('App.verification') ?></label>
                                             <select class="form-control" id="verified_at" name="verified_at" style="max-width: 50%;">
-                                                <option value="">Not Verified</option>
-                                                <option value="1" <?= old('verified_at', $driver['verified_at']) ? 'selected' : '' ?>>Verified</option>
+                                                <option value=""><?= lang('App.not_verified') ?></option>
+                                                <option value="1" <?= old('verified_at', $driver['verified_at']) ? 'selected' : '' ?>><?= lang('App.verified') ?></option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
-                                            <label for="address">Address</label>
+                                            <label for="address"><?= lang('App.address') ?></label>
                                             <textarea class="form-control <?= isset($errors['address']) ? 'is-invalid border-danger' : '' ?>" id="address" name="address" rows="2" placeholder="Full residential address..."><?= esc(old('address', $driver['address'])) ?></textarea>
                                             <?php if (isset($errors['address'])): ?>
                                                 <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['address']) ?></div>
@@ -176,7 +176,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group mb-4">
-                                            <label for="notes">Notes</label>
+                                            <label for="notes"><?= lang('App.notes') ?></label>
                                             <textarea class="form-control" id="notes" name="notes" rows="2" placeholder="Any internal notes or references..."><?= esc(old('notes', $driver['notes'])) ?></textarea>
                                         </div>
                                     </div>
@@ -185,16 +185,16 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                 <div class="row border-top pt-4">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="photo_path">Driver Photo</label>
+                                            <label for="photo_path"><?= lang('App.driver_photo') ?></label>
                                             <div class="custom-file mb-2">
                                                 <input type="file" class="custom-file-input" id="photo_path" name="photo_path" accept="image/*" capture="environment">
-                                                <label class="custom-file-label" for="photo_path" style="border: 1px solid #E0E0E0; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 13px;">Choose photo</label>
+                                                <label class="custom-file-label" for="photo_path" style="border: 1px solid #E0E0E0; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 13px;"><?= lang('App.choose_photo') ?></label>
                                             </div>
                                             <div class="camera-capture p-3 border rounded bg-light" data-camera-capture data-input="photo_path">
                                                 <div class="camera-capture__actions d-flex gap-2 flex-wrap mb-2">
-                                                    <button type="button" class="btn btn-outline-enterprise py-1 px-2 text-sm" data-camera-start><i class="fas fa-camera mr-1"></i> Capture Photo</button>
-                                                    <button type="button" class="btn btn-primary-enterprise py-1 px-2 text-sm" data-camera-snap style="display:none;">Use This Photo</button>
-                                                    <button type="button" class="btn btn-outline-secondary py-1 px-2 text-sm" data-camera-stop style="display:none;">Cancel</button>
+                                                    <button type="button" class="btn btn-outline-enterprise py-1 px-2 text-sm" data-camera-start><i class="fas fa-camera mr-1"></i> <?= lang('App.capture_photo') ?></button>
+                                                    <button type="button" class="btn btn-primary-enterprise py-1 px-2 text-sm" data-camera-snap style="display:none;"><?= lang('App.use_this') ?></button>
+                                                    <button type="button" class="btn btn-outline-secondary py-1 px-2 text-sm" data-camera-stop style="display:none;"><?= lang('App.cancel') ?></button>
                                                 </div>
                                                 <video class="camera-capture__media w-100 rounded" data-camera-video playsinline></video>
                                                 <canvas data-camera-canvas hidden></canvas>
@@ -203,7 +203,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                             </div>
                                             <?php if (!empty($driver['photo_path'])): ?>
                                                 <div class="mt-3 p-2 border rounded text-center">
-                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; text-transform: uppercase; margin-bottom: 8px;">Current Photo</div>
+                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; text-transform: uppercase; margin-bottom: 8px;"><?= lang('App.current_photo') ?></div>
                                                     <?php if ($driverPhotoUrl): ?>
                                                         <a href="<?= esc($driverPhotoUrl) ?>" target="_blank" rel="noopener">
                                                             <img src="<?= esc($driverPhotoUrl) ?>" alt="Current driver photo" class="img-fluid rounded border" style="max-height: 120px; border-color: #E0E0E0 !important;">
@@ -217,16 +217,16 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="license_photo_path">License Document / Photo</label>
+                                            <label for="license_photo_path"><?= lang('App.license_document') ?></label>
                                             <div class="custom-file mb-2">
                                                 <input type="file" class="custom-file-input" id="license_photo_path" name="license_photo_path" accept="image/*" capture="environment">
-                                                <label class="custom-file-label" for="license_photo_path" style="border: 1px solid #E0E0E0; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 13px;">Choose license document</label>
+                                                <label class="custom-file-label" for="license_photo_path" style="border: 1px solid #E0E0E0; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 13px;"><?= lang('App.choose_document') ?></label>
                                             </div>
                                             <div class="camera-capture p-3 border rounded bg-light" data-camera-capture data-input="license_photo_path">
                                                 <div class="camera-capture__actions d-flex gap-2 flex-wrap mb-2">
-                                                    <button type="button" class="btn btn-outline-enterprise py-1 px-2 text-sm" data-camera-start><i class="fas fa-camera mr-1"></i> Capture License</button>
-                                                    <button type="button" class="btn btn-primary-enterprise py-1 px-2 text-sm" data-camera-snap style="display:none;">Use This Photo</button>
-                                                    <button type="button" class="btn btn-outline-secondary py-1 px-2 text-sm" data-camera-stop style="display:none;">Cancel</button>
+                                                    <button type="button" class="btn btn-outline-enterprise py-1 px-2 text-sm" data-camera-start><i class="fas fa-camera mr-1"></i> <?= lang('App.capture_license') ?></button>
+                                                    <button type="button" class="btn btn-primary-enterprise py-1 px-2 text-sm" data-camera-snap style="display:none;"><?= lang('App.use_this') ?></button>
+                                                    <button type="button" class="btn btn-outline-secondary py-1 px-2 text-sm" data-camera-stop style="display:none;"><?= lang('App.cancel') ?></button>
                                                 </div>
                                                 <video class="camera-capture__media w-100 rounded" data-camera-video playsinline></video>
                                                 <canvas data-camera-canvas hidden></canvas>
@@ -235,7 +235,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                             </div>
                                             <?php if (!empty($driver['license_photo_path'])): ?>
                                                 <div class="mt-3 p-2 border rounded text-center">
-                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; text-transform: uppercase; margin-bottom: 8px;">Current License</div>
+                                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; text-transform: uppercase; margin-bottom: 8px;"><?= lang('App.current_license') ?></div>
                                                     <?php if ($licensePhotoUrl): ?>
                                                         <a href="<?= esc($licensePhotoUrl) ?>" target="_blank" rel="noopener">
                                                             <img src="<?= esc($licensePhotoUrl) ?>" alt="Current license photo" class="img-fluid rounded border" style="max-height: 120px; border-color: #E0E0E0 !important;">
@@ -250,8 +250,8 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                 </div>
                             </div>
                             <div class="card-footer" style="background: #F8F9FA; border-top: 1px solid #E0E0E0; display: flex; gap: 10px;">
-                                <button type="submit" class="btn btn-primary-enterprise"><i class="fas fa-save mr-1"></i> Update Driver</button>
-                                <a href="<?= base_url('drivers') ?>" class="btn btn-outline-enterprise">Cancel</a>
+                                <button type="submit" class="btn btn-primary-enterprise"><i class="fas fa-save mr-1"></i> <?= lang('App.update_driver') ?></button>
+                                <a href="<?= base_url('drivers') ?>" class="btn btn-outline-enterprise"><?= lang('App.cancel') ?></a>
                             </div>
                         </form>
                     </div>
@@ -261,14 +261,14 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Assign Primary Vehicle</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.assign_primary_vehicle') ?></h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('drivers/' . $driver['id'] . '/vehicles') ?>" method="POST">
                                 <?= csrf_field(); ?>
                                 <div class="form-group mb-3">
-                                    <label for="vehicle_number">Vehicle Number <span class="text-danger">*</span></label>
+                                    <label for="vehicle_number"><?= lang('App.vehicle_number') ?> <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control <?= isset($errors['vehicle_number']) ? 'is-invalid border-danger' : '' ?>" id="vehicle_number" name="vehicle_number" value="<?= esc(old('vehicle_number')) ?>" required placeholder="e.g. DL 1C AA 1111">
                                     <?php if (isset($errors['vehicle_number'])): ?>
                                         <div class="invalid-feedback text-danger small mt-1"><?= esc($errors['vehicle_number']) ?></div>
@@ -276,9 +276,9 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                 </div>
 
                                 <div class="form-group mb-4">
-                                    <label for="vehicle_type">Vehicle Category <span class="text-danger">*</span></label>
+                                    <label for="vehicle_type"><?= lang('App.vehicle_category') ?> <span class="text-danger">*</span></label>
                                     <select class="form-control <?= isset($errors['vehicle_type']) ? 'is-invalid border-danger' : '' ?>" id="vehicle_type" name="vehicle_type" required>
-                                        <option value="">-- Select Category --</option>
+                                        <option value=""><?= lang('App.select_vehicle_category') ?></option>
                                         <?php foreach (($vehicleTypeOptions ?? []) as $vehicleTypeOption): ?>
                                             <option value="<?= esc($vehicleTypeOption) ?>" <?= old('vehicle_type') === $vehicleTypeOption ? 'selected' : '' ?>>
                                                 <?= esc(ucwords($vehicleTypeOption)) ?>
@@ -290,7 +290,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     <?php endif; ?>
                                 </div>
 
-                                <button type="submit" class="btn btn-outline-enterprise w-100"><i class="fas fa-car mr-1"></i> Save Vehicle</button>
+                                <button type="submit" class="btn btn-outline-enterprise w-100"><i class="fas fa-car mr-1"></i> <?= lang('App.save_vehicle') ?></button>
                             </form>
                         </div>
                     </div>
@@ -298,7 +298,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                     <div class="card ops-card">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Vehicle History</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.vehicle_history') ?></h3>
                             </div>
                         </div>
                         <div class="card-body ops-table-wrap p-0">
@@ -306,9 +306,9 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                 <table class="table table-modern mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Vehicle</th>
-                                            <th>Timeline</th>
-                                            <th class="text-right">Status</th>
+                                            <th><?= lang('App.vehicle') ?></th>
+                                            <th><?= lang('App.timeline') ?></th>
+                                            <th class="text-right"><?= lang('App.status') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -327,13 +327,13 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                                         <div style="font-family: 'Inter', sans-serif; font-size: 12px; color: #4F4255;">
                                                             <?= esc(date('M d, Y', strtotime($vehicle['assigned_from'] ?? ''))) ?>
                                                             <br>
-                                                            <small class="text-muted">to <?= esc(isset($vehicle['assigned_until']) ? date('M d, Y', strtotime($vehicle['assigned_until'])) : 'Present') ?></small>
+                                                            <small class="text-muted">to <?= esc(isset($vehicle['assigned_until']) ? date('M d, Y', strtotime($vehicle['assigned_until'])) : lang('App.present')) ?></small>
                                                         </div>
                                                     </td>
                                                     <td data-label="Status" class="text-right">
                                                         <?php $vStatus = strtolower($vehicle['status'] ?? ''); ?>
                                                         <?php if ($vStatus === 'active'): ?>
-                                                            <span class="badge-enterprise-role" style="background: #10B981; color: #FFFFFF;">Active</span>
+                                                            <span class="badge-enterprise-role" style="background: #10B981; color: #FFFFFF;"><?= lang('App.active') ?></span>
                                                         <?php else: ?>
                                                             <span class="badge-enterprise-role" style="background: #E0E0E0; color: #1A1C1C;"><?= esc(ucfirst($vStatus)) ?></span>
                                                         <?php endif; ?>
@@ -343,7 +343,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                         <?php else: ?>
                                             <tr>
                                                 <td colspan="3" class="text-center text-muted py-4" style="font-size: 13px; font-family: 'Inter', sans-serif;">
-                                                    No vehicle history available.
+                                                    <?= lang('App.no_vehicle_history') ?>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>

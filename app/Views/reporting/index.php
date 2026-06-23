@@ -28,12 +28,12 @@ $currentYear = (int) date('Y');
 ?>
 
 <?php
-$pageTitle = 'Reports';
-$pageSubtitle = (string) ($report['description'] ?? 'Pick a report, set filters, and run.');
-$pageEyebrow = 'Analytics';
+$pageTitle = lang('App.reports');
+$pageSubtitle = (string) ($report['description'] ?? lang('App.reports_subtitle'));
+$pageEyebrow = lang('App.analytics');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Reports', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.reports'), 'active' => true],
 ];
 ?>
 
@@ -57,7 +57,7 @@ $breadcrumbs = [
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Reports</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.reports') ?></h3>
                             </div>
                         </div>
                         <div class="card-body p-3">
@@ -95,8 +95,8 @@ $breadcrumbs = [
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;" id="reportActiveHint"><?= esc((string) ($reportDefinitions[$activeType]['label'] ?? 'Report')) ?></h3>
-                                <div class="text-muted" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase;">Filter & Extract Data</div>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;" id="reportActiveHint"><?= esc((string) ($reportDefinitions[$activeType]['label'] ?? lang('App.reports'))) ?></h3>
+                                <div class="text-muted" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase;"><?= lang('App.filter_extract_data') ?></div>
                             </div>
                         </div>
                         <div class="card-body">
@@ -107,12 +107,12 @@ $breadcrumbs = [
                                     <!-- Date Filter -->
                                     <div class="col-md-6 report-filter-group<?= ($reportFilterMap[$activeType]['date'] ?? false) ? ' is-visible' : '' ?>" data-filter-group="date">
                                         <div class="form-group mb-3">
-                                            <label class="report-filter-heading">Date Range</label>
+                                            <label class="report-filter-heading"><?= lang('App.date_range') ?></label>
                                             <div class="report-quick-ranges btn-group btn-group-sm mb-2" role="group" style="width: 100%;">
-                                                <button type="button" class="btn btn-outline-enterprise report-range-btn py-1" data-range="today">Today</button>
-                                                <button type="button" class="btn btn-outline-enterprise report-range-btn py-1" data-range="week">Week</button>
-                                                <button type="button" class="btn btn-outline-enterprise report-range-btn py-1" data-range="month">Month</button>
-                                                <button type="button" class="btn btn-outline-enterprise report-range-btn py-1" data-range="last30">30d</button>
+                                                <button type="button" class="btn btn-outline-enterprise report-range-btn py-1" data-range="today"><?= lang('App.today') ?></button>
+                                                <button type="button" class="btn btn-outline-enterprise report-range-btn py-1" data-range="week"><?= lang('App.week') ?></button>
+                                                <button type="button" class="btn btn-outline-enterprise report-range-btn py-1" data-range="month"><?= lang('App.month') ?></button>
+                                                <button type="button" class="btn btn-outline-enterprise report-range-btn py-1" data-range="last30"><?= lang('App.last_30d') ?></button>
                                             </div>
                                             <div class="d-flex" style="gap: 10px;">
                                                 <div class="flex-fill">
@@ -128,7 +128,7 @@ $breadcrumbs = [
                                     <!-- Period Filter -->
                                     <div class="col-md-6 report-filter-group<?= ($reportFilterMap[$activeType]['period'] ?? false) ? ' is-visible' : '' ?>" data-filter-group="period">
                                         <div class="form-group mb-3">
-                                            <label class="report-filter-heading">Payout Period</label>
+                                            <label class="report-filter-heading"><?= lang('App.payout_period') ?></label>
                                             <div class="d-flex" style="gap: 10px;">
                                                 <div class="flex-fill">
                                                     <select name="year" id="year" class="form-control">
@@ -153,14 +153,14 @@ $breadcrumbs = [
                                     <!-- Search Filter -->
                                     <div class="col-md-3 report-filter-group<?= ($reportFilterMap[$activeType]['search'] ?? false) ? ' is-visible' : '' ?>" data-filter-group="search">
                                         <div class="form-group mb-3">
-                                            <label class="report-filter-heading">Search</label>
+                                            <label class="report-filter-heading"><?= lang('App.search') ?></label>
                                             <input
                                                 type="text"
                                                 name="search_input"
                                                 id="search_input"
                                                 class="form-control"
                                                 value="<?= esc((string) ($filters['search_input'] ?? '')) ?>"
-                                                placeholder="Driver name or mobile..."
+                                                placeholder="<?= lang('App.search_driver_mobile') ?>"
                                                 autocomplete="off"
                                             >
                                         </div>
@@ -169,11 +169,11 @@ $breadcrumbs = [
                                     <!-- Limit Filter -->
                                     <div class="col-md-3 report-filter-group<?= ($reportFilterMap[$activeType]['limit'] ?? false) ? ' is-visible' : '' ?>" data-filter-group="limit">
                                         <div class="form-group mb-3">
-                                            <label class="report-filter-heading">Rows</label>
+                                            <label class="report-filter-heading"><?= lang('App.rows') ?></label>
                                             <select name="limit" id="limit" class="form-control">
                                                 <?php foreach ([25, 50, 100, 200] as $limitOption): ?>
                                                     <option value="<?= $limitOption ?>" <?= (int) ($filters['limit'] ?? 25) === $limitOption ? 'selected' : '' ?>>
-                                                        <?= $limitOption ?> rows
+                                                        <?= $limitOption ?> <?= strtolower(lang('App.rows')) ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
@@ -183,15 +183,15 @@ $breadcrumbs = [
                                 
                                 <div class="report-actions d-flex flex-wrap align-items-center mt-3 pt-3 border-top">
                                     <button type="submit" class="btn btn-primary-enterprise mr-2" id="reportRunBtn">
-                                        <i class="fas fa-play mr-1"></i> Run Report
+                                        <i class="fas fa-play mr-1"></i> <?= lang('App.run_report') ?>
                                     </button>
                                     <button type="button" class="btn btn-outline-enterprise mr-2" id="reportResetBtn">
-                                        <i class="fas fa-rotate-left mr-1"></i> Reset
+                                        <i class="fas fa-rotate-left mr-1"></i> <?= lang('App.reset') ?>
                                     </button>
                                     
                                     <div class="btn-group mr-auto">
                                         <button type="button" class="btn btn-outline-enterprise text-success border-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="reportExportToggle"<?= $rowCount === 0 ? ' disabled' : '' ?>>
-                                            <i class="fas fa-file-export mr-1"></i> Export
+                                            <i class="fas fa-file-export mr-1"></i> <?= lang('App.export') ?>
                                         </button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item report-export-link" href="<?= esc($buildExportUrl('excel')) ?>" data-format="excel"><i class="fas fa-file-excel mr-2 text-success"></i>Excel</a>
@@ -201,7 +201,7 @@ $breadcrumbs = [
                                     </div>
 
                                     <span class="badge-enterprise-role bg-light text-dark border" id="reportResultBadge" style="font-size: 12px; padding: 6px 12px;">
-                                        <?= $rowCount ?> <?= $rowCount === 1 ? 'row' : 'rows' ?> generated
+                                        <?= $rowCount ?> <?= $rowCount === 1 ? lang('App.row_generated') : lang('App.rows_generated') ?>
                                     </span>
                                 </div>
                             </form>
@@ -267,8 +267,8 @@ $breadcrumbs = [
                                     <div style="width: 60px; height: 60px; background: #F3E8FF; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
                                         <i class="fa-solid fa-chart-line text-primary" style="font-size: 24px; color: #A600FF !important;"></i>
                                     </div>
-                                    <h5 style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; color: #1A1C1C;">No records found</h5>
-                                    <p class="text-muted mb-0" style="font-size: 13px;">Try adjusting your filters or date range.</p>
+                                    <h5 style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; color: #1A1C1C;"><?= lang('App.no_records_found') ?></h5>
+                                    <p class="text-muted mb-0" style="font-size: 13px;"><?= lang('App.adjust_filters') ?></p>
                                 </div>
                             <?php endif; ?>
                         </div>

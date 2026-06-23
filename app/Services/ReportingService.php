@@ -12,24 +12,24 @@ class ReportingService
     }
     private const REPORT_DEFINITIONS = [
         'driver-report' => [
-            'label' => 'Driver Report',
-            'description' => 'Driver list with current primary vehicle details.',
+            'label' => 'App.driver_report',
+            'description' => 'App.driver_report_desc',
         ],
         'visit-ledger' => [
-            'label' => 'Visits Report',
-            'description' => 'Basic visit details with driver, guests, food, and cash incentive.',
+            'label' => 'App.visit_ledger',
+            'description' => 'App.visit_ledger_desc',
         ],
         'drivers-registered' => [
-            'label' => 'Incentive Report',
-            'description' => 'Registered drivers and their default driver incentive amounts.',
+            'label' => 'App.incentive_report',
+            'description' => 'App.incentive_report_desc',
         ],
         'monthly-bonuses' => [
-            'label' => 'Monthly Bonuses',
-            'description' => 'Drivers who qualified for visit milestone bonuses in the selected month.',
+            'label' => 'App.monthly_bonuses_report',
+            'description' => 'App.monthly_bonuses_desc',
         ],
         'top-drivers' => [
-            'label' => 'Top Drivers',
-            'description' => 'Branch-scoped driver ranking by visits, guests, and incentives.',
+            'label' => 'App.top_drivers_report',
+            'description' => 'App.top_drivers_desc',
         ],
         // 'branch-monthly-summary' => [
         //     'label' => 'Branch Monthly Summary',
@@ -55,7 +55,12 @@ class ReportingService
 
     public function getReportDefinitions(): array
     {
-        return self::REPORT_DEFINITIONS;
+        $definitions = self::REPORT_DEFINITIONS;
+        foreach ($definitions as &$def) {
+            $def['label'] = lang($def['label']);
+            $def['description'] = lang($def['description']);
+        }
+        return $definitions;
     }
 
     public function getDefaultType(): string
@@ -650,10 +655,11 @@ class ReportingService
 
     private function buildResponse(string $type, array $definition, array $columns, array $rows, array $filters, array $summary): array
     {
+        $definitions = $this->getReportDefinitions();
         return [
             'type' => $type,
-            'title' => $definition['label'],
-            'description' => $definition['description'],
+            'title' => $definitions[$type]['label'] ?? $definition['label'],
+            'description' => $definitions[$type]['description'] ?? $definition['description'],
             'columns' => $columns,
             'rows' => $rows,
             'filters' => $filters,

@@ -2,12 +2,12 @@
 <?php include 'app/Views/templates/topmenu.php'; ?>
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 <?php
-$pageTitle = 'Employee Directory';
-$pageSubtitle = 'Manage employee roles, login status, and password recovery.';
-$pageEyebrow = 'Administration';
+$pageTitle = lang('App.employee_directory');
+$pageSubtitle = lang('App.manage_employees');
+$pageEyebrow = lang('App.administration');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Users', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.users'), 'active' => true],
 ];
 $canCreateUsers = in_array((int) session()->get('role'), [1, 5], true);
 ?>
@@ -22,12 +22,12 @@ $canCreateUsers = in_array((int) session()->get('role'), [1, 5], true);
             <div class="card ops-card mb-4">
                 <div class="card-header ops-toolbar">
                     <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                        <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">All Employees</h3>
-                        <div class="text-muted">Restaurant staff accounts for admin, accountant, and front desk roles.</div>
+                        <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.all_employees') ?></h3>
+                        <div class="text-muted"><?= lang('App.employee_desc') ?></div>
                     </div>
                     <?php if ($canCreateUsers): ?>
                         <a href="<?= base_url('create_user') ?>" class="btn btn-primary-enterprise py-2 px-3" style="font-size: 13px;">
-                            <i class="fas fa-user-plus mr-1"></i> Create User
+                            <i class="fas fa-user-plus mr-1"></i> <?= lang('App.create_user') ?>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -36,13 +36,13 @@ $canCreateUsers = in_array((int) session()->get('role'), [1, 5], true);
                         <table class="table table-modern mb-0">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Mobile Number</th>
-                                    <th>Role</th>
-                                    <th>Branch</th>
-                                    <th>Status</th>
-                                    <th class="text-right">Actions</th>
+                                    <th><?= lang('App.id') ?></th>
+                                    <th><?= lang('App.name') ?></th>
+                                    <th><?= lang('App.mobile_number') ?></th>
+                                    <th><?= lang('App.role') ?></th>
+                                    <th><?= lang('App.branch') ?></th>
+                                    <th><?= lang('App.status') ?></th>
+                                    <th class="text-right"><?= lang('App.actions') ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,31 +65,31 @@ $canCreateUsers = in_array((int) session()->get('role'), [1, 5], true);
                                                     <?= esc($user['phone']) ?>
                                                 </div>
                                             </td>
-                                            <td data-label="Role">
+                                            <td data-label="<?= lang('App.role') ?>">
                                                 <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4F4255;">
-                                                    <?= esc(ucwords(str_replace('_', ' ', $user['role_name'] ?? 'Unknown'))) ?>
+                                                    <?= esc(ucwords(str_replace('_', ' ', $user['role_name'] ?? lang('App.unknown')))) ?>
                                                 </div>
                                             </td>
-                                            <td data-label="Branch">
+                                            <td data-label="<?= lang('App.branch') ?>">
                                                 <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4F4255;">
-                                                    <?= esc($user['branch_name'] ?? 'All branches') ?>
+                                                    <?= esc($user['branch_name'] ?? lang('App.all_branches')) ?>
                                                 </div>
                                             </td>
-                                            <td data-label="Status">
+                                            <td data-label="<?= lang('App.status') ?>">
                                                 <?php if ($status === 'active'): ?>
-                                                    <span class="badge-enterprise-role" style="background: #10B981; color: #FFFFFF;">Active</span>
+                                                    <span class="badge-enterprise-role" style="background: #10B981; color: #FFFFFF;"><?= lang('App.active') ?></span>
                                                 <?php elseif ($status === 'disabled'): ?>
-                                                    <span class="badge-enterprise-role" style="background: #F43F5E; color: #FFFFFF;">Disabled</span>
+                                                    <span class="badge-enterprise-role" style="background: #F43F5E; color: #FFFFFF;"><?= lang('App.disabled') ?></span>
                                                 <?php else: ?>
-                                                    <span class="badge-enterprise-role" style="background: #E0E0E0; color: #1A1C1C;">Inactive</span>
+                                                    <span class="badge-enterprise-role" style="background: #E0E0E0; color: #1A1C1C;"><?= lang('App.inactive') ?></span>
                                                 <?php endif; ?>
                                             </td>
-                                            <td data-label="Actions" class="text-right">
+                                            <td data-label="<?= lang('App.actions') ?>" class="text-right">
                                                 <div class="btn-group" style="gap: 4px;">
-                                                    <a href="<?= base_url('edit_user/' . $user['id']) ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2" title="Edit">
+                                                    <a href="<?= base_url('edit_user/' . $user['id']) ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2" title="<?= lang('App.edit') ?>">
                                                         <i class="fas fa-pen"></i>
                                                     </a>
-                                                    <a href="<?= base_url('delete_user/' . $user['id']) ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2 text-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this user?');" style="border-color: #F43F5E;">
+                                                    <a href="<?= base_url('delete_user/' . $user['id']) ?>" class="btn btn-sm btn-outline-enterprise py-1 px-2 text-danger" title="<?= lang('App.delete') ?>" onclick="return confirm('<?= lang('App.are_you_sure_delete_user') ?>');" style="border-color: #F43F5E;">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
                                                 </div>
@@ -99,7 +99,7 @@ $canCreateUsers = in_array((int) session()->get('role'), [1, 5], true);
                                 <?php else: ?>
                                     <tr>
                                         <td colspan="7" class="text-center text-muted py-4" style="font-family: 'Inter', sans-serif; font-size: 14px;">
-                                            No users found.
+                                            <?= lang('App.no_users_found') ?>
                                         </td>
                                     </tr>
                                 <?php endif; ?>

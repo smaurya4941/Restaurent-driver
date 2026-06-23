@@ -3,12 +3,12 @@
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 
 <?php
-$pageTitle = 'WhatsApp Campaigns';
-$pageSubtitle = 'Send special offers to opted-in drivers grouped by visit activity.';
-$pageEyebrow = 'Marketing';
+$pageTitle = lang('App.whatsapp_campaigns');
+$pageSubtitle = lang('App.whatsapp_campaigns_desc');
+$pageEyebrow = lang('App.marketing');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'WhatsApp', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.whatsapp'), 'active' => true],
 ];
 ?>
 
@@ -24,42 +24,43 @@ $breadcrumbs = [
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Group Drivers</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.group_drivers') ?></h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('whatsapp-campaigns') ?>" method="get">
                                 <div class="form-group">
-                                    <label for="vehicle_type">Vehicle Type</label>
+                                <div class="form-group">
+                                    <label for="vehicle_type"><?= lang('App.vehicle_type') ?></label>
                                     <?php $selectedVehicleType = $currentFilters['vehicle_type'] ?? ''; ?>
                                     <select name="vehicle_type" id="vehicle_type" class="form-control">
-                                        <option value="">All</option>
-                                        <option value="bus" <?= $selectedVehicleType === 'bus' ? 'selected' : '' ?>>Bus</option>
-                                        <option value="cab" <?= $selectedVehicleType === 'cab' ? 'selected' : '' ?>>Cab</option>
-                                        <option value="traveller" <?= $selectedVehicleType === 'traveller' ? 'selected' : '' ?>>Traveller</option>
-                                        <option value="truck" <?= $selectedVehicleType === 'truck' ? 'selected' : '' ?>>Truck</option>
-                                        <option value="tempo" <?= $selectedVehicleType === 'tempo' ? 'selected' : '' ?>>Tempo</option>
-                                        <option value="private taxi" <?= $selectedVehicleType === 'private taxi' ? 'selected' : '' ?>>Private Taxi</option>
+                                        <option value=""><?= lang('App.all') ?></option>
+                                        <option value="bus" <?= $selectedVehicleType === 'bus' ? 'selected' : '' ?>><?= lang('App.bus') ?></option>
+                                        <option value="cab" <?= $selectedVehicleType === 'cab' ? 'selected' : '' ?>><?= lang('App.cab') ?></option>
+                                        <option value="traveller" <?= $selectedVehicleType === 'traveller' ? 'selected' : '' ?>><?= lang('App.traveller') ?></option>
+                                        <option value="truck" <?= $selectedVehicleType === 'truck' ? 'selected' : '' ?>><?= lang('App.truck') ?></option>
+                                        <option value="tempo" <?= $selectedVehicleType === 'tempo' ? 'selected' : '' ?>><?= lang('App.tempo') ?></option>
+                                        <option value="private taxi" <?= $selectedVehicleType === 'private taxi' ? 'selected' : '' ?>><?= lang('App.private_taxi') ?></option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="min_visits">Minimum Visits</label>
+                                    <label for="min_visits"><?= lang('App.min_visits') ?></label>
                                     <input type="number" name="min_visits" id="min_visits" class="form-control" min="0" value="<?= esc($currentFilters['min_visits'] ?? '') ?>">
                                 </div>
                                 <div class="form-group">
-                                    <label for="max_visits">Maximum Visits</label>
+                                    <label for="max_visits"><?= lang('App.max_visits') ?></label>
                                     <input type="number" name="max_visits" id="max_visits" class="form-control" min="0" value="<?= esc($currentFilters['max_visits'] ?? '') ?>">
                                 </div>
                                 <div class="form-group">
-                                    <label for="min_guests">Minimum Guest Count</label>
+                                    <label for="min_guests"><?= lang('App.min_guest_count') ?></label>
                                     <input type="number" name="min_guests" id="min_guests" class="form-control" min="0" value="<?= esc($currentFilters['min_guests'] ?? '') ?>">
                                 </div>
                                 <div class="form-group mb-4">
-                                    <label for="max_guests">Maximum Guest Count</label>
+                                    <label for="max_guests"><?= lang('App.max_guest_count') ?></label>
                                     <input type="number" name="max_guests" id="max_guests" class="form-control" min="0" value="<?= esc($currentFilters['max_guests'] ?? '') ?>">
                                 </div>
 
-                                <button type="submit" class="btn btn-outline-enterprise w-100"><i class="fas fa-search mr-1"></i> View Group</button>
+                                <button type="submit" class="btn btn-outline-enterprise w-100"><i class="fas fa-search mr-1"></i> <?= lang('App.view_group') ?></button>
                             </form>
                         </div>
                     </div>
@@ -67,7 +68,7 @@ $breadcrumbs = [
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Send Message</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.send_message') ?></h3>
                             </div>
                         </div>
                         <div class="card-body">
@@ -80,9 +81,9 @@ $breadcrumbs = [
                                 <input type="hidden" name="max_guests" value="<?= esc($currentFilters['max_guests'] ?? '') ?>">
 
                                 <div class="form-group">
-                                    <label for="template_select">Select Template</label>
+                                    <label for="template_select"><?= lang('App.select_template') ?></label>
                                     <select id="template_select" class="form-control">
-                                        <option value="">-- Custom Message (No Template) --</option>
+                                        <option value=""><?= lang('App.custom_message_no_template') ?></option>
                                         <?php foreach (($templates ?? []) as $template): ?>
                                             <option value="<?= esc($template['content']) ?>"><?= esc($template['name']) ?></option>
                                         <?php endforeach; ?>
@@ -90,28 +91,28 @@ $breadcrumbs = [
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="message_body">WhatsApp Message</label>
+                                    <label for="message_body"><?= lang('App.whatsapp_message') ?></label>
                                     <textarea name="message_body" id="message_body" rows="6" class="form-control" placeholder="Example: Hello {{driver_name}}, you completed {{visit_count}} visits and brought {{guest_count}} guests."><?= esc(old('message_body')) ?></textarea>
                                     <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;">Supported variables: {{driver_name}}, {{visit_count}}, {{guest_count}}, {{city}}, {{vehicle_type}}</div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="media_url">Image URL</label>
+                                    <label for="media_url"><?= lang('App.image_url') ?></label>
                                     <input type="url" name="media_url" id="media_url" class="form-control" maxlength="2048" value="<?= esc(old('media_url')) ?>" placeholder="https://example.com/image.jpg">
                                 </div>
 
                                 <div class="form-group mb-4">
-                                    <label for="message_image">Select Image</label>
+                                    <label for="message_image"><?= lang('App.select_image') ?></label>
                                     <input type="file" name="message_image" id="message_image" class="form-control" accept="image/jpeg,image/png,image/webp" style="padding-top: 7px; padding-bottom: 7px;">
                                     <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;">Optional. Max 5 MB. JPG, PNG, and WebP are allowed.</div>
                                 </div>
 
                                 <div class="d-flex flex-column" style="gap: 10px;">
                                     <button type="submit" name="send_scope" value="selected" class="btn btn-primary-enterprise w-100" <?= empty($groupRows) ? 'disabled' : '' ?>>
-                                        <i class="fab fa-whatsapp mr-1"></i> Send To Selected
+                                        <i class="fab fa-whatsapp mr-1"></i> <?= lang('App.send_to_selected') ?>
                                     </button>
                                     <button type="submit" name="send_scope" value="group" class="btn btn-outline-enterprise w-100" <?= empty($groupRows) ? 'disabled' : '' ?> onclick="return confirm('Send this message to every driver in the current group?');">
-                                        <i class="fas fa-users mr-1"></i> Send To Group
+                                        <i class="fas fa-users mr-1"></i> <?= lang('App.send_to_group') ?>
                                     </button>
                                 </div>
                             </form>
@@ -123,9 +124,9 @@ $breadcrumbs = [
                     <div class="card ops-card">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Grouped Driver Report</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.grouped_driver_report') ?></h3>
                             </div>
-                            <span class="badge-enterprise-role" style="background: #E0E0E0; color: #1A1C1C;">Matching drivers: <?= esc((string) count($groupRows ?? [])) ?></span>
+                            <span class="badge-enterprise-role" style="background: #E0E0E0; color: #1A1C1C;"><?= lang('App.matching_drivers') ?>: <?= esc((string) count($groupRows ?? [])) ?></span>
                         </div>
                         <div class="card-body ops-table-wrap p-0">
                             <div class="table-responsive">
@@ -135,13 +136,13 @@ $breadcrumbs = [
                                             <th style="width: 40px; text-align: center;">
                                                 <input type="checkbox" id="select_all_drivers" aria-label="Select all drivers">
                                             </th>
-                                            <th>Driver</th>
-                                            <th>WhatsApp</th>
-                                            <th>Status</th>
-                                            <th>City</th>
-                                            <th>Vehicle</th>
-                                            <th>Visits</th>
-                                            <th>Guests</th>
+                                            <th><?= lang('App.driver') ?></th>
+                                            <th><?= lang('App.whatsapp') ?></th>
+                                            <th><?= lang('App.status') ?></th>
+                                            <th><?= lang('App.city') ?></th>
+                                            <th><?= lang('App.vehicle') ?></th>
+                                            <th><?= lang('App.visits') ?></th>
+                                            <th><?= lang('App.guests') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -198,7 +199,7 @@ $breadcrumbs = [
                                         <?php if (empty($groupRows)): ?>
                                             <tr>
                                                 <td colspan="8" class="text-center text-muted py-4" style="font-family: 'Inter', sans-serif; font-size: 14px;">
-                                                    No drivers matched the current report filters.
+                                                    <?= lang('App.no_drivers_matched') ?>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>
@@ -207,7 +208,7 @@ $breadcrumbs = [
                             </div>
                         </div>
                         <div class="card-footer" style="background: #F8F9FA; border-top: 1px solid #E0E0E0; font-family: 'Inter', sans-serif; font-size: 13px; color: #4F4255;">
-                            <span id="selected_driver_count" style="font-weight: 600; color: #A600FF;">Selected: 0</span>
+                            <span id="selected_driver_count" style="font-weight: 600; color: #A600FF;"><?= lang('App.selected') ?>: 0</span>
                         </div>
                     </div>
                 </div>

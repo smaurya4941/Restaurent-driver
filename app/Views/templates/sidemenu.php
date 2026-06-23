@@ -225,7 +225,7 @@ $vehicleOpsOpen = $isCurrent(['vehicle-branch-activity']);
                             <li class="nav-item">
                                 <a href="<?= base_url('whatsapp-campaigns') ?>" class="nav-link <?= $isCurrent(['whatsapp-campaigns']) ? 'active' : '' ?>">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p><?= lang('App.driver_report') ?></p>
+                                    <p><?= lang('App.whatsapp_campaigns') ?></p>
                                 </a>
                             </li>
                             <li class="nav-item">

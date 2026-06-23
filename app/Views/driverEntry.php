@@ -2,12 +2,12 @@
 <?php include 'app/Views/templates/topmenu.php'; ?>
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 <?php
-$pageTitle = 'Driver Directory';
-$pageSubtitle = 'Manage registered highway drivers, vehicles, incentives, and account status.';
-$pageEyebrow = 'Fleet Management';
+$pageTitle = lang('App.driver_directory');
+$pageSubtitle = lang('App.driver_directory_subtitle');
+$pageEyebrow = lang('App.fleet_management');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Drivers', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.drivers'), 'active' => true],
 ];
 ?>
 
@@ -21,11 +21,11 @@ $breadcrumbs = [
             <div class="card ops-card">
                 <div class="card-header d-flex justify-content-between align-items-center flex-wrap ops-toolbar">
                     <div>
-                        <h3 class="card-title mb-0">All Drivers</h3>
-                        <span class="text-muted small d-block"><?= count($drivers ?? []) ?> registered</span>
+                        <h3 class="card-title mb-0"><?= lang('App.all_drivers') ?></h3>
+                        <span class="text-muted small d-block"><?= count($drivers ?? []) ?> <?= lang('App.registered') ?></span>
                     </div>
                     <a href="<?= base_url('drivers/create') ?>" class="btn btn-primary-enterprise">
-                        <i class="fas fa-plus mr-1"></i> Add Driver
+                        <i class="fas fa-plus mr-1"></i> <?= lang('App.add_driver') ?>
                     </a>
                 </div>
                 <div class="card-body ops-table-wrap driver-directory-wrap p-0">
@@ -33,12 +33,12 @@ $breadcrumbs = [
                         <table class="table table-modern data_table1 mb-0">
                             <thead>
                                 <tr>
-                                    <th>Driver Name</th>
-                                    <th>Contact</th>
-                                    <th>Vehicle Details</th>
-                                    <th>Incentive</th>
-                                    <th>Status</th>
-                                    <th width="120">Actions</th>
+                                    <th><?= lang('App.driver_name') ?></th>
+                                    <th><?= lang('App.contact') ?></th>
+                                    <th><?= lang('App.vehicle_details') ?></th>
+                                    <th><?= lang('App.incentive') ?></th>
+                                    <th><?= lang('App.status') ?></th>
+                                    <th width="120"><?= lang('App.actions') ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,23 +53,20 @@ $breadcrumbs = [
                                     };
                                     ?>
                                     <tr>
-                                        <!-- DRIVER NAME -->
-                                        <td data-label="Driver Name">
+                                        <td data-label="<?= lang('App.driver_name') ?>">
                                             <div class="driver-name" style="font-weight: 600; color: #1A1C1C;">
                                                 <?= esc($driver['driver_name']) ?>
                                             </div>
                                         </td>
                                         
-                                        <!-- CONTACT -->
-                                        <td data-label="Contact">
+                                        <td data-label="<?= lang('App.contact') ?>">
                                             <div class="driver-phone" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #4F4255;">
                                                 <i class="fas fa-phone-alt mr-1" style="color: #A600FF; font-size: 11px;"></i>
                                                 <?= esc($driver['mobile_number']) ?>
                                             </div>
                                         </td>
                                         
-                                        <!-- VEHICLE DETAILS -->
-                                        <td data-label="Vehicle Details">
+                                        <td data-label="<?= lang('App.vehicle_details') ?>">
                                             <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #1A1C1C; font-weight: 500;">
                                                 <?= esc(strtoupper($driver['vehicle_number'] ?? 'N/A')) ?>
                                             </div>
@@ -80,35 +77,32 @@ $breadcrumbs = [
                                             </div>
                                         </td>
                                         
-                                        <!-- INCENTIVE -->
-                                        <td data-label="Incentive">
+                                        <td data-label="<?= lang('App.incentive') ?>">
                                             <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #1A1C1C;">
                                                 ₹<?= number_format((float)($driver['default_cash_incentive_amount'] ?? 200), 2) ?>
                                             </div>
                                         </td>
 
-                                        <!-- STATUS -->
-                                        <td data-label="Status">
+                                        <td data-label="<?= lang('App.status') ?>">
                                             <span class="badge-enterprise-role <?= $statusClass ?>">
                                                 <?= esc(ucwords($status)) ?>
                                             </span>
                                         </td>
                                         
-                                        <!-- ACTION BUTTONS -->
-                                        <td data-label="Actions" class="btn-group-ops">
+                                        <td data-label="<?= lang('App.actions') ?>" class="btn-group-ops">
                                             <div class="action-buttons">
                                                 <a href="<?= base_url('drivers/' . $driver['id']) ?>"
-                                                   class="btn" title="View Profile">
+                                                   class="btn" title="<?= lang('App.view_profile') ?>">
                                                     <i class="fas fa-user"></i>
                                                 </a>
                                                 <a href="<?= base_url('drivers/' . $driver['id'] . '/edit') ?>"
-                                                   class="btn" title="Edit Driver">
+                                                   class="btn" title="<?= lang('App.edit_driver') ?>">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 <?php if (in_array((int) $user_role, [1, 3], true)): ?>
                                                     <a href="<?= base_url('drivers/' . $driver['id'] . '/delete') ?>"
                                                        class="btn btn-danger-enterprise"
-                                                       onclick="return confirm('Delete this driver?');" title="Delete Driver">
+                                                       onclick="return confirm('<?= lang('App.confirm_delete_driver') ?>');" title="<?= lang('App.delete_driver') ?>">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
                                                 <?php endif; ?>

@@ -4,13 +4,13 @@
 
 <?php
 $isEdit = isset($template) && $template;
-$pageTitle = $isEdit ? 'Edit Template' : 'Create Template';
-$pageSubtitle = 'Design reusable WhatsApp messages.';
-$pageEyebrow = 'Marketing';
+$pageTitle = $isEdit ? lang('App.edit_template') : lang('App.create_template');
+$pageSubtitle = lang('App.design_reusable_whatsapp_messages');
+$pageEyebrow = lang('App.marketing');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Templates', 'url' => base_url('message-templates')],
-    ['label' => $isEdit ? 'Edit' : 'Create', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.templates'), 'url' => base_url('message-templates')],
+    ['label' => $isEdit ? lang('App.edit') : lang('App.create'), 'active' => true],
 ];
 ?>
 
@@ -26,22 +26,22 @@ $breadcrumbs = [
                     <div class="card ops-card mb-4">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= $isEdit ? 'Edit Message Template' : 'New Message Template' ?></h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= $isEdit ? lang('App.edit_message_template') : lang('App.new_message_template') ?></h3>
                             </div>
                         </div>
                         <form action="<?= base_url($isEdit ? 'message-templates/' . $template['id'] : 'message-templates') ?>" method="post">
                             <?= csrf_field() ?>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="name">Template Name</label>
-                                    <input type="text" name="name" id="name" class="form-control" required maxlength="150" value="<?= esc(old('name', $template['name'] ?? '')) ?>" placeholder="e.g. Daily Offer, Welcome Message">
+                                    <label for="name"><?= lang('App.template_name') ?></label>
+                                    <input type="text" name="name" id="name" class="form-control" required maxlength="150" value="<?= esc(old('name', $template['name'] ?? '')) ?>" placeholder="<?= lang('App.example_template_name') ?>">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="content">Message Content</label>
+                                    <label for="content"><?= lang('App.message_content') ?></label>
                                     <textarea name="content" id="content" rows="8" class="form-control" required maxlength="5000" placeholder="Type your message here..."><?= esc(old('content', $template['content'] ?? '')) ?></textarea>
                                     <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; margin-top: 8px;">
-                                        <strong style="color: #1A1C1C;">Available Variables:</strong><br>
+                                        <strong style="color: #1A1C1C;"><?= lang('App.available_variables') ?></strong><br>
                                         <span style="background: #F5F5F5; padding: 2px 4px; border-radius: 2px;">{{driver_name}}</span>, 
                                         <span style="background: #F5F5F5; padding: 2px 4px; border-radius: 2px;">{{visit_count}}</span>, 
                                         <span style="background: #F5F5F5; padding: 2px 4px; border-radius: 2px;">{{guest_count}}</span>, 
@@ -53,14 +53,14 @@ $breadcrumbs = [
                                 <div class="form-group mb-2 mt-4">
                                     <div class="custom-control custom-switch" style="padding-left: 2.25rem;">
                                         <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" value="1" <?= old('is_active', $template['is_active'] ?? 1) ? 'checked' : '' ?>>
-                                        <label class="custom-control-label" for="is_active" style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: #1A1C1C; text-transform: none; letter-spacing: 0;">Template is Active</label>
+                                        <label class="custom-control-label" for="is_active" style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: #1A1C1C; text-transform: none; letter-spacing: 0;"><?= lang('App.template_is_active') ?></label>
                                     </div>
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;">Inactive templates will not appear in the WhatsApp Campaigns dropdown.</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 6px;"><?= lang('App.inactive_template_warning') ?></div>
                                 </div>
                             </div>
                             <div class="card-footer" style="background: #F8F9FA; border-top: 1px solid #E0E0E0; display: flex; gap: 10px;">
-                                <button type="submit" class="btn btn-primary-enterprise"><?= $isEdit ? 'Update Template' : 'Save Template' ?></button>
-                                <a href="<?= base_url('message-templates') ?>" class="btn btn-outline-enterprise">Cancel</a>
+                                <button type="submit" class="btn btn-primary-enterprise"><?= $isEdit ? lang('App.update_template') : lang('App.save_template') ?></button>
+                                <a href="<?= base_url('message-templates') ?>" class="btn btn-outline-enterprise"><?= lang('App.cancel') ?></a>
                             </div>
                         </form>
                     </div>

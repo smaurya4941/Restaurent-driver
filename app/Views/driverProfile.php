@@ -3,13 +3,13 @@
 <?php include 'app/Views/templates/sidemenu.php'; ?>
 
 <?php
-$pageTitle = (string) ($driver['driver_name'] ?? 'Driver Profile');
-$pageSubtitle = 'Visit history, monthly bonus summary, and payout workflow.';
-$pageEyebrow = 'Driver Profile';
+$pageTitle = (string) ($driver['driver_name'] ?? lang('App.profile'));
+$pageSubtitle = lang('App.driverProfile_subtitle');
+$pageEyebrow = lang('App.profile');
 $breadcrumbs = [
-    ['label' => 'Home', 'url' => base_url('dashboard')],
-    ['label' => 'Drivers', 'url' => base_url('drivers')],
-    ['label' => $driver['driver_name'] ?? 'Profile', 'active' => true],
+    ['label' => lang('App.home'), 'url' => base_url('dashboard')],
+    ['label' => lang('App.drivers'), 'url' => base_url('drivers')],
+    ['label' => $driver['driver_name'] ?? lang('App.profile'), 'active' => true],
 ];
 
 $driverPhotoUrl = !empty($driver['photo_path'])
@@ -32,7 +32,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                     <div class="card ops-card">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Driver Details</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.driver_details') ?></h3>
                             </div>
                         </div>
                         <div class="card-body">
@@ -46,35 +46,35 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                             ?>
                             <div class="snapshot-grid mb-3" style="display: grid; grid-template-columns: 1fr; gap: 16px;">
                                 <div class="snapshot-item">
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;">Name</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;"><?= lang('App.name') ?></div>
                                     <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #1A1C1C;"><?= esc($driver['driver_name']) ?></div>
                                 </div>
                                 <div class="snapshot-item">
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;">Mobile</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;"><?= lang('App.mobile') ?></div>
                                     <div style="font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1C1C;"><?= esc($driver['mobile_number']) ?></div>
                                 </div>
                                 <div class="snapshot-item">
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;">WhatsApp</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;"><?= lang('App.whatsapp') ?></div>
                                     <div style="font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1C1C;"><?= esc($driver['whatsapp_number'] ?? '—') ?></div>
                                 </div>
                                 <div class="snapshot-item">
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;">License</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;"><?= lang('App.license') ?></div>
                                     <div style="font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1C1C;"><?= esc($driver['license_number'] ?? '—') ?></div>
                                 </div>
                                 <div class="snapshot-item">
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;">Vehicle</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;"><?= lang('App.vehicle') ?></div>
                                     <div style="font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1C1C;"><?= esc($driver['vehicle_number'] ?? '—') ?></div>
                                 </div>
                                 <div class="snapshot-item">
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;">Type</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;"><?= lang('App.type') ?></div>
                                     <div style="font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1C1C;"><?= esc($driver['vehicle_type'] ? ucwords($driver['vehicle_type']) : '—') ?></div>
                                 </div>
                                 <div class="snapshot-item">
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;">Cash Incentive</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;"><?= lang('App.cash_incentive') ?></div>
                                     <div style="font-family: 'Inter', sans-serif; font-size: 14px; color: #1A1C1C;">₹<?= esc(number_format((float) ($driver['default_cash_incentive_amount'] ?? 200), 2)) ?></div>
                                 </div>
                                 <div class="snapshot-item">
-                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;">Status</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase;"><?= lang('App.status') ?></div>
                                     <div>
                                         <span class="badge-enterprise-role" style="background: <?= in_array($driverStatus, ['blocked', 'blacklisted'], true) ? '#F43F5E' : '#10B981' ?>; color: #FFFFFF;">
                                             <?= esc(ucfirst($driverStatus)) ?>
@@ -86,7 +86,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                 <div class="row mb-3 mt-4">
                                     <?php if ($driverPhotoUrl): ?>
                                         <div class="col-sm-6 mb-3">
-                                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase; margin-bottom: 8px;">Driver Photo</div>
+                                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase; margin-bottom: 8px;"><?= lang('App.driver_photo') ?></div>
                                             <a href="<?= esc($driverPhotoUrl) ?>" target="_blank" rel="noopener">
                                                 <img src="<?= esc($driverPhotoUrl) ?>" alt="Driver photo" class="img-fluid rounded border" style="border-color: #E0E0E0 !important;">
                                             </a>
@@ -94,7 +94,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                     <?php endif; ?>
                                     <?php if ($licensePhotoUrl): ?>
                                         <div class="col-sm-6 mb-3">
-                                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase; margin-bottom: 8px;">License Photo</div>
+                                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; text-transform: uppercase; margin-bottom: 8px;"><?= lang('App.license_document') ?></div>
                                             <a href="<?= esc($licensePhotoUrl) ?>" target="_blank" rel="noopener">
                                                 <img src="<?= esc($licensePhotoUrl) ?>" alt="License photo" class="img-fluid rounded border" style="border-color: #E0E0E0 !important;">
                                             </a>
@@ -103,7 +103,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                 </div>
                             <?php endif; ?>
                             <div class="mt-4">
-                                <a href="<?= base_url('drivers/' . $driver['id'] . '/edit') ?>" class="btn btn-outline-enterprise w-100 text-center"><i class="fas fa-pen mr-1"></i> Edit Driver</a>
+                                <a href="<?= base_url('drivers/' . $driver['id'] . '/edit') ?>" class="btn btn-outline-enterprise w-100 text-center"><i class="fas fa-pen mr-1"></i> <?= lang('App.edit_driver') ?></a>
                             </div>
                         </div>
                     </div>
@@ -113,7 +113,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                     <div class="card ops-card">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Monthly Bonus Workflow</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.monthly_bonus_workflow') ?></h3>
                             </div>
                         </div>
                         <div class="card-body ops-table-wrap p-0">
@@ -121,13 +121,13 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                 <table class="table table-modern mb-0 <?= !empty($monthlySummaries) ? 'data_table1' : '' ?>">
                                     <thead>
                                         <tr>
-                                            <th>Month</th>
-                                            <th>Visits</th>
-                                            <th>Cash Incentive</th>
-                                            <th>Bonus %</th>
-                                            <th>Bonus Amount</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
+                                            <th><?= lang('App.month') ?></th>
+                                            <th><?= lang('App.visits') ?></th>
+                                            <th><?= lang('App.cash_incentive') ?></th>
+                                            <th><?= lang('App.bonus_percentage') ?></th>
+                                            <th><?= lang('App.bonus_amount') ?></th>
+                                            <th><?= lang('App.status') ?></th>
+                                            <th><?= lang('App.actions') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -164,12 +164,12 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                                     </div>
                                                     <?php if (!empty($summary['approved_by_name'])): ?>
                                                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 2px;">
-                                                            Approved by <?= esc($summary['approved_by_name']) ?>
+                                                            <?= lang('App.approved_by') ?> <?= esc($summary['approved_by_name']) ?>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if (!empty($summary['paid_by_name'])): ?>
                                                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4F4255; margin-top: 2px;">
-                                                            Paid by <?= esc($summary['paid_by_name']) ?>
+                                                            <?= lang('App.paid_by') ?> <?= esc($summary['paid_by_name']) ?>
                                                         </div>
                                                     <?php endif; ?>
                                                 </td>
@@ -177,15 +177,15 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                                     <?php if ($canManagePayouts && (string) ($summary['payout_status'] ?? '') === 'eligible'): ?>
                                                         <form action="<?= base_url('driver-bonus/' . $summary['id'] . '/approve') ?>" method="post" class="mb-2">
                                                             <?= csrf_field() ?>
-                                                            <button type="submit" class="btn btn-sm btn-outline-enterprise py-1 px-2" style="font-size: 12px;">Approve</button>
+                                                            <button type="submit" class="btn btn-sm btn-outline-enterprise py-1 px-2" style="font-size: 12px;"><?= lang('App.approve') ?></button>
                                                         </form>
                                                     <?php endif; ?>
                                                     <?php if ($canManagePayouts && in_array((string) ($summary['payout_status'] ?? ''), ['eligible', 'approved'], true)): ?>
                                                         <form action="<?= base_url('driver-bonus/' . $summary['id'] . '/pay') ?>" method="post">
                                                             <?= csrf_field() ?>
-                                                            <input type="text" name="payout_reference" class="form-control form-control-sm mb-2" placeholder="Payout ref">
-                                                            <textarea name="payout_notes" class="form-control mb-2" style="font-size: 12px; padding: 6px; min-height: 40px;" rows="1" placeholder="Payout notes"></textarea>
-                                                            <button type="submit" class="btn btn-sm btn-primary-enterprise py-1 px-2" style="font-size: 12px;">Mark Paid</button>
+                                                            <input type="text" name="payout_reference" class="form-control form-control-sm mb-2" placeholder="<?= lang('App.payout_ref') ?>">
+                                                            <textarea name="payout_notes" class="form-control mb-2" style="font-size: 12px; padding: 6px; min-height: 40px;" rows="1" placeholder="<?= lang('App.payout_notes') ?>"></textarea>
+                                                            <button type="submit" class="btn btn-sm btn-primary-enterprise py-1 px-2" style="font-size: 12px;"><?= lang('App.mark_paid') ?></button>
                                                         </form>
                                                     <?php endif; ?>
                                                 </td>
@@ -194,7 +194,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                         <?php if (empty($monthlySummaries)): ?>
                                             <tr>
                                                 <td colspan="7" class="text-center text-muted py-4" style="font-family: 'Inter', sans-serif; font-size: 14px;">
-                                                    No monthly bonus records found for this driver yet.
+                                                    <?= lang('App.no_monthly_bonus') ?>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>
@@ -207,7 +207,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                     <div class="card ops-card">
                         <div class="card-header ops-toolbar">
                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;">
-                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;">Visit Incentive History</h3>
+                                <h3 class="card-title mb-0" style="float: none; line-height: 1.2;"><?= lang('App.visit_incentive_history') ?></h3>
                             </div>
                         </div>
                         <div class="card-body ops-table-wrap p-0">
@@ -215,12 +215,12 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                 <table class="table table-modern mb-0 <?= !empty($visitHistory) ? 'data_table1' : '' ?>">
                                     <thead>
                                         <tr>
-                                            <th>Visit Time</th>
-                                            <th>Vehicle</th>
-                                            <th>Guests</th>
-                                            <th>Food Issued</th>
-                                            <th>Cash Incentive</th>
-                                            <th>Given By</th>
+                                            <th><?= lang('App.visit_time') ?></th>
+                                            <th><?= lang('App.vehicle') ?></th>
+                                            <th><?= lang('App.guests') ?></th>
+                                            <th><?= lang('App.food_issued') ?></th>
+                                            <th><?= lang('App.cash_incentive') ?></th>
+                                            <th><?= lang('App.given_by') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -244,11 +244,11 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                                 <td data-label="Food Issued">
                                                     <?php if ((int) $visit['food_offered'] === 1): ?>
                                                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #10B981;">
-                                                            <i class="fas fa-utensils mr-1"></i> Yes
+                                                            <i class="fas fa-utensils mr-1"></i> <?= lang('App.yes') ?>
                                                         </div>
                                                     <?php else: ?>
                                                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #F43F5E;">
-                                                            <i class="fas fa-times mr-1"></i> No
+                                                            <i class="fas fa-times mr-1"></i> <?= lang('App.no') ?>
                                                         </div>
                                                     <?php endif; ?>
                                                 </td>
@@ -267,7 +267,7 @@ $licensePhotoUrl = !empty($driver['license_photo_path'])
                                         <?php if (empty($visitHistory)): ?>
                                             <tr>
                                                 <td colspan="6" class="text-center text-muted py-4" style="font-family: 'Inter', sans-serif; font-size: 14px;">
-                                                    No visits recorded for this driver yet.
+                                                    <?= lang('App.no_visits_recorded_driver') ?>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>
