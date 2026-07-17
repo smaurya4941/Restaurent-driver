@@ -26,6 +26,26 @@ class WhatsApp extends BaseConfig
     public int $retryDelayMinutes = 15;
     public bool $simulateDelivery = true;
 
+    /**
+     * Restaurant/brand name used in automated driver notifications
+     * (e.g. the welcome message sent right after a driver is registered).
+     */
+    public string $restaurantName = 'Hawa Hawai Aeroplane Restaurant';
+
+    /**
+     * When true, a welcome WhatsApp message is queued automatically as soon
+     * as a driver is registered successfully.
+     */
+    public bool $sendWelcomeOnRegistration = true;
+
+    /**
+     * Optional override for the welcome message body. Leave empty to use the
+     * built-in default template. Supports {{tokens}}: driver_name, restaurant,
+     * restaurant_full, branch, mobile_number, whatsapp_number, city,
+     * vehicle_number, vehicle_type, has_vehicle.
+     */
+    public string $welcomeMessageTemplate = '';
+
     public function __construct()
     {
         parent::__construct();
@@ -49,5 +69,8 @@ class WhatsApp extends BaseConfig
         $this->workerBatchSize = (int) env('whatsapp.workerBatchSize', $this->workerBatchSize);
         $this->retryDelayMinutes = (int) env('whatsapp.retryDelayMinutes', $this->retryDelayMinutes);
         $this->simulateDelivery = filter_var(env('whatsapp.simulateDelivery', $this->simulateDelivery), FILTER_VALIDATE_BOOL);
+        $this->restaurantName = (string) env('whatsapp.restaurantName', $this->restaurantName);
+        $this->sendWelcomeOnRegistration = filter_var(env('whatsapp.sendWelcomeOnRegistration', $this->sendWelcomeOnRegistration), FILTER_VALIDATE_BOOL);
+        $this->welcomeMessageTemplate = (string) env('whatsapp.welcomeMessageTemplate', $this->welcomeMessageTemplate);
     }
 }

@@ -28,6 +28,11 @@ class VisitModel extends BranchScopedModel
         'verification_method',
         'verification_reference',
         'remarks',
+        'latitude',
+        'longitude',
+        'location_accuracy',
+        'location_captured_at',
+        'location_address',
     ];
 
     protected bool $allowEmptyInserts = false;

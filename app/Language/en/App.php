@@ -408,6 +408,8 @@ return [
     'cash' => 'Cash',
     'handled_by' => 'Handled By',
     'visit_time' => 'Visit Time',
+    'location' => 'Location',
+    'open_in_maps' => 'Open in Google Maps',
     'yes' => 'Yes',
     'no' => 'No',
     'delete_visit' => 'Delete this visit?',

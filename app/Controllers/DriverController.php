@@ -6,6 +6,7 @@ use App\Models\DriverModel;
 use App\Models\DriverMonthlySummaryModel;
 use App\Models\VehicleModel;
 use App\Models\VisitModel;
+use App\Services\DriverRegistrationNotifier;
 use App\Services\IncentiveEngineService;
 
 class DriverController extends BaseController
@@ -72,6 +73,8 @@ class DriverController extends BaseController
         }
 
         $this->logAudit('driver.created', 'driver', $driverId, null, $driverModel->find($driverId));
+        $this->queueWelcomeMessage($driverId);
+
         return redirect()->to('/drivers')->with('success', 'Driver added successfully.');
     }
 
@@ -267,6 +270,30 @@ class DriverController extends BaseController
         $this->logAudit('driver_bonus.paid', 'driver_monthly_summary', (int) $summaryId, $summary, $summaryModel->find((int) $summaryId));
 
         return redirect()->back()->with('success', 'Monthly bonus marked as paid.');
+    }
+
+    /**
+     * Queue the automated welcome WhatsApp message for a newly registered driver.
+     * Runs after the driver + vehicle have been committed. Any failure here is
+     * logged inside the notifier and must never affect the registration result.
+     */
+    private function queueWelcomeMessage(int $driverId): void
+    {
+        $driver = (new DriverModel())->find($driverId);
+        if (!$driver) {
+            return;
+        }
+
+        $vehicle = (new VehicleModel())
+            ->where('driver_id', $driverId)
+            ->where('is_primary', 1)
+            ->first();
+
+        (new DriverRegistrationNotifier())->sendWelcomeMessage(
+            $driver,
+            $vehicle ?: null,
+            $this->branchContext->getActiveBranchLabel()
+        );
     }
 
     private function getDriverValidationRules(?int $driverId = null): array

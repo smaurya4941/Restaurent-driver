@@ -107,10 +107,18 @@ $breadcrumbs = [
                                     <span class="text-muted small" style="margin-top: 4px;">For Registered Driver #<?= esc((string) $driver['id']) ?></span>
                                 </div>
                             </div>
-                            <form action="<?= base_url('saveVisit') ?>" method="post">
+                            <form action="<?= base_url('saveVisit') ?>" method="post" id="logVisitForm">
                                 <?= csrf_field(); ?>
                                 <input type="hidden" name="driver_id" value="<?= esc((string) $driver['id']) ?>">
+                                <input type="hidden" name="latitude" id="visit_latitude" value="">
+                                <input type="hidden" name="longitude" id="visit_longitude" value="">
+                                <input type="hidden" name="location_accuracy" id="visit_location_accuracy" value="">
+                                <input type="hidden" name="location_address" id="visit_location_address" value="">
                                 <div class="card-body">
+                                    <div id="geoStatus" class="geo-status geo-status--pending">
+                                        <i class="fas fa-location-arrow mr-1"></i>
+                                        <span id="geoStatusText">Fetching current location…</span>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -164,8 +172,21 @@ $breadcrumbs = [
                                     </div>
 
                                     <div class="form-group mt-2">
-                                        <label for="remarks">Remarks</label>
+                                        <div class="remarks-label-row">
+                                            <label for="remarks" class="mb-0">Remarks</label>
+                                            <div class="dictation-controls" id="dictationControls" hidden>
+                                                <div class="dictation-lang" role="group" aria-label="Dictation language">
+                                                    <button type="button" class="dictation-lang-btn is-active" data-lang="hi-IN">हिंदी</button>
+                                                    <button type="button" class="dictation-lang-btn" data-lang="en-IN">English</button>
+                                                </div>
+                                                <button type="button" id="dictateBtn" class="dictation-mic" aria-pressed="false" title="Bolein / Speak">
+                                                    <i class="fas fa-microphone" aria-hidden="true"></i>
+                                                    <span class="dictation-mic-text">Bolein</span>
+                                                </button>
+                                            </div>
+                                        </div>
                                         <textarea name="remarks" id="remarks" class="form-control" rows="3" placeholder="Payment/Remarks"><?= esc(old('remarks')) ?></textarea>
+                                        <small id="dictationStatus" class="dictation-status" role="status" aria-live="polite"></small>
                                     </div>
                                 </div>
                                 <div class="card-footer">
@@ -329,6 +350,347 @@ textarea.form-control {
     border-top: 1px solid #E0E0E0 !important;
     border-radius: 0 0 4px 4px;
 }
+
+/* =========================================
+   GEOLOCATION STATUS
+========================================= */
+.geo-status {
+    display: flex;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    border: 1px solid transparent;
+}
+.geo-status--pending {
+    background: #FFF7ED;
+    border-color: #FED7AA;
+    color: #C2410C;
+}
+.geo-status--success {
+    background: #ECFDF5;
+    border-color: #A7F3D0;
+    color: #047857;
+}
+.geo-status--error {
+    background: #FFF1F2;
+    border-color: #FECDD3;
+    color: #BE123C;
+}
+
+/* =========================================
+   SPEECH-TO-TEXT (DICTATION)
+========================================= */
+.remarks-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+.dictation-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.dictation-lang {
+    display: inline-flex;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.dictation-lang-btn {
+    background: #FFFFFF;
+    border: none;
+    padding: 5px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #4F4255;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.dictation-lang-btn + .dictation-lang-btn {
+    border-left: 1px solid #E0E0E0;
+}
+.dictation-lang-btn.is-active {
+    background: #1A1C1C;
+    color: #FFFFFF;
+}
+.dictation-mic {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FFFFFF;
+    border: 1px solid #A600FF;
+    color: #A600FF;
+    border-radius: 4px;
+    padding: 5px 12px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.dictation-mic:hover {
+    background: #F7ECFF;
+}
+.dictation-mic.is-listening {
+    background: #A600FF;
+    color: #FFFFFF;
+    box-shadow: 0 0 0 0 rgba(166, 0, 255, 0.5);
+    animation: dictation-pulse 1.4s infinite;
+}
+@keyframes dictation-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(166, 0, 255, 0.45); }
+    70%  { box-shadow: 0 0 0 8px rgba(166, 0, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(166, 0, 255, 0); }
+}
+.dictation-status {
+    display: none;
+    margin-top: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #4F4255;
+}
+.dictation-status.is-visible {
+    display: block;
+}
+.dictation-status.is-error {
+    color: #BE123C;
+}
 </style>
+
+<script>
+(function () {
+    var form = document.getElementById('logVisitForm');
+    if (!form) {
+        return;
+    }
+
+    var latField = document.getElementById('visit_latitude');
+    var lngField = document.getElementById('visit_longitude');
+    var accField = document.getElementById('visit_location_accuracy');
+    var addrField = document.getElementById('visit_location_address');
+    var statusBox = document.getElementById('geoStatus');
+    var statusText = document.getElementById('geoStatusText');
+
+    function setStatus(state, message) {
+        if (!statusBox) {
+            return;
+        }
+        statusBox.className = 'geo-status geo-status--' + state;
+        if (statusText) {
+            statusText.textContent = message;
+        }
+    }
+
+    // Best-effort browser-side reverse geocoding for instant feedback.
+    // If it fails, the server reverse-geocodes on save, so this never blocks.
+    function resolveAddress(lat, lng, acc) {
+        var url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1'
+            + '&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lng);
+
+        fetch(url, { headers: { 'Accept': 'application/json' } })
+            .then(function (response) { return response.ok ? response.json() : null; })
+            .then(function (data) {
+                var address = data && data.display_name ? String(data.display_name) : '';
+                if (address) {
+                    addrField.value = address.substring(0, 255);
+                    setStatus('success', 'Location captured (±' + Math.round(acc) + ' m): ' + address);
+                }
+            })
+            .catch(function () { /* keep coordinate-only status */ });
+    }
+
+    if (!('geolocation' in navigator)) {
+        setStatus('error', 'Location not supported on this device. Visit will be saved without it.');
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var acc = position.coords.accuracy;
+
+            latField.value = lat.toFixed(7);
+            lngField.value = lng.toFixed(7);
+            accField.value = (acc !== null && acc !== undefined) ? Math.round(acc) : '';
+
+            setStatus('success', 'Location captured (±' + Math.round(acc) + ' m): '
+                + lat.toFixed(5) + ', ' + lng.toFixed(5));
+
+            resolveAddress(lat.toFixed(7), lng.toFixed(7), acc);
+        },
+        function (error) {
+            var reason = 'Location unavailable';
+            if (error && error.code === error.PERMISSION_DENIED) {
+                reason = 'Location permission denied';
+            } else if (error && error.code === error.TIMEOUT) {
+                reason = 'Location request timed out';
+            }
+            setStatus('error', reason + '. Visit will be saved without it.');
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+    );
+})();
+</script>
+
+<script>
+// =========================================
+// SPEECH-TO-TEXT for the Remarks field.
+// Uses the browser-native Web Speech API (free, no key). Supported on
+// Chrome / Edge (incl. Android). Silently hidden on unsupported browsers,
+// so staff can always type manually.
+// =========================================
+(function () {
+    var textarea = document.getElementById('remarks');
+    var controls = document.getElementById('dictationControls');
+    var micBtn = document.getElementById('dictateBtn');
+    var statusEl = document.getElementById('dictationStatus');
+    var langButtons = document.querySelectorAll('.dictation-lang-btn');
+
+    if (!textarea || !controls || !micBtn) {
+        return;
+    }
+
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        // Browser can't do speech recognition — leave manual typing as-is.
+        return;
+    }
+
+    controls.hidden = false;
+
+    var recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'hi-IN';
+
+    var listening = false;
+    // Text already committed to the textarea when the current session started.
+    var baseText = '';
+    // Sum of final results received during the current session.
+    var sessionFinal = '';
+
+    function setStatus(message, isError) {
+        if (!statusEl) {
+            return;
+        }
+        statusEl.textContent = message || '';
+        statusEl.classList.toggle('is-visible', !!message);
+        statusEl.classList.toggle('is-error', !!isError);
+    }
+
+    function joinText(a, b) {
+        if (!a) { return b; }
+        if (!b) { return a; }
+        return /\s$/.test(a) ? (a + b) : (a + ' ' + b);
+    }
+
+    function startListening() {
+        baseText = textarea.value;
+        sessionFinal = '';
+        try {
+            recognition.start();
+        } catch (e) {
+            // start() throws if called while already starting; ignore.
+        }
+    }
+
+    function stopListening() {
+        try {
+            recognition.stop();
+        } catch (e) { /* no-op */ }
+    }
+
+    micBtn.addEventListener('click', function () {
+        if (listening) {
+            stopListening();
+        } else {
+            startListening();
+        }
+    });
+
+    langButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            langButtons.forEach(function (b) { b.classList.remove('is-active'); });
+            btn.classList.add('is-active');
+            recognition.lang = btn.getAttribute('data-lang');
+            if (listening) {
+                // Restart so the new language takes effect immediately.
+                stopListening();
+            }
+        });
+    });
+
+    recognition.addEventListener('start', function () {
+        listening = true;
+        micBtn.classList.add('is-listening');
+        micBtn.setAttribute('aria-pressed', 'true');
+        setStatus('Sun raha hoon… boliye (Listening…)', false);
+    });
+
+    recognition.addEventListener('result', function (event) {
+        var interim = '';
+        for (var i = event.resultIndex; i < event.results.length; i++) {
+            var transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+                sessionFinal = joinText(sessionFinal, transcript.trim());
+            } else {
+                interim += transcript;
+            }
+        }
+        var combined = joinText(baseText, sessionFinal);
+        combined = joinText(combined, interim.trim());
+        textarea.value = combined;
+    });
+
+    recognition.addEventListener('error', function (event) {
+        var message = 'Voice input error. Please type manually.';
+        if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            message = 'Microphone permission denied. Allow mic access to dictate.';
+        } else if (event.error === 'no-speech') {
+            message = 'No speech detected. Tap the mic and try again.';
+        } else if (event.error === 'network') {
+            message = 'Network needed for voice input. Check your connection.';
+        } else if (event.error === 'aborted') {
+            message = '';
+        }
+        setStatus(message, !!message);
+    });
+
+    recognition.addEventListener('end', function () {
+        listening = false;
+        micBtn.classList.remove('is-listening');
+        micBtn.setAttribute('aria-pressed', 'false');
+        // Persist whatever was captured as the new base for the next session.
+        baseText = textarea.value;
+        sessionFinal = '';
+        if (statusEl && !statusEl.classList.contains('is-error')) {
+            setStatus('', false);
+        }
+    });
+
+    // Stop capturing before the form submits so nothing is lost mid-word.
+    var form = document.getElementById('logVisitForm');
+    if (form) {
+        form.addEventListener('submit', function () {
+            if (listening) {
+                stopListening();
+            }
+        });
+    }
+})();
+</script>
 
 <?php include 'app/Views/templates/footer.php'; ?>

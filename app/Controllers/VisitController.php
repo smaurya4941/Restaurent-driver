@@ -7,6 +7,7 @@ use App\Models\VehicleBranchActivityModel;
 use App\Models\VehicleModel;
 use App\Models\VisitModel;
 use App\Services\DriverLoyaltyService;
+use App\Services\GeocodingService;
 use App\Services\IncentiveEngineService;
 
 class VisitController extends BaseController
@@ -120,7 +121,7 @@ class VisitController extends BaseController
             // 'verification_method' => (string) $this->request->getPost('verification_method'),
             'verification_reference' => $this->emptyToNull($this->request->getPost('verification_reference')),
             'remarks' => $this->emptyToNull($this->request->getPost('remarks')),
-        ];
+        ] + $this->resolveGeolocationPayload();
 
         $visitModel = new VisitModel();
         $visitModel->insert($visitPayload);
@@ -159,6 +160,10 @@ class VisitController extends BaseController
         $visitedAt = date('Y-m-d H:i:s', strtotime((string) $this->request->getPost('visited_at')));
         $foodOffered = (int) $this->request->getPost('food_offered') === 1;
 
+        // Resolve geolocation (may hit an external geocoder) before opening the
+        // transaction so a slow lookup never holds table locks open.
+        $geolocation = $this->resolveGeolocationPayload();
+
         $db = \Config\Database::connect();
         $driverModel = new DriverModel();
         $vehicleModel = new VehicleModel();
@@ -191,7 +196,7 @@ class VisitController extends BaseController
             'verification_method' => (string) $this->request->getPost('verification_method'),
             'verification_reference' => $this->emptyToNull($this->request->getPost('verification_reference')),
             'remarks' => $this->emptyToNull($this->request->getPost('remarks')),
-        ];
+        ] + $geolocation;
 
         $visitModel->insert($visitPayload);
         $visitId = (int) $visitModel->getInsertID();
@@ -348,7 +353,7 @@ class VisitController extends BaseController
     private function getVisitListing(): array
     {
         $query = (new VisitModel())
-            ->select('visits.id, branches.name AS branch_name, drivers.full_name AS driver_name, drivers.mobile_number, vehicles.vehicle_number, visits.guest_count, visits.food_offered, visits.cash_incentive_amount, visits.verification_method, visits.visited_at AS visit_date, verifier.name AS verified_by_name, handler.name AS handled_by_name')
+            ->select('visits.id, branches.name AS branch_name, drivers.full_name AS driver_name, drivers.mobile_number, vehicles.vehicle_number, visits.guest_count, visits.food_offered, visits.cash_incentive_amount, visits.verification_method, visits.visited_at AS visit_date, visits.latitude, visits.longitude, visits.location_accuracy, visits.location_address, verifier.name AS verified_by_name, handler.name AS handled_by_name')
             ->join('branches', 'branches.id = visits.branch_id', 'left')
             ->join('drivers', 'drivers.id = visits.driver_id')
             ->join('vehicles', 'vehicles.id = visits.vehicle_id', 'left')
@@ -524,6 +529,60 @@ class VisitController extends BaseController
     {
         $trimmed = trim((string) $value);
         return $trimmed === '' ? null : $trimmed;
+    }
+
+    /**
+     * Reads the browser-captured geolocation from the request and returns a
+     * sanitised payload. Coordinates are only accepted as a valid pair within
+     * real-world bounds; anything else is stored as NULL so the visit still
+     * saves even when the device denies or fails to resolve a location.
+     *
+     * @return array{latitude: ?string, longitude: ?string, location_accuracy: ?string, location_captured_at: ?string, location_address: ?string}
+     */
+    private function resolveGeolocationPayload(): array
+    {
+        $empty = [
+            'latitude' => null,
+            'longitude' => null,
+            'location_accuracy' => null,
+            'location_captured_at' => null,
+            'location_address' => null,
+        ];
+
+        $latRaw = $this->emptyToNull($this->request->getPost('latitude'));
+        $lngRaw = $this->emptyToNull($this->request->getPost('longitude'));
+
+        if ($latRaw === null || $lngRaw === null || !is_numeric($latRaw) || !is_numeric($lngRaw)) {
+            return $empty;
+        }
+
+        $latitude = (float) $latRaw;
+        $longitude = (float) $lngRaw;
+
+        if ($latitude < -90.0 || $latitude > 90.0 || $longitude < -180.0 || $longitude > 180.0) {
+            return $empty;
+        }
+
+        $accuracyRaw = $this->emptyToNull($this->request->getPost('location_accuracy'));
+        $accuracy = ($accuracyRaw !== null && is_numeric($accuracyRaw) && (float) $accuracyRaw >= 0)
+            ? number_format((float) $accuracyRaw, 2, '.', '')
+            : null;
+
+        // Prefer an address the browser already resolved; otherwise reverse-geocode server-side.
+        $address = $this->emptyToNull($this->request->getPost('location_address'));
+        if ($address !== null) {
+            $address = mb_substr(strip_tags($address), 0, 255);
+        } else {
+            $address = (new GeocodingService())->reverseGeocode($latitude, $longitude);
+        }
+
+        return [
+            'latitude' => number_format($latitude, 7, '.', ''),
+            'longitude' => number_format($longitude, 7, '.', ''),
+            'location_accuracy' => $accuracy,
+            'location_captured_at' => date('Y-m-d H:i:s'),
+            'location_address' => $address,
+        ];
     }
 
     private function getVisitValidationRules(): array

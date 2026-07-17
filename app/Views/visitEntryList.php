@@ -42,6 +42,7 @@ $isAdmin = in_array((int) session()->get('role'), [1, 3], true);
                                     <th><?= lang('App.cash') ?></th>
                                     <th><?= lang('App.handled_by') ?></th>
                                     <th><?= lang('App.visit_time') ?></th>
+                                    <th><?= lang('App.location') ?></th>
                                     <?php if ($isAdmin): ?><th width="120"><?= lang('App.actions') ?></th><?php endif; ?>
                                 </tr>
                             </thead>
@@ -93,6 +94,32 @@ $isAdmin = in_array((int) session()->get('role'), [1, 3], true);
                                                     <?= esc(date('d M Y, H:i', strtotime($visit['visit_date']))) ?>
                                                 </div>
                                             </td>
+                                            <td data-label="<?= lang('App.location') ?>">
+                                                <?php if (isset($visit['latitude'], $visit['longitude']) && $visit['latitude'] !== null && $visit['longitude'] !== null): ?>
+                                                    <?php
+                                                        $lat = (float) $visit['latitude'];
+                                                        $lng = (float) $visit['longitude'];
+                                                        $coords = number_format($lat, 5) . ', ' . number_format($lng, 5);
+                                                        $address = trim((string) ($visit['location_address'] ?? ''));
+                                                        // Show only the first couple of address parts so the cell stays compact.
+                                                        $shortLabel = $coords;
+                                                        if ($address !== '') {
+                                                            $segments = array_values(array_filter(array_map('trim', explode(',', $address)), static fn ($s) => $s !== ''));
+                                                            $shortLabel = implode(', ', array_slice($segments, 0, 2));
+                                                        }
+                                                        $mapsUrl = 'https://www.google.com/maps?q=' . rawurlencode($lat . ',' . $lng);
+                                                    ?>
+                                                    <a href="<?= esc($mapsUrl, 'attr') ?>" target="_blank" rel="noopener noreferrer" title="<?= esc($address !== '' ? $address : lang('App.open_in_maps'), 'attr') ?>" class="location-link" style="font-family: 'Inter', sans-serif; font-size: 13px; color: #A600FF; text-decoration: none; display: inline-flex; align-items: center; max-width: 220px;">
+                                                        <i class="fas fa-map-marker-alt mr-1"></i>
+                                                        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= esc($shortLabel) ?></span>
+                                                    </a>
+                                                    <?php if (!empty($visit['location_accuracy'])): ?>
+                                                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4F4255; margin-top: 2px;">±<?= esc((string) round((float) $visit['location_accuracy'])) ?> m</div>
+                                                    <?php endif; ?>
+                                                <?php else: ?>
+                                                    <span style="color: #4F4255;">—</span>
+                                                <?php endif; ?>
+                                            </td>
                                             <?php if ($isAdmin): ?>
                                                 <td data-label="<?= lang('App.actions') ?>" class="btn-group-ops">
                                                     <div style="display: flex; gap: 8px;">
@@ -105,7 +132,7 @@ $isAdmin = in_array((int) session()->get('role'), [1, 3], true);
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="<?= $isAdmin ? '9' : '8' ?>" class="text-center p-4" style="color: #4F4255;">
+                                        <td colspan="<?= $isAdmin ? '10' : '9' ?>" class="text-center p-4" style="color: #4F4255;">
                                             <?= lang('App.no_visits_recorded_yet') ?>
                                         </td>
                                     </tr>
